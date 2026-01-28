@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2023-10-16",
+});
 
-export async function POST() {
+export async function POST(req: Request) {
   try {
+    const origin = req.headers.get("origin");
+
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
@@ -20,9 +24,8 @@ export async function POST() {
           quantity: 1,
         },
       ],
-      success_url:
-        "https://big-discounts.vercel.app/success?session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: "https://big-discounts.vercel.app/cart",
+      success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/cart`,
     });
 
     return NextResponse.json({ url: session.url });
