@@ -20,13 +20,14 @@ export async function POST() {
           quantity: 1,
         },
       ],
-      success_url: "https://big-discounts.vercel.app/success?session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: "https://big-discounts.vercel.app/cancel",
+      success_url:
+        "https://big-discounts.vercel.app/success?session_id={CHECKOUT_SESSION_ID}",
+      cancel_url: "https://big-discounts.vercel.app/cart",
     });
 
     return NextResponse.json({ url: session.url });
   } catch (err) {
-    console.error("Stripe error:", err);
+    console.error("Stripe checkout error:", err);
     return NextResponse.json(
       { error: "Stripe checkout failed" },
       { status: 500 }
