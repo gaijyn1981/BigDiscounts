@@ -1,59 +1,35 @@
 "use client";
 
 export default function CartPage() {
-  const handleCheckout = async () => {
-    try {
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-      });
+  async function checkout() {
+    const res = await fetch("/api/checkout", {
+      method: "POST",
+    });
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert("Checkout failed");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Something went wrong");
+    if (data.url) {
+      window.location.href = data.url; // 🔥 THIS redirects to Stripe
+    } else {
+      alert("Failed to start checkout");
     }
-  };
+  }
 
   return (
-    <div style={{ padding: "60px 40px", maxWidth: "800px", margin: "0 auto" }}>
-      <h1 style={{ fontSize: "36px", marginBottom: "30px" }}>
-        Your cart
-      </h1>
+    <div style={{ padding: 40 }}>
+      <h1>Your Cart</h1>
 
-      <div
-        style={{
-          border: "1px solid #ddd",
-          padding: "20px",
-          marginBottom: "30px",
-        }}
-      >
-        <h3>Wireless Headphones</h3>
-        <p>£49.99</p>
-        <small>Sold by UK Audio Co</small>
-      </div>
-
-      <div style={{ fontSize: "20px", marginBottom: "30px" }}>
-        <strong>Total: £49.99</strong>
-      </div>
+      <p>Wireless Headphones – £49.99</p>
 
       <button
-        onClick={handleCheckout}
+        onClick={checkout}
         style={{
-          padding: "14px 24px",
+          padding: "12px 20px",
           fontSize: "16px",
           cursor: "pointer",
-          background: "black",
-          color: "white",
-          border: "none",
         }}
       >
-        Checkout
+        Pay with Stripe
       </button>
     </div>
   );
