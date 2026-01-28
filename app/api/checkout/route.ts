@@ -21,8 +21,7 @@ export async function POST() {
         },
       ],
 
-      success_url:
-        "https://big-discounts.vercel.app/success?session_id={CHECKOUT_SESSION_ID}",
+      success_url: "https://big-discounts.vercel.app/success?session_id={CHECKOUT_SESSION_ID}",
       cancel_url:
         "https://big-discounts.vercel.app/cart",
     });
