@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2023-10-16",
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST() {
   try {
@@ -17,22 +15,21 @@ export async function POST() {
             product_data: {
               name: "Wireless Headphones",
             },
-            unit_amount: 4999, // £49.99
+            unit_amount: 4999,
           },
           quantity: 1,
         },
       ],
-
-      // ✅ THIS IS THE IMPORTANT PART
-      success_url:
-        "https://big-discounts.vercel.app/success?session_id={CHECKOUT_SESSION_ID}",
-
-      cancel_url: "https://big-discounts.vercel.app/cart",
+      success_url: "https://big-discounts.vercel.app/success?session_id={CHECKOUT_SESSION_ID}",
+      cancel_url: "https://big-discounts.vercel.app/cancel",
     });
 
     return NextResponse.json({ url: session.url });
-  } catch (error) {
-    console.error("Stripe checkout error:", error);
-    return new NextResponse("Stripe error", { status: 500 });
+  } catch (err) {
+    console.error("Stripe error:", err);
+    return NextResponse.json(
+      { error: "Stripe checkout failed" },
+      { status: 500 }
+    );
   }
 }
