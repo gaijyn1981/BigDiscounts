@@ -3,13 +3,12 @@ import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
-    const origin = req.headers.get("origin");
-
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
+
       line_items: [
         {
           price_data: {
@@ -17,20 +16,23 @@ export async function POST(req: Request) {
             product_data: {
               name: "Wireless Headphones",
             },
-            unit_amount: 4999,
+            unit_amount: 4999, // £49.99
           },
           quantity: 1,
         },
       ],
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/cart`,
+
+      success_url:
+        "https://big-discounts.vercel.app/success?session_id={CHECKOUT_SESSION_ID}",
+      cancel_url:
+        "https://big-discounts.vercel.app/cart",
     });
 
     return NextResponse.json({ url: session.url });
-  } catch (err) {
-    console.error("Stripe error:", err);
+  } catch (error) {
+    console.error("Stripe checkout error:", error);
     return NextResponse.json(
-      { error: "Stripe checkout failed" },
+      { error: "Failed to start checkout" },
       { status: 500 }
     );
   }
