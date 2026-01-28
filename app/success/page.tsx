@@ -1,40 +1,41 @@
-export default function SuccessPage() {
-  return (
-    <div style={{ padding: "80px 40px", maxWidth: "800px", margin: "0 auto" }}>
-      <h1 style={{ fontSize: "40px", marginBottom: "20px" }}>
-        ✅ Payment successful
-      </h1>
+import Stripe from "stripe";
 
-      <p style={{ fontSize: "18px", marginBottom: "30px" }}>
-        Thank you for your purchase. Your payment has been processed successfully.
-      </p>
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2025-12-15.clover",
+});
 
-      <div
-        style={{
-          border: "1px solid #ddd",
-          padding: "20px",
-          borderRadius: "6px",
-          marginBottom: "30px",
-        }}
-      >
-        <strong>Order summary</strong>
-        <p>Wireless Headphones</p>
-        <p>Total paid: £49.99</p>
+type Props = {
+  searchParams: {
+    session_id?: string;
+  };
+};
+
+export default async function SuccessPage({ searchParams }: Props) {
+  const sessionId = searchParams.session_id;
+
+  if (!sessionId) {
+    return (
+      <div style={{ padding: 40 }}>
+        <h1>❌ Missing session</h1>
+        <p>No checkout session found.</p>
       </div>
+    );
+  }
 
-      <a
-        href="/"
-        style={{
-          display: "inline-block",
-          padding: "12px 24px",
-          background: "black",
-          color: "white",
-          textDecoration: "none",
-          borderRadius: "4px",
-        }}
-      >
-        Back to home
-      </a>
+  const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+  return (
+    <div style={{ padding: 40 }}>
+      <h1>✅ Payment successful</h1>
+
+      <p><strong>Session ID:</strong> {session.id}</p>
+      <p><strong>Email:</strong> {session.customer_details?.email}</p>
+      <p><strong>Amount:</strong> £{(session.amount_total ?? 0) / 100}</p>
+      <p><strong>Status:</strong> {session.payment_status}</p>
+
+      <hr />
+
+      <p>Thank you for your purchase 🎉</p>
     </div>
   );
 }

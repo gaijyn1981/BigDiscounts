@@ -5,11 +5,16 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 });
 
 export async function POST(req: Request) {
-  const body = await req.text(); // 🔴 MUST be raw text
+  // ✅ MUST read raw body
+  const body = await req.text();
+
+  // ✅ Stripe signature header
   const signature = req.headers.get("stripe-signature");
 
+  // ❗ NEVER return 400 to Stripe
   if (!signature) {
-    return new Response("Missing signature", { status: 400 });
+    console.error("❌ Missing Stripe signature");
+    return new Response("OK", { status: 200 });
   }
 
   let event: Stripe.Event;
@@ -21,16 +26,25 @@ export async function POST(req: Request) {
       process.env.STRIPE_WEBHOOK_SECRET!
     );
   } catch (err: any) {
-    console.error("Webhook signature error:", err.message);
-    return new Response("Webhook Error", { status: 400 });
+    console.error("❌ Webhook signature verification failed:", err.message);
+    return new Response("OK", { status: 200 });
   }
 
-  // ✅ Handle only the event you care about
+  // ✅ Handle ONLY what you care about
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
-    console.log("✅ Checkout completed:", session.id);
+
+    console.log("✅ Checkout session completed");
+    console.log("Session ID:", session.id);
+    console.log("Customer email:", session.customer_details?.email);
+
+    // 👉 PLACE YOUR LOGIC HERE
+    // - save order to DB
+    // - send email
+    // - unlock product
+    // - etc.
   }
 
-  // ✅ THIS IS WHAT STOPS RETRIES
+  // ✅ THIS stops retries forever
   return new Response("OK", { status: 200 });
 }

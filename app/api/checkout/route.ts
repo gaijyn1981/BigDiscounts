@@ -20,8 +20,8 @@ export async function POST() {
           quantity: 1,
         },
       ],
-      success_url: "http://localhost:3000/success",
-      cancel_url: "http://localhost:3000/cancel",
+     success_url: "https://big-discounts.vercel.app/success?session_id={CHECKOUT_SESSION_ID}",
+cancel_url: "https://big-discounts.vercel.app/cancel",
     });
 
     return NextResponse.json({ url: session.url });
