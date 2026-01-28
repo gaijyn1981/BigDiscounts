@@ -5,7 +5,7 @@ interface SuccessPageProps {
 }
 
 export default function SuccessPage({ searchParams }: SuccessPageProps) {
-  const sessionId = searchParams.session_id;
+  const sessionId = searchParams?.session_id;
 
   if (!sessionId) {
     return (
