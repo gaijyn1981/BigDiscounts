@@ -8,21 +8,16 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false },
 });
 
-function unauthorized() {
-  return new Response("Unauthorized", {
-    status: 401,
-    headers: {
-      "WWW-Authenticate": 'Basic realm="Admin Area"',
-    },
-  });
-}
-
-export default async function OrdersPage() {
-  // 🔐 BASIC AUTH
+function requireAuth() {
   const authHeader = headers().get("authorization");
 
   if (!authHeader || !authHeader.startsWith("Basic ")) {
-    return unauthorized();
+    throw new Response("Unauthorized", {
+      status: 401,
+      headers: {
+        "WWW-Authenticate": 'Basic realm="Admin Area"',
+      },
+    });
   }
 
   const base64Credentials = authHeader.split(" ")[1];
@@ -33,8 +28,18 @@ export default async function OrdersPage() {
     username !== "admin" ||
     password !== process.env.ADMIN_PASSWORD
   ) {
-    return unauthorized();
+    throw new Response("Unauthorized", {
+      status: 401,
+      headers: {
+        "WWW-Authenticate": 'Basic realm="Admin Area"',
+      },
+    });
   }
+}
+
+export default async function OrdersPage() {
+  // 🔐 AUTH CHECK
+  requireAuth();
 
   // 📦 FETCH ORDERS
   const result = await pool.query(`
