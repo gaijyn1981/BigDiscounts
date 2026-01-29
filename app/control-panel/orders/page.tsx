@@ -1,49 +1,55 @@
 import { sql } from "@vercel/postgres";
-export default async function OrdersPage() {
-  try {
-    const result = await sql`
-      SELECT id, stripe_session_id, payment_intent, amount_total, created_at
-      FROM orders
-      ORDER BY created_at DESC
-      LIMIT 50;
-    `;
 
-    return (
-      <div>
-        <h1>Orders</h1>
-        <table border={1} cellPadding={8}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Stripe Session</th>
-              <th>Payment Intent</th>
-              <th>Amount</th>
-              <th>Created</th>
+export default async function OrdersPage() {
+  const { rows } = await sql`
+    SELECT
+      id,
+      customer_email,
+      amount_total,
+      status,
+      created_at
+    FROM orders
+    ORDER BY created_at DESC
+    LIMIT 50
+  `;
+
+  return (
+    <div style={{ padding: "40px" }}>
+      <h1 style={{ fontSize: "24px", marginBottom: "20px" }}>
+        Orders
+      </h1>
+
+      <table
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+          fontSize: "14px",
+        }}
+      >
+        <thead>
+          <tr>
+            <th align="left">ID</th>
+            <th align="left">Email</th>
+            <th align="left">Amount (£)</th>
+            <th align="left">Status</th>
+            <th align="left">Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {rows.map((order) => (
+            <tr key={order.id}>
+              <td>{order.id}</td>
+              <td>{order.customer_email}</td>
+              <td>{(order.amount_total / 100).toFixed(2)}</td>
+              <td>{order.status}</td>
+              <td>
+                {new Date(order.created_at).toLocaleString()}
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {result.rows.map((order: any) => (
-              <tr key={order.id}>
-                <td>{order.id}</td>
-                <td>{order.stripe_session_id}</td>
-                <td>{order.payment_intent}</td>
-                <td>£{(order.amount_total / 100).toFixed(2)}</td>
-                <td>{order.created_at ? new Date(order.created_at).toLocaleString() : "—"}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  } catch (err) {
-    console.error(err);
-    return (
-      <div>
-        <h1>Orders</h1>
-        <p style={{ color: "red" }}>
-          Failed to load orders. Check server logs.
-        </p>
-      </div>
-    );
-  }
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }

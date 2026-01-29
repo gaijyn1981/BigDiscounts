@@ -1,52 +1,34 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const ADMIN_USER = process.env.ADMIN_USER;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-
-// 👇 YOUR ALLOWED IPs
-const ALLOWED_IPS = [
-  "86.174.162.124",
-];
-
 export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+  const authHeader = req.headers.get("authorization");
 
-  if (pathname.startsWith("/control-panel")) {
-    // Vercel / Edge-safe IP detection
-    const forwardedFor = req.headers.get("x-forwarded-for");
-    const ip = forwardedFor ? forwardedFor.split(",")[0].trim() : "unknown";
+  const ADMIN_USER = process.env.ADMIN_USER;
+  const ADMIN_PASS = process.env.ADMIN_PASS;
 
-    if (!ALLOWED_IPS.includes(ip)) {
-      return new NextResponse("Access denied", { status: 403 });
-    }
+  // Safety check — prevents crash
+  if (!ADMIN_USER || !ADMIN_PASS) {
+    return new NextResponse("Admin credentials not configured", {
+      status: 500,
+    });
+  }
 
-    const authHeader = req.headers.get("authorization");
+  if (!authHeader) {
+    return new NextResponse("Auth required", {
+      status: 401,
+      headers: {
+        "WWW-Authenticate": 'Basic realm="Admin Area"',
+      },
+    });
+  }
 
-    if (!authHeader) {
-      return new NextResponse("Auth required", {
-        status: 401,
-        headers: {
-          "WWW-Authenticate": "Basic realm=\"Admin Area\"",
-        },
-      });
-    }
+  const encoded = authHeader.split(" ")[1];
+  const decoded = Buffer.from(encoded, "base64").toString();
+  const [user, pass] = decoded.split(":");
 
-    const decoded = Buffer.from(
-      authHeader.split(" ")[1],
-      "base64"
-    ).toString();
-
-    const [user, pass] = decoded.split(":");
-
-    if (user !== ADMIN_USER || pass !== ADMIN_PASSWORD) {
-      return new NextResponse("Invalid credentials", {
-        status: 401,
-        headers: {
-          "WWW-Authenticate": "Basic realm=\"Admin Area\"",
-        },
-      });
-    }
+  if (user !== ADMIN_USER || pass !== ADMIN_PASS) {
+    return new NextResponse("Forbidden", { status: 403 });
   }
 
   return NextResponse.next();
