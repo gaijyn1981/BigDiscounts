@@ -1,21 +1,31 @@
+import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { Pool } from "pg";
 
+export const runtime = "nodejs";
+
+// Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-12-15.clover",
+  apiVersion: "2023-10-16",
 });
 
-export async function POST(req: Request) {
-  // ✅ MUST read raw body
-  const body = await req.text();
+// Neon Postgres
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+});
 
-  // ✅ Stripe signature header
+export async function POST(req: NextRequest) {
+  console.log("🔥 Stripe webhook hit");
+
   const signature = req.headers.get("stripe-signature");
-
-  // ❗ NEVER return 400 to Stripe
   if (!signature) {
     console.error("❌ Missing Stripe signature");
+    // NEVER return 400 to Stripe
     return new Response("OK", { status: 200 });
   }
+
+  const body = await req.text();
 
   let event: Stripe.Event;
 
@@ -26,25 +36,49 @@ export async function POST(req: Request) {
       process.env.STRIPE_WEBHOOK_SECRET!
     );
   } catch (err: any) {
-    console.error("❌ Webhook signature verification failed:", err.message);
+    console.error("❌ Signature verification failed:", err.message);
     return new Response("OK", { status: 200 });
   }
 
-  // ✅ Handle ONLY what you care about
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
 
-    console.log("✅ Checkout session completed");
-    console.log("Session ID:", session.id);
-    console.log("Customer email:", session.customer_details?.email);
+    try {
+      await pool.query(
+        `
+        INSERT INTO orders (
+          stripe_session_id,
+          payment_intent,
+          amount_total,
+          currency,
+          status,
+          email
+        )
+        VALUES ($1, $2, $3, $4, $5, $6)
+        ON CONFLICT (stripe_session_id) DO NOTHING
+        `,
+        [
+          session.id,
+          session.payment_intent,
+          session.amount_total,
+          session.currency,
+          session.status,
+          session.customer_details?.email ??
+            session.customer_email ??
+            null,
+        ]
+      );
 
-    // 👉 PLACE YOUR LOGIC HERE
-    // - save order to DB
-    // - send email
-    // - unlock product
-    // - etc.
+      console.log("✅ Order inserted:", session.id);
+    } catch (dbErr: any) {
+      console.error("❌ Database insert failed:", dbErr.message);
+      // Return 500 so Stripe retries
+      return NextResponse.json(
+        { error: "Database insert failed" },
+        { status: 500 }
+      );
+    }
   }
 
-  // ✅ THIS stops retries forever
-  return new Response("OK", { status: 200 });
+  return NextResponse.json({ received: true });
 }
