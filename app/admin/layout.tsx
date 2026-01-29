@@ -1,6 +1,10 @@
 export const metadata = {
   title: "Admin Panel",
   description: "Restricted admin area",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function AdminLayout({
