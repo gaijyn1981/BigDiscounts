@@ -4,10 +4,10 @@ import { Pool } from "@neondatabase/serverless";
 
 export const runtime = "nodejs";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2024-04-10",
-});
+// ✅ Stripe client (NO apiVersion)
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
+// ✅ Neon pool
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
@@ -29,33 +29,32 @@ export async function POST(req: NextRequest) {
       signature,
       process.env.STRIPE_WEBHOOK_SECRET!
     );
-    if (event.type !== "checkout.session.completed") {
-  console.log("Ignoring Stripe event:", event.type);
-  return NextResponse.json({ ignored: true });
-}
-    console.log("✅ Stripe event received:", event.type);
   } catch (err: any) {
     console.error("❌ Webhook verification failed:", err.message);
     return new NextResponse("Webhook error", { status: 400 });
   }
 
+  // ✅ Ignore all other events
   if (event.type !== "checkout.session.completed") {
-    return NextResponse.json({ received: true });
+    console.log("ℹ️ Ignored event:", event.type);
+    return NextResponse.json({ ignored: true });
   }
+
+  console.log("✅ Stripe event received:", event.type);
 
   const session = event.data.object as Stripe.Checkout.Session;
 
   const values = [
     session.id,
-    session.payment_intent,
-    session.amount_total ?? 0,
-    session.currency ?? "gbp",
-    "paid",
+    session.payment_intent as string,
+    session.amount_total ? session.amount_total / 100 : 0,
+    session.currency,
+    session.payment_status,
     session.customer_details?.email ?? null,
   ];
 
   try {
-    console.log("📝 Inserting order:", values);
+    console.log("📦 Inserting order:", values);
 
     await pool.query(
       `
@@ -74,6 +73,8 @@ export async function POST(req: NextRequest) {
     );
 
     console.log("✅ Order inserted into Neon");
+
+    // ✅ IMPORTANT: Stripe needs 200
     return NextResponse.json({ received: true });
   } catch (err) {
     console.error("❌ Database insert failed:", err);
