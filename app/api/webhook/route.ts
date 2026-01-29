@@ -4,21 +4,15 @@ import { Pool } from "pg";
 
 export const runtime = "nodejs";
 
-// Stripe client
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-12-15.clover",
+  apiVersion: "2023-10-16",
 });
 
-// Neon / Postgres pool
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
 });
 
 export async function POST(req: NextRequest) {
-  let event: Stripe.Event;
-
-  // 1️⃣ Read raw body (REQUIRED for Stripe)
   const body = await req.text();
   const signature = req.headers.get("stripe-signature");
 
@@ -27,7 +21,8 @@ export async function POST(req: NextRequest) {
     return new Response("OK", { status: 200 });
   }
 
-  // 2️⃣ Verify Stripe signature
+  let event: Stripe.Event;
+
   try {
     event = stripe.webhooks.constructEvent(
       body,
@@ -39,14 +34,13 @@ export async function POST(req: NextRequest) {
     return new Response("OK", { status: 200 });
   }
 
-  // 3️⃣ Handle relevant events
   if (
     event.type === "checkout.session.completed" ||
     event.type === "payment_intent.succeeded"
   ) {
-    try {
-      const session: any = event.data.object;
+    const session: any = event.data.object;
 
+    try {
       await pool.query(
         `
         INSERT INTO orders (
@@ -75,8 +69,6 @@ export async function POST(req: NextRequest) {
       console.log("✅ Order inserted:", session.id);
     } catch (dbErr: any) {
       console.error("❌ Database insert failed:", dbErr.message);
-
-      // IMPORTANT: return 500 so Stripe retries
       return NextResponse.json(
         { error: "Database insert failed" },
         { status: 500 }
@@ -84,6 +76,5 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // 4️⃣ Always acknowledge Stripe
   return NextResponse.json({ received: true });
 }
