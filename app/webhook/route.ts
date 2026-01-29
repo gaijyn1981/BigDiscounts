@@ -1,83 +1,89 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { Pool } from "@neondatabase/serverless";
+import { Pool } from "pg";
 
 export const runtime = "nodejs";
 
-// ✅ Stripe client (NO apiVersion)
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+// Stripe
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2023-10-16",
+});
 
-// ✅ Neon pool
+// Neon Postgres
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
 });
 
 export async function POST(req: NextRequest) {
-  const body = await req.text();
-  const signature = req.headers.get("stripe-signature");
+  const sig = req.headers.get("stripe-signature");
 
-  if (!signature) {
-    console.error("❌ Missing Stripe signature");
-    return new NextResponse("Missing signature", { status: 400 });
+  if (!sig) {
+    return NextResponse.json(
+      { error: "Missing Stripe signature" },
+      { status: 400 }
+    );
   }
 
+  const body = await req.text();
   let event: Stripe.Event;
 
   try {
     event = stripe.webhooks.constructEvent(
       body,
-      signature,
+      sig,
       process.env.STRIPE_WEBHOOK_SECRET!
     );
   } catch (err: any) {
-    console.error("❌ Webhook verification failed:", err.message);
-    return new NextResponse("Webhook error", { status: 400 });
-  }
-
-  // ✅ Ignore all other events
-  if (event.type !== "checkout.session.completed") {
-    console.log("ℹ️ Ignored event:", event.type);
-    return NextResponse.json({ ignored: true });
-  }
-
-  console.log("✅ Stripe event received:", event.type);
-
-  const session = event.data.object as Stripe.Checkout.Session;
-
-  const values = [
-    session.id,
-    session.payment_intent as string,
-    session.amount_total ? session.amount_total / 100 : 0,
-    session.currency,
-    session.payment_status,
-    session.customer_details?.email ?? null,
-  ];
-
-  try {
-    console.log("📦 Inserting order:", values);
-
-    await pool.query(
-      `
-      INSERT INTO orders (
-        stripe_session_id,
-        payment_intent_id,
-        amount,
-        currency,
-        status,
-        customer_email
-      )
-      VALUES ($1, $2, $3, $4, $5, $6)
-      ON CONFLICT (stripe_session_id) DO NOTHING;
-      `,
-      values
+    console.error("❌ Webhook signature verification failed:", err.message);
+    return NextResponse.json(
+      { error: "Invalid signature" },
+      { status: 400 }
     );
-
-    console.log("✅ Order inserted into Neon");
-
-    // ✅ IMPORTANT: Stripe needs 200
-    return NextResponse.json({ received: true });
-  } catch (err) {
-    console.error("❌ Database insert failed:", err);
-    return new NextResponse("DB error", { status: 500 });
   }
+
+  // ✅ Handle checkout completion
+  iif (
+  event.type === "checkout.session.completed" ||
+  event.type === "payment_intent.succeeded"
+) {
+  const session = event.data.object as any;
+
+  await pool.query(
+    `
+    INSERT INTO orders (
+      stripe_session_id,
+      payment_intent_id,
+      amount,
+      currency,
+      status,
+      customer_email
+    )
+    VALUES ($1, $2, $3, $4, $5, $6)
+    ON CONFLICT (stripe_session_id) DO NOTHING
+    `,
+    [
+      session.id ?? session.checkout_session,
+      session.payment_intent ?? session.id,
+      session.amount_total ?? session.amount_received,
+      session.currency,
+      session.status,
+      session.customer_details?.email ?? session.receipt_email,
+    ]
+  );
+}
+
+      console.log("✅ Order inserted:", session.id);
+    } catch (dbErr: any) {
+      console.error("❌ Database insert failed:", dbErr.message);
+
+      // IMPORTANT: return 500 so Stripe retries
+      return NextResponse.json(
+        { error: "Database insert failed" },
+        { status: 500 }
+      );
+    }
+  }
+
+  return NextResponse.json({ received: true });
 }
