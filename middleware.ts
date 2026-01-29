@@ -4,19 +4,18 @@ import type { NextRequest } from "next/server";
 const ADMIN_USER = process.env.ADMIN_USER;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
-// 86.174.162.124
+// 👇 YOUR ALLOWED IPs
 const ALLOWED_IPS = [
-  "YOUR.IP.ADDRESS.HERE",
+  "86.174.162.124",
 ];
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (pathname.startsWith("/control-panel")) {
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0] ||
-      req.ip ||
-      "unknown";
+    // Vercel / Edge-safe IP detection
+    const forwardedFor = req.headers.get("x-forwarded-for");
+    const ip = forwardedFor ? forwardedFor.split(",")[0].trim() : "unknown";
 
     if (!ALLOWED_IPS.includes(ip)) {
       return new NextResponse("Access denied", { status: 403 });
@@ -28,23 +27,23 @@ export function middleware(req: NextRequest) {
       return new NextResponse("Auth required", {
         status: 401,
         headers: {
-          "WWW-Authenticate": "Basic realm='Admin Area'",
+          "WWW-Authenticate": "Basic realm=\"Admin Area\"",
         },
       });
     }
 
-    const [user, pass] = Buffer.from(
+    const decoded = Buffer.from(
       authHeader.split(" ")[1],
       "base64"
-    )
-      .toString()
-      .split(":");
+    ).toString();
+
+    const [user, pass] = decoded.split(":");
 
     if (user !== ADMIN_USER || pass !== ADMIN_PASSWORD) {
       return new NextResponse("Invalid credentials", {
         status: 401,
         headers: {
-          "WWW-Authenticate": "Basic realm='Admin Area'",
+          "WWW-Authenticate": "Basic realm=\"Admin Area\"",
         },
       });
     }
