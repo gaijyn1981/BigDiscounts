@@ -1,3 +1,8 @@
+export const metadata = {
+  title: "Admin Panel",
+  description: "Restricted admin area",
+};
+
 export default function AdminLayout({
   children,
 }: {
@@ -8,17 +13,30 @@ export default function AdminLayout({
       <body
         style={{
           margin: 0,
-          padding: "40px",
           fontFamily: "Arial, sans-serif",
-          backgroundColor: "#f9f9f9",
+          backgroundColor: "#f5f5f5",
         }}
       >
-        <header style={{ marginBottom: "30px" }}>
-          <h1>Admin Panel</h1>
-          <p style={{ color: "#666" }}>Restricted access</p>
+        {/* Admin Header */}
+        <header
+          style={{
+            padding: "20px 40px",
+            backgroundColor: "#111",
+            color: "#fff",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <strong style={{ fontSize: "20px" }}>Admin Panel</strong>
+
+          <span style={{ fontSize: "14px", opacity: 0.8 }}>
+            Restricted Access
+          </span>
         </header>
 
-        <main>{children}</main>
+        {/* Admin Content */}
+        <main style={{ padding: "40px" }}>{children}</main>
       </body>
     </html>
   );
