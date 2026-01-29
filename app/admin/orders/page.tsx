@@ -1,27 +1,53 @@
+import { headers } from "next/headers";
 import { Pool } from "pg";
 
+export const dynamic = "force-dynamic";
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.POSTGRES_URL,
+  ssl: { rejectUnauthorized: false },
 });
 
+function unauthorized() {
+  return new Response("Unauthorized", {
+    status: 401,
+    headers: {
+      "WWW-Authenticate": 'Basic realm="Admin Area"',
+    },
+  });
+}
+
 export default async function OrdersPage() {
+  // 🔐 BASIC AUTH
+  const authHeader = headers().get("authorization");
+
+  if (!authHeader || !authHeader.startsWith("Basic ")) {
+    return unauthorized();
+  }
+
+  const base64Credentials = authHeader.split(" ")[1];
+  const decoded = Buffer.from(base64Credentials, "base64").toString();
+  const [username, password] = decoded.split(":");
+
+  if (
+    username !== "admin" ||
+    password !== process.env.ADMIN_PASSWORD
+  ) {
+    return unauthorized();
+  }
+
+  // 📦 FETCH ORDERS
   const result = await pool.query(`
-    SELECT
-      id,
-      stripe_session_id,
-      payment_intent,
-      amount_total,
-      created_at
+    SELECT id, stripe_session_id, payment_intent, amount_total, created_at
     FROM orders
     ORDER BY created_at DESC
-    LIMIT 50
   `);
 
   return (
-    <div style={{ padding: "40px", fontFamily: "sans-serif" }}>
+    <div style={{ padding: "20px" }}>
       <h1>Orders</h1>
 
-      <table border={1} cellPadding={10} cellSpacing={0}>
+      <table border={1} cellPadding={8} cellSpacing={0}>
         <thead>
           <tr>
             <th>ID</th>
@@ -32,7 +58,7 @@ export default async function OrdersPage() {
           </tr>
         </thead>
         <tbody>
-          {result.rows.map((order) => (
+          {result.rows.map((order: any) => (
             <tr key={order.id}>
               <td>{order.id}</td>
               <td>{order.stripe_session_id}</td>
