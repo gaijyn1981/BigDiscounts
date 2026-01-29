@@ -16,6 +16,8 @@ const pool = new Pool({
 });
 
 export async function POST(req: NextRequest) {
+  console.log("🔥 WEBHOOK HIT");
+
   const sig = req.headers.get("stripe-signature");
 
   if (!sig) {
