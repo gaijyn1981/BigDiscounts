@@ -1,3 +1,4 @@
+import { sql } from "@vercel/postgres";
 export default async function OrdersPage() {
   try {
     const result = await sql`
