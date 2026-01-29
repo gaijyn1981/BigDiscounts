@@ -21,6 +21,11 @@ export default function RootLayout({
             alignItems: "center",
           }}
         >
+          {/* 
+  IMPORTANT:
+  Admin routes are intentionally hidden.
+  Access is URL-only and protected by middleware.
+*/}
           <strong style={{ fontSize: "22px" }}>BigDiscounts</strong>
 
           <nav style={{ fontSize: "16px" }}>
