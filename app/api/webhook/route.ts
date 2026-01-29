@@ -40,36 +40,38 @@ export async function POST(req: NextRequest) {
     return new Response("OK", { status: 200 });
   }
 
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object as Stripe.Checkout.Session;
+  if (
+  event.type === "checkout.session.completed" ||
+  event.type === "payment_intent.succeeded"
+) {
+  const session = event.data.object as any;
 
-    try {
-      await pool.query(
-        `
-        INSERT INTO orders (
-          stripe_session_id,
-          payment_intent,
-          amount_total,
-          currency,
-          status,
-          email
-        )
-        VALUES ($1, $2, $3, $4, $5, $6)
-        ON CONFLICT (stripe_session_id) DO NOTHING
-        `,
-        [
-          session.id,
-          session.payment_intent,
-          session.amount_total,
-          session.currency,
-          session.status,
-          session.customer_details?.email ??
-            session.customer_email ??
-            null,
-        ]
-      );
+  await pool.query(
+    `
+    INSERT INTO orders (
+      stripe_session_id,
+      payment_intent,
+      amount_total,
+      currency,
+      status,
+      email
+    )
+    VALUES ($1, $2, $3, $4, $5, $6)
+    `,
+    [
+      session.id,
+      session.payment_intent,
+      session.amount_total,
+      session.currency,
+      session.status,
+      session.customer_details?.email ??
+        session.customer_email ??
+        null,
+    ]
+  );
 
-      console.log("✅ Order inserted:", session.id);
+  console.log("✅ Order inserted:", session.id);
+}
     } catch (dbErr: any) {
       console.error("❌ Database insert failed:", dbErr.message);
       // Return 500 so Stripe retries
