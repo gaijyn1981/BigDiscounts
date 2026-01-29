@@ -10,7 +10,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body style={{ margin: 0, fontFamily: "Arial, sans-serif" }}>
+      <body>
         {/* Header */}
         <header
           style={{
@@ -55,7 +55,9 @@ export default function RootLayout({
     color: "#666",
   }}
 >
-  <p>© {new Date().getFullYear()} BigDiscounts.uk</p>
+  <p suppressHydrationWarning>
+  © {new Date().getFullYear()} BigDiscounts.uk
+</p>
   <p>
     A UK marketplace bringing multiple sellers together in one place.
   </p>
