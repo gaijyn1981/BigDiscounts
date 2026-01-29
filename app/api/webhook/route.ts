@@ -9,7 +9,9 @@ export const runtime = "nodejs";
  * IMPORTANT:
  * - Do NOT set apiVersion manually (prevents TS mismatch errors)
  */
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  typescript: true,
+});
 
 /**
  * Neon / Postgres pool
@@ -31,15 +33,36 @@ export async function POST(req: NextRequest) {
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(
-      body,
-      signature,
-      process.env.STRIPE_WEBHOOK_SECRET!
-    );
-  } catch (err: any) {
-    console.error("❌ Signature verification failed:", err.message);
-    return new Response("OK", { status: 200 });
+  event = stripe.webhooks.constructEvent(
+    body,
+    signature,
+    process.env.STRIPE_WEBHOOK_SECRET!
+  );
+
+  switch (event.type) {
+    case "payment_intent.succeeded": {
+      const paymentIntent = event.data.object;
+
+      try {
+        // 🔽 YOUR DATABASE INSERT HERE
+        console.log("✅ Payment succeeded:", paymentIntent.id);
+      } catch (dbErr) {
+        console.error("❌ Database insert failed", dbErr);
+        // DO NOT throw
+      }
+
+      break;
+    }
+
+    default:
+      console.log("ℹ️ Ignored event:", event.type);
   }
+} catch (err: any) {
+  console.error("❌ Signature verification failed:", err.message);
+}
+
+// ✅ ALWAYS respond 200
+return new Response("OK", { status: 200 });
 
   // ✅ Handle only the events we care about
   if (
