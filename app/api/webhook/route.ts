@@ -4,12 +4,19 @@ import { Pool } from "pg";
 
 export const runtime = "nodejs";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2023-10-16",
-});
+/**
+ * Stripe client
+ * IMPORTANT:
+ * - Do NOT set apiVersion manually (prevents TS mismatch errors)
+ */
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
+/**
+ * Neon / Postgres pool
+ */
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
 });
 
 export async function POST(req: NextRequest) {
@@ -34,6 +41,7 @@ export async function POST(req: NextRequest) {
     return new Response("OK", { status: 200 });
   }
 
+  // ✅ Handle only the events we care about
   if (
     event.type === "checkout.session.completed" ||
     event.type === "payment_intent.succeeded"
