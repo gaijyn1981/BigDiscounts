@@ -1,29 +1,53 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
-  const authHeader = request.headers.get("authorization");
+const ADMIN_USER = process.env.ADMIN_USER;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
-  if (!authHeader || !authHeader.startsWith("Basic ")) {
-    return new NextResponse("Unauthorized", {
-      status: 401,
-      headers: {
-        "WWW-Authenticate": 'Basic realm="Admin Area"',
-      },
-    });
-  }
+// 86.174.162.124
+const ALLOWED_IPS = [
+  "YOUR.IP.ADDRESS.HERE",
+];
 
-  const base64Credentials = authHeader.split(" ")[1];
-  const credentials = atob(base64Credentials);
-  const [, password] = credentials.split(":");
+export function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl;
 
-  if (password !== process.env.ADMIN_PASSWORD) {
-    return new NextResponse("Unauthorized", {
-      status: 401,
-      headers: {
-        "WWW-Authenticate": 'Basic realm="Admin Area"',
-      },
-    });
+  if (pathname.startsWith("/control-panel")) {
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0] ||
+      req.ip ||
+      "unknown";
+
+    if (!ALLOWED_IPS.includes(ip)) {
+      return new NextResponse("Access denied", { status: 403 });
+    }
+
+    const authHeader = req.headers.get("authorization");
+
+    if (!authHeader) {
+      return new NextResponse("Auth required", {
+        status: 401,
+        headers: {
+          "WWW-Authenticate": "Basic realm='Admin Area'",
+        },
+      });
+    }
+
+    const [user, pass] = Buffer.from(
+      authHeader.split(" ")[1],
+      "base64"
+    )
+      .toString()
+      .split(":");
+
+    if (user !== ADMIN_USER || pass !== ADMIN_PASSWORD) {
+      return new NextResponse("Invalid credentials", {
+        status: 401,
+        headers: {
+          "WWW-Authenticate": "Basic realm='Admin Area'",
+        },
+      });
+    }
   }
 
   return NextResponse.next();
