@@ -8,8 +8,9 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false },
 });
 
-function requireAuth() {
-  const authHeader = headers().get("authorization");
+async function requireAuth() {
+  const h = await headers();
+  const authHeader = h.get("authorization");
 
   if (!authHeader || !authHeader.startsWith("Basic ")) {
     throw new Response("Unauthorized", {
@@ -39,7 +40,7 @@ function requireAuth() {
 
 export default async function OrdersPage() {
   // 🔐 AUTH CHECK
-  requireAuth();
+  await requireAuth();
 
   // 📦 FETCH ORDERS
   const result = await pool.query(`
