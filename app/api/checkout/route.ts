@@ -9,18 +9,17 @@ export async function POST() {
       mode: "payment",
 
       line_items: [
-        {
-          price_data: {
-            currency: "gbp",
-            product_data: {
-              name: "Wireless Headphones",
-            },
-            unit_amount: 4999,
-          },
-          quantity: 1,
-        },
-      ],
-
+  {
+    price_data: {
+      currency: "gbp",
+      product_data: {
+        name: "Wireless Headphones",
+      },
+      unit_amount: 100, // £1.00
+    },
+    quantity: 1,
+  },
+],
       success_url:
 "https://big-discounts.vercel.app/success?session_id={CHECKOUT_SESSION_ID}",
 
