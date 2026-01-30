@@ -22,14 +22,15 @@ export async function POST() {
 });
 
     return NextResponse.json({ url: session.url });
-} catch (error) {
-  console.error("STRIPE ERROR 👉", error);
+  } catch (error) {
+    console.error("STRIPE ERROR 👉", error);
 
-  return NextResponse.json(
-    {
-      error: "Failed to create checkout session",
-      details: String(error),
-    },
-    { status: 500 }
-  );
+    return NextResponse.json(
+      {
+        error: "Failed to create checkout session",
+        details: String(error),
+      },
+      { status: 500 }
+    );
+  }
 }
