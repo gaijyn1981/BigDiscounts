@@ -9,7 +9,7 @@ export async function POST() {
   mode: "payment",
   line_items: [
     {
-      price: "price_1SvGG6JfM9TAIpMII3muaNPM",
+      price: "price_1SvGG6JfM9TAIpMIl3muaNPM",
       quantity: 1,
     },
   ],
