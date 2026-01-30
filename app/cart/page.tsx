@@ -2,18 +2,35 @@
 
 export default function CartPage() {
   const handleCheckout = async () => {
+  const handleCheckout = async () => {
+  console.log("🟢 CLICKED PAY WITH STRIPE");
+
+  try {
+    console.log("🟡 Sending request to /api/checkout");
+
     const res = await fetch("/api/checkout", {
       method: "POST",
     });
 
-    const data = await res.json();
+    console.log("🟡 Response status:", res.status);
+
+    const text = await res.text();
+    console.log("🟡 Raw response:", text);
+
+    const data = JSON.parse(text);
 
     if (data.url) {
-      window.location.href = data.url; // 🔑 THIS is critical
+      console.log("🟢 Redirecting to Stripe:", data.url);
+      window.location.href = data.url;
     } else {
-      alert("Failed to start checkout");
+      alert("❌ No URL returned from checkout");
     }
-  };
+  } catch (err) {
+    console.error("🔴 Checkout crashed:", err);
+    alert("Checkout crashed – see console");
+  }
+};
+};
 
   return (
     <main style={{ padding: "2rem" }}>
