@@ -1,32 +1,44 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_TEST_SECRET_KEY!);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-export async function POST() {
-  try {
-   const session = await stripe.checkout.sessions.create({
-  mode: "payment",
-  line_items: [
-    {
-      price: "price_1SvGG6JfM9TAIpMIl3muaNPM",
-      quantity: 1,
-    },
-  ],
-  success_url: "https://big-discounts.vercel.app/success?session_id={CHECKOUT_SESSION_ID}",
-  cancel_url: "https://big-discounts.vercel.app/cart",
-});
+export async function POST(req: NextRequest) {
+  const body = await req.text();
+  const sig = req.headers.get("stripe-signature");
 
-    return NextResponse.json({ url: session.url });
-  } catch (error) {
-    console.error("STRIPE ERROR 👉", error);
-
-    return NextResponse.json(
-      {
-        error: "Failed to create checkout session",
-        details: String(error),
-      },
-      { status: 500 }
-    );
+  if (!sig) {
+    return new NextResponse("Missing signature", { status: 400 });
   }
+
+  let event: Stripe.Event;
+
+  try {
+    event = stripe.webhooks.constructEvent(
+      body,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET!
+    );
+  } catch (err: any) {
+    console.error("❌ Webhook signature failed:", err.message);
+    return new NextResponse("Webhook Error", { status: 400 });
+  }
+
+  // ✅ PAYMENT CONFIRMED BY STRIPE
+  if (event.type === "checkout.session.completed") {
+    const session = event.data.object as Stripe.Checkout.Session;
+
+    console.log("✅ PAYMENT CONFIRMED", {
+      sessionId: session.id,
+      email: session.customer_details?.email,
+      amount: session.amount_total,
+    });
+
+    // 🔜 Here is where you will:
+    // - create order
+    // - mark as paid
+    // - send email
+  }
+
+  return NextResponse.json({ received: true });
 }
