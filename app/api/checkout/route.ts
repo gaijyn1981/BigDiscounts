@@ -20,11 +20,14 @@ export async function POST() {
 });
 
     return NextResponse.json({ url: session.url });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Failed to create checkout session" },
-      { status: 500 }
-    );
-  }
+} catch (error) {
+  console.error("STRIPE ERROR 👉", error);
+
+  return NextResponse.json(
+    {
+      error: "Failed to create checkout session",
+      details: String(error),
+    },
+    { status: 500 }
+  );
 }
