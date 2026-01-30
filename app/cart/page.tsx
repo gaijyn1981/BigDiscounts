@@ -2,42 +2,40 @@
 
 export default function CartPage() {
   const handleCheckout = async () => {
-  const handleCheckout = async () => {
-  console.log("🟢 CLICKED PAY WITH STRIPE");
+    console.log("🟢 CLICKED PAY WITH STRIPE");
 
-  try {
-    console.log("🟡 Sending request to /api/checkout");
+    try {
+      console.log("🟡 Sending request to /api/checkout");
 
-    const res = await fetch("/api/checkout", {
-      method: "POST",
-    });
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+      });
 
-    console.log("🟡 Response status:", res.status);
+      console.log("🟡 Response status:", res.status);
 
-    const text = await res.text();
-    console.log("🟡 Raw response:", text);
+      const text = await res.text();
+      console.log("🟡 Raw response:", text);
 
-    const data = JSON.parse(text);
+      const data = JSON.parse(text);
 
-    if (data.url) {
-      console.log("🟢 Redirecting to Stripe:", data.url);
-      window.location.href = data.url;
-    } else {
-      alert("❌ No URL returned from checkout");
+      if (data.url) {
+        console.log("🟢 Redirecting to Stripe:", data.url);
+        window.location.href = data.url;
+      } else {
+        alert("No checkout URL returned");
+      }
+    } catch (err) {
+      console.error("🔴 Checkout crashed:", err);
+      alert("Checkout crashed – see console");
     }
-  } catch (err) {
-    console.error("🔴 Checkout crashed:", err);
-    alert("Checkout crashed – see console");
-  }
-};
-};
+  };
 
   return (
     <main style={{ padding: "2rem" }}>
       <h1>Your Cart</h1>
       <p>Wireless Headphones – £1.00</p>
 
-      <button onClick={handleCheckout}>
+      <button type="button" onClick={handleCheckout}>
         Pay with Stripe
       </button>
     </main>
