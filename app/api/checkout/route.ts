@@ -6,20 +6,18 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 export async function POST() {
   try {
     const session = await stripe.checkout.sessions.create({
-      mode: "payment",
+  mode: "payment",
 
-   line_items: [
-  {
-    price: "price_1SvFTyJfM9TAIpM4rqFXY2U",
-    quantity: 1,
-  },
-],
-      success_url:
-"https://big-discounts.vercel.app/success?session_id={CHECKOUT_SESSION_ID}",
+  line_items: [
+    {
+      price: "price_1SvFTyJfM9TAIpM4rqFXY2U",
+      quantity: 1,
+    },
+  ],
 
-      cancel_url:
-        "https://big-discounts.vercel.app/cart",
-    });
+  success_url: "https://big-discounts.vercel.app/success?session_id={CHECKOUT_SESSION_ID}",
+  cancel_url: "https://big-discounts.vercel.app/cart",
+});
 
     return NextResponse.json({ url: session.url });
   } catch (error) {
