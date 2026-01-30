@@ -8,15 +8,9 @@ export async function POST() {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
 
-      line_items: [
+   line_items: [
   {
-    price_data: {
-      currency: "gbp",
-      product_data: {
-        name: "Wireless Headphones",
-      },
-      unit_amount: 100, // £1.00
-    },
+    price: "price_1SvFTyJfM9TAIpM4rqFXY2U",
     quantity: 1,
   },
 ],
