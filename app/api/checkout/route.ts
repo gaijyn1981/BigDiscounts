@@ -22,8 +22,8 @@ export async function POST() {
           quantity: 1,
         },
       ],
-      success_url: "https://www.bigdiscounts.uk/orders?success=true",
-      cancel_url: "https://www.bigdiscounts.uk/cart?cancelled=true",
+      success_url: "https://www.bigdiscounts.uk/success?session_id={CHECKOUT_SESSION_ID}",
+cancel_url: "https://www.bigdiscounts.uk/cart",
     });
 
     return NextResponse.json({ url: session.url });
