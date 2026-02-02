@@ -39,7 +39,11 @@ export async function POST(req: NextRequest) {
       createdAt: new Date().toISOString(),
     };
 
-    orders.push(order);
+    const existing = orders.find(o => o.id === session.id);
+
+if (!existing) {
+  orders.push(order);
+}
 
     console.log("✅ PAYMENT CONFIRMED");
     console.log(order);
