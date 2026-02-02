@@ -1,110 +1,48 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { Pool } from "pg";
+import { orders } from "@/app/lib/orders";
 
-export const runtime = "nodejs";
+export const runtime = "nodejs"; // REQUIRED for Stripe webhooks
 
-/**
- * Stripe client
- * IMPORTANT:
- * - Do NOT set apiVersion manually (prevents TS mismatch errors)
- */
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  typescript: true,
-});
-
-/**
- * Neon / Postgres pool
- */
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
-  const signature = req.headers.get("stripe-signature");
+  const sig = req.headers.get("stripe-signature");
 
-  if (!signature) {
-    console.error("❌ Missing Stripe signature");
-    return new Response("OK", { status: 200 });
+  if (!sig) {
+    return new NextResponse("Missing Stripe signature", { status: 400 });
   }
 
   let event: Stripe.Event;
 
   try {
-  event = stripe.webhooks.constructEvent(
-    body,
-    signature,
-    process.env.STRIPE_WEBHOOK_SECRET!
-  );
-
-  switch (event.type) {
-    case "payment_intent.succeeded": {
-      const paymentIntent = event.data.object;
-
-      try {
-        // 🔽 YOUR DATABASE INSERT HERE
-        console.log("✅ Payment succeeded:", paymentIntent.id);
-      } catch (dbErr) {
-        console.error("❌ Database insert failed", dbErr);
-        // DO NOT throw
-      }
-
-      break;
-    }
-
-    default:
-      console.log("ℹ️ Ignored event:", event.type);
+    event = stripe.webhooks.constructEvent(
+      body,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET!
+    );
+  } catch (err: any) {
+    console.error("❌ Webhook verification failed:", err.message);
+    return new NextResponse("Webhook Error", { status: 400 });
   }
-} catch (err: any) {
-  console.error("❌ Signature verification failed:", err.message);
-}
 
-// ✅ ALWAYS respond 200
-return new Response("OK", { status: 200 });
+  // ✅ Handle successful checkout
+  if (event.type === "checkout.session.completed") {
+    const session = event.data.object as Stripe.Checkout.Session;
 
-  // ✅ Handle only the events we care about
-  if (
-    event.type === "checkout.session.completed" ||
-    event.type === "payment_intent.succeeded"
-  ) {
-    const session: any = event.data.object;
+    const order = {
+      id: session.id,
+      email: session.customer_details?.email ?? null,
+      amount: session.amount_total ?? null,
+      currency: session.currency ?? null,
+      createdAt: new Date().toISOString(),
+    };
 
-    try {
-      await pool.query(
-        `
-        INSERT INTO orders (
-          stripe_session_id,
-          payment_intent,
-          amount_total,
-          currency,
-          status,
-          email
-        )
-        VALUES ($1, $2, $3, $4, $5, $6)
-        ON CONFLICT (stripe_session_id) DO NOTHING
-        `,
-        [
-          session.id ?? null,
-          session.payment_intent ?? null,
-          session.amount_total ?? null,
-          session.currency ?? null,
-          session.status ?? null,
-          session.customer_details?.email ??
-            session.customer_email ??
-            null,
-        ]
-      );
+    orders.push(order);
 
-      console.log("✅ Order inserted:", session.id);
-    } catch (dbErr: any) {
-      console.error("❌ Database insert failed:", dbErr.message);
-      return NextResponse.json(
-        { error: "Database insert failed" },
-        { status: 500 }
-      );
-    }
+    console.log("✅ PAYMENT CONFIRMED");
+    console.log(order);
   }
 
   return NextResponse.json({ received: true });
