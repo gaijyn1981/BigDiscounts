@@ -1,14 +1,20 @@
-import { orders } from "@/app/lib/orders";
+import { pool } from "@/lib/db";
 
-export default function OrdersPage() {
+export default async function OrdersPage() {
+  const { rows } = await pool.query(`
+    SELECT id, email, amount, currency, created_at
+    FROM orders
+    ORDER BY created_at DESC
+  `);
+
   return (
-    <main style={{ padding: 24 }}>
+    <main>
       <h1>Orders</h1>
 
-      {orders.length === 0 ? (
+      {rows.length === 0 ? (
         <p>No orders yet.</p>
       ) : (
-        <table border={1} cellPadding={8} cellSpacing={0}>
+        <table>
           <thead>
             <tr>
               <th>ID</th>
@@ -19,17 +25,19 @@ export default function OrdersPage() {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
+            {rows.map((order) => (
               <tr key={order.id}>
                 <td>{order.id}</td>
-                <td>{order.email ?? "—"}</td>
+                <td>{order.email ?? "-"}</td>
                 <td>
                   {order.amount
                     ? (order.amount / 100).toFixed(2)
-                    : "—"}
+                    : "-"}
                 </td>
-                <td>{order.currency ?? "—"}</td>
-                <td>{new Date(order.createdAt).toLocaleString()}</td>
+                <td>{order.currency ?? "-"}</td>
+                <td>
+                  {new Date(order.created_at).toLocaleString()}
+                </td>
               </tr>
             ))}
           </tbody>

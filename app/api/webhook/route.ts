@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { orders } from "../../lib/orders";
+import { pool } from "@/lib/db";
 
-export const runtime = "nodejs"; // REQUIRED for Stripe webhooks
+export const runtime = "nodejs";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2023-10-16",
+});
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
@@ -27,26 +29,43 @@ export async function POST(req: NextRequest) {
     return new NextResponse("Webhook Error", { status: 400 });
   }
 
-  // ✅ Handle successful checkout
+  // ✅ Handle completed checkout
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
 
-    const order = {
-      id: session.id,
-      email: session.customer_details?.email ?? null,
-      amount: session.amount_total ?? null,
-      currency: session.currency ?? null,
-      createdAt: new Date().toISOString(),
-    };
+    // 🔑 PaymentIntent is the source of truth
+    const paymentIntentId = session.payment_intent as string;
 
-    const existing = orders.find(o => o.id === session.id);
+    const paymentIntent = await stripe.paymentIntents.retrieve(
+      paymentIntentId
+    );
 
-if (!existing) {
-  orders.push(order);
-}
+    const amountTotal = paymentIntent.amount; // ALWAYS non-null
+    const currency = paymentIntent.currency;
+    const email = session.customer_details?.email ?? null;
 
-    console.log("✅ PAYMENT CONFIRMED");
-    console.log(order);
+    await pool.query(
+      `
+      INSERT INTO orders (
+        stripe_session_id,
+        payment_intent,
+        email,
+        amount_total,
+        currency
+      )
+      VALUES ($1, $2, $3, $4, $5)
+      ON CONFLICT (stripe_session_id) DO NOTHING
+      `,
+      [
+        session.id,
+        paymentIntentId,
+        email,
+        amountTotal,
+        currency,
+      ]
+    );
+
+    console.log("✅ Order saved:", session.id);
   }
 
   return NextResponse.json({ received: true });
