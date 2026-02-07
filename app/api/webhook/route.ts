@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { pool } from "@/lib/db";
+import { pool } from "@/app/lib/db";
 
 export const runtime = "nodejs";
 
@@ -29,18 +29,22 @@ export async function POST(req: NextRequest) {
     return new NextResponse("Webhook Error", { status: 400 });
   }
 
-  // ✅ Handle completed checkout
+  // ✅ Handle successful checkout
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
 
-    // 🔑 PaymentIntent is the source of truth
-    const paymentIntentId = session.payment_intent as string;
+    // Safety checks
+    if (!session.payment_intent) {
+      console.error("❌ Missing payment_intent on session", session.id);
+      return NextResponse.json({ received: true });
+    }
 
+    // 🔥 Fetch PaymentIntent (source of truth)
     const paymentIntent = await stripe.paymentIntents.retrieve(
-      paymentIntentId
+      session.payment_intent as string
     );
 
-    const amountTotal = paymentIntent.amount; // ALWAYS non-null
+    const amountTotal = paymentIntent.amount; // ALWAYS present
     const currency = paymentIntent.currency;
     const email = session.customer_details?.email ?? null;
 
@@ -58,7 +62,7 @@ export async function POST(req: NextRequest) {
       `,
       [
         session.id,
-        paymentIntentId,
+        paymentIntent.id,
         email,
         amountTotal,
         currency,
