@@ -5,15 +5,16 @@ export function middleware(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
 
   const ADMIN_USER = process.env.ADMIN_USER;
-  const ADMIN_PASS = process.env.ADMIN_PASS;
+  const ADMIN_PASS = process.env.ADMIN_PASSWORD;
 
-  // Safety check — prevents crash
+  // Safety check – avoids silent failures
   if (!ADMIN_USER || !ADMIN_PASS) {
     return new NextResponse("Admin credentials not configured", {
       status: 500,
     });
   }
 
+  // No auth header → trigger browser login popup
   if (!authHeader) {
     return new NextResponse("Auth required", {
       status: 401,
@@ -23,7 +24,14 @@ export function middleware(req: NextRequest) {
     });
   }
 
-  const encoded = authHeader.split(" ")[1];
+  const [scheme, encoded] = authHeader.split(" ");
+
+  if (scheme !== "Basic" || !encoded) {
+    return new NextResponse("Invalid authorization header", {
+      status: 400,
+    });
+  }
+
   const decoded = Buffer.from(encoded, "base64").toString();
   const [user, pass] = decoded.split(":");
 
@@ -31,6 +39,7 @@ export function middleware(req: NextRequest) {
     return new NextResponse("Forbidden", { status: 403 });
   }
 
+  // Auth OK → continue
   return NextResponse.next();
 }
 
