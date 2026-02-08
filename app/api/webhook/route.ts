@@ -25,17 +25,17 @@ export async function POST(req: NextRequest) {
     return new NextResponse("Webhook error", { status: 400 });
   }
 
-  /* ================================
+  /* ======================================================
      PAYMENT SUCCEEDED
-  ================================= */
+  ====================================================== */
   if (event.type === "payment_intent.succeeded") {
     const intent = event.data.object as Stripe.PaymentIntent;
 
-    // 🔒 DB-level protection already exists
+    // DB-level + app-level duplicate protection
     const existing = await sql`
       SELECT id FROM orders
       WHERE payment_intent = ${intent.id}
-      LIMIT 1
+      LIMIT 1;
     `;
 
     if ((existing.rowCount ?? 0) > 0) {
@@ -56,49 +56,50 @@ export async function POST(req: NextRequest) {
         ${intent.currency},
         'complete',
         ${intent.id}
-      )
+      );
     `;
+
+    console.log("Order inserted:", intent.id);
   }
 
-  /* ================================
-     REFUND HANDLING (IMPORTANT)
-  ================================= */
+  /* ======================================================
+     REFUND HANDLING
+  ====================================================== */
   if (event.type === "charge.refunded") {
     const charge = event.data.object as Stripe.Charge;
 
+    const paymentIntentId =
+      typeof charge.payment_intent === "string"
+        ? charge.payment_intent
+        : charge.payment_intent?.id;
+
+    if (!paymentIntentId) {
+      console.warn("Refund without payment_intent, skipping");
+      return NextResponse.json({ received: true });
+    }
+
     await sql`
-     const paymentIntentId =
-  typeof charge.payment_intent === "string"
-    ? charge.payment_intent
-    : charge.payment_intent?.id;
+      UPDATE orders
+      SET
+        status = 'refunded',
+        refund_amount = ${charge.amount_refunded},
+        refunded_at = NOW()
+      WHERE payment_intent = ${paymentIntentId};
+    `;
 
-if (!paymentIntentId) {
-  console.warn("Refund without payment_intent, skipping");
-  return NextResponse.json({ received: true });
-}
-
-await sql`;
-UPDATE orders
-  SET
-    status = 'refunded',
-    refund_amount = ${charge.amount_refunded},
-    refunded_at = NOW()
-  WHERE payment_intent = ${paymentIntentId}
-`;
-
-    console.log("Order refunded:", charge.payment_intent);
+    console.log("Order refunded:", paymentIntentId);
   }
 
-  /* ================================
-     PAYMENT CANCELED (edge cases)
-  ================================= */
+  /* ======================================================
+     PAYMENT CANCELLED (EDGE CASES)
+  ====================================================== */
   if (event.type === "payment_intent.canceled") {
     const intent = event.data.object as Stripe.PaymentIntent;
 
     await sql`
       UPDATE orders
       SET status = 'cancelled'
-      WHERE payment_intent = ${intent.id}
+      WHERE payment_intent = ${intent.id};
     `;
 
     console.log("Payment cancelled:", intent.id);
