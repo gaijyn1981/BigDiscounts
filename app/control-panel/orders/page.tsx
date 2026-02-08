@@ -13,7 +13,6 @@ type Order = {
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetch("/api/admin/orders")
@@ -21,59 +20,32 @@ export default function OrdersPage() {
       .then(setOrders);
   }, []);
 
-  async function refund(paymentIntentId: string) {
-    if (!confirm("Refund this order?")) return;
-
-    setLoading(true);
-
-    const res = await fetch("/api/admin/refund", {
+  async function refund(payment_intent: string) {
+    await fetch("/api/admin/refund", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ paymentIntentId }),
+      body: JSON.stringify({ payment_intent }),
     });
 
-    setLoading(false);
-
-    if (!res.ok) {
-      alert("Refund failed");
-      return;
-    }
-
-    alert("Refund initiated. Webhook will update status.");
+    alert("Refund initiated");
   }
 
   return (
-    <div style={{ padding: 40 }}>
+    <div>
       <h1>Orders</h1>
 
-      <table border={1} cellPadding={10}>
-        <thead>
-          <tr>
-            <th>Email</th>
-            <th>Amount</th>
-            <th>Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map(o => (
-            <tr key={o.id}>
-              <td>{o.customer_email}</td>
-              <td>
-                {(o.amount_total / 100).toFixed(2)} {o.currency.toUpperCase()}
-              </td>
-              <td>{o.status}</td>
-              <td>
-                {o.status === "complete" && (
-                  <button onClick={() => refund(o.payment_intent)} disabled={loading}>
-                    Refund
-                  </button>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {orders.map(o => (
+        <div key={o.id} style={{ marginBottom: 12 }}>
+          <b>{o.customer_email}</b> – £{o.amount_total / 100}
+          <br />
+          Status: {o.status}
+          <br />
+          {o.status === "complete" && (
+            <button onClick={() => refund(o.payment_intent)}>
+              Refund
+            </button>
+          )}
+        </div>
+      ))}
     </div>
   );
 }
