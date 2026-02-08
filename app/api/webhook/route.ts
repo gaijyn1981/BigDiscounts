@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { pool } from "../../lib/db";
-
-export const runtime = "nodejs";
+import { sql } from "@vercel/postgres";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2023-10-16" as any,
+  apiVersion: "2023-10-16",
 });
 
 export async function POST(req: NextRequest) {
@@ -25,51 +23,47 @@ export async function POST(req: NextRequest) {
       process.env.STRIPE_WEBHOOK_SECRET!
     );
   } catch (err: any) {
-    console.error("❌ Webhook verification failed:", err.message);
-    return new NextResponse("Webhook Error", { status: 400 });
+    console.error("Webhook signature error:", err.message);
+    return new NextResponse("Webhook error", { status: 400 });
   }
 
-  // ✅ Handle successful checkout
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object as Stripe.Checkout.Session;
+  // ✅ Only handle completed payments
+  if (event.type === "payment_intent.succeeded") {
+    const intent = event.data.object as Stripe.PaymentIntent;
 
-    // Safety checks
-    if (!session.payment_intent) {
-      console.error("❌ Missing payment_intent on session", session.id);
-      return NextResponse.json({ received: true });
+    try {
+      // 🔒 Check if order already exists
+      const existing = await sql`
+        SELECT id FROM orders
+        WHERE payment_intent = ${intent.id}
+        LIMIT 1
+      `;
+
+      if (existing.rowCount > 0) {
+        console.log("Duplicate webhook ignored:", intent.id);
+        return NextResponse.json({ received: true });
+      }
+
+      // ✅ Insert order
+      await sql`
+        INSERT INTO orders (
+          customer_email,
+          amount_total,
+          currency,
+          status,
+          payment_intent
+        ) VALUES (
+          ${intent.receipt_email},
+          ${intent.amount_received},
+          ${intent.currency},
+          'complete',
+          ${intent.id}
+        )
+      `;
+    } catch (err) {
+      console.error("Order insert error:", err);
+      return new NextResponse("Database error", { status: 500 });
     }
-
-    // 🔥 Fetch PaymentIntent (source of truth)
-    const paymentIntent = await stripe.paymentIntents.retrieve(
-      session.payment_intent as string
-    );
-
-    const amountTotal = paymentIntent.amount; // ALWAYS present
-    const currency = paymentIntent.currency;
-    const email = session.customer_details?.email ?? null;
-
-    await pool.query(
-      `
-      INSERT INTO orders (
-        stripe_session_id,
-        payment_intent,
-        email,
-        amount_total,
-        currency
-      )
-      VALUES ($1, $2, $3, $4, $5)
-      ON CONFLICT (stripe_session_id) DO NOTHING
-      `,
-      [
-        session.id,
-        paymentIntent.id,
-        email,
-        amountTotal,
-        currency,
-      ]
-    );
-
-    console.log("✅ Order saved:", session.id);
   }
 
   return NextResponse.json({ received: true });
