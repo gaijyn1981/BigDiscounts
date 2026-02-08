@@ -72,8 +72,24 @@ export async function POST(req: NextRequest) {
         status = 'refunded',
         refund_amount = ${charge.amount_refunded},
         refunded_at = NOW()
-      WHERE payment_intent = ${charge.payment_intent}
-    `;
+     const paymentIntentId =
+  typeof charge.payment_intent === "string"
+    ? charge.payment_intent
+    : charge.payment_intent?.id;
+
+if (!paymentIntentId) {
+  console.warn("Refund without payment_intent, skipping");
+  return NextResponse.json({ received: true });
+}
+
+await sql`
+  UPDATE orders
+  SET
+    status = 'refunded',
+    refund_amount = ${charge.amount_refunded},
+    refunded_at = NOW()
+  WHERE payment_intent = ${paymentIntentId}
+`;
 
     console.log("Order refunded:", charge.payment_intent);
   }
