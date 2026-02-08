@@ -6,9 +6,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
-  const signature = req.headers.get("stripe-signature");
+  const sig = req.headers.get("stripe-signature");
 
-  if (!signature) {
+  if (!sig) {
     return new NextResponse("Missing Stripe signature", { status: 400 });
   }
 
@@ -17,54 +17,80 @@ export async function POST(req: NextRequest) {
   try {
     event = stripe.webhooks.constructEvent(
       body,
-      signature,
+      sig,
       process.env.STRIPE_WEBHOOK_SECRET!
     );
   } catch (err: any) {
-    console.error("Webhook signature verification failed:", err.message);
+    console.error("Webhook signature error:", err.message);
     return new NextResponse("Webhook error", { status: 400 });
   }
 
-  // ✅ Only handle successful payments
+  /* ================================
+     PAYMENT SUCCEEDED
+  ================================= */
   if (event.type === "payment_intent.succeeded") {
     const intent = event.data.object as Stripe.PaymentIntent;
 
-    try {
-      // 🔒 Prevent duplicate inserts
-      const existing = await sql`
-        SELECT id
-        FROM orders
-        WHERE payment_intent = ${intent.id}
-        LIMIT 1;
-      `;
+    // 🔒 DB-level protection already exists
+    const existing = await sql`
+      SELECT id FROM orders
+      WHERE payment_intent = ${intent.id}
+      LIMIT 1
+    `;
 
-      if ((existing.rowCount ?? 0) > 0) {
-        console.log("Duplicate webhook ignored:", intent.id);
-        return NextResponse.json({ received: true });
-      }
-
-      // ✅ Insert order
-      await sql`
-        INSERT INTO orders (
-          customer_email,
-          amount_total,
-          currency,
-          status,
-          payment_intent
-        ) VALUES (
-          ${intent.receipt_email},
-          ${intent.amount_received},
-          ${intent.currency},
-          'complete',
-          ${intent.id}
-        );
-      `;
-
-      console.log("Order stored:", intent.id);
-    } catch (err) {
-      console.error("Database error:", err);
-      return new NextResponse("Database error", { status: 500 });
+    if ((existing.rowCount ?? 0) > 0) {
+      console.log("Duplicate payment ignored:", intent.id);
+      return NextResponse.json({ received: true });
     }
+
+    await sql`
+      INSERT INTO orders (
+        customer_email,
+        amount_total,
+        currency,
+        status,
+        payment_intent
+      ) VALUES (
+        ${intent.receipt_email},
+        ${intent.amount_received},
+        ${intent.currency},
+        'complete',
+        ${intent.id}
+      )
+    `;
+  }
+
+  /* ================================
+     REFUND HANDLING (IMPORTANT)
+  ================================= */
+  if (event.type === "charge.refunded") {
+    const charge = event.data.object as Stripe.Charge;
+
+    await sql`
+      UPDATE orders
+      SET
+        status = 'refunded',
+        refund_amount = ${charge.amount_refunded},
+        refunded_at = NOW()
+      WHERE payment_intent = ${charge.payment_intent}
+    `;
+
+    console.log("Order refunded:", charge.payment_intent);
+  }
+
+  /* ================================
+     PAYMENT CANCELED (edge cases)
+  ================================= */
+  if (event.type === "payment_intent.canceled") {
+    const intent = event.data.object as Stripe.PaymentIntent;
+
+    await sql`
+      UPDATE orders
+      SET status = 'cancelled'
+      WHERE payment_intent = ${intent.id}
+    `;
+
+    console.log("Payment cancelled:", intent.id);
   }
 
   return NextResponse.json({ received: true });
