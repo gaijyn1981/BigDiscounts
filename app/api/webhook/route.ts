@@ -37,7 +37,6 @@ export async function POST(req: NextRequest) {
         LIMIT 1
       `;
 
-      const existing = await sql`
   SELECT 1 FROM orders WHERE payment_intent = ${intent.id}
 `;
 
