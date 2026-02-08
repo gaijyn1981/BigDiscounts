@@ -67,11 +67,6 @@ export async function POST(req: NextRequest) {
     const charge = event.data.object as Stripe.Charge;
 
     await sql`
-      UPDATE orders
-      SET
-        status = 'refunded',
-        refund_amount = ${charge.amount_refunded},
-        refunded_at = NOW()
      const paymentIntentId =
   typeof charge.payment_intent === "string"
     ? charge.payment_intent
@@ -82,7 +77,7 @@ if (!paymentIntentId) {
   return NextResponse.json({ received: true });
 }
 
-await sql`
+await sql`;
 UPDATE orders
   SET
     status = 'refunded',
