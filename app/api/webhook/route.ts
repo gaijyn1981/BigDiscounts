@@ -37,10 +37,14 @@ export async function POST(req: NextRequest) {
         LIMIT 1
       `;
 
-      if (existing.rowCount > 0) {
-        console.log("Duplicate webhook ignored:", intent.id);
-        return NextResponse.json({ received: true });
-      }
+      const existing = await sql`
+  SELECT 1 FROM orders WHERE payment_intent = ${intent.id}
+`;
+
+if ((existing.rowCount ?? 0) > 0) {
+  console.log("Duplicate webhook ignored:", intent.id);
+  return NextResponse.json({ received: true });
+}
 
       // ✅ Insert order
       await sql`
