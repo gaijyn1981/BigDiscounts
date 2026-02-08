@@ -2,12 +2,13 @@ import { headers } from "next/headers";
 
 export const runtime = "nodejs";
 
-export default function ControlPanelLayout({
+export default async function ControlPanelLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const authHeader = headers().get("authorization");
+  const headersList = await headers();
+  const authHeader = headersList.get("authorization");
 
   const ADMIN_USER = process.env.ADMIN_USER;
   const ADMIN_PASS = process.env.ADMIN_PASS;
