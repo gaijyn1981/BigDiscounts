@@ -1,47 +1,37 @@
-export const metadata = {
-  title: "Admin Panel",
-  description: "Restricted admin area",
-  robots: {
-    index: false,
-    follow: false,
-  },
-};
+import { headers } from "next/headers";
 
-export default function AdminLayout({
+export const runtime = "nodejs";
+
+export default function ControlPanelLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body
-        style={{
-          margin: 0,
-          fontFamily: "Arial, sans-serif",
-          backgroundColor: "#f5f5f5",
-        }}
-      >
-        {/* Admin Header */}
-        <header
-          style={{
-            padding: "20px 40px",
-            backgroundColor: "#111",
-            color: "#fff",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <strong style={{ fontSize: "20px" }}>Admin Panel</strong>
+  const authHeader = headers().get("authorization");
 
-          <span style={{ fontSize: "14px", opacity: 0.8 }}>
-            Restricted Access
-          </span>
-        </header>
+  const ADMIN_USER = process.env.ADMIN_USER;
+  const ADMIN_PASS = process.env.ADMIN_PASS;
 
-        {/* Admin Content */}
-        <main style={{ padding: "40px" }}>{children}</main>
-      </body>
-    </html>
-  );
+  if (!ADMIN_USER || !ADMIN_PASS) {
+    return <pre>Admin credentials not configured</pre>;
+  }
+
+  if (!authHeader) {
+    return new Response("Auth required", {
+      status: 401,
+      headers: {
+        "WWW-Authenticate": 'Basic realm="Admin Area"',
+      },
+    }) as any;
+  }
+
+  const encoded = authHeader.split(" ")[1];
+  const decoded = Buffer.from(encoded, "base64").toString();
+  const [user, pass] = decoded.split(":");
+
+  if (user !== ADMIN_USER || pass !== ADMIN_PASS) {
+    return new Response("Forbidden", { status: 403 }) as any;
+  }
+
+  return <>{children}</>;
 }
