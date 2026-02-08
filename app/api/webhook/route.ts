@@ -83,7 +83,7 @@ if (!paymentIntentId) {
 }
 
 await sql`
-  UPDATE orders
+UPDATE orders
   SET
     status = 'refunded',
     refund_amount = ${charge.amount_refunded},
