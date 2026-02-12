@@ -1,19 +1,24 @@
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { password } = await req.json();
+  const { username, password } = await req.json();
 
-  if (password !== process.env.ADMIN_PASSWORD) {
-    return new NextResponse("Unauthorized", { status: 401 });
+  const ADMIN_USER = process.env.ADMIN_USER;
+  const ADMIN_PASS = process.env.ADMIN_PASS;
+
+  if (username === ADMIN_USER && password === ADMIN_PASS) {
+    const response = NextResponse.json({ success: true });
+
+    response.cookies.set("admin_session", "true", {
+      httpOnly: true,
+      path: "/",
+    });
+
+    return response;
   }
 
-  const res = NextResponse.json({ success: true });
-  res.cookies.set("admin_session", "true", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "strict",
-    path: "/",
-  });
-
-  return res;
+  return NextResponse.json(
+    { success: false },
+    { status: 401 }
+  );
 }
