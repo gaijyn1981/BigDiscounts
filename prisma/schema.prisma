@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Seller {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  password         String
+  companyName      String
+  contactName      String
+  phone            String?
+  stripeCustomerId String?
+  createdAt        DateTime  @default(now())
+  products         Product[]
+}
+
+model Buyer {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  sellerId    String
+  title       String
+  description String
+  price       Float
+  photos      String   @default("[]")
+  category    String?
+  active      Boolean  @default(false)
+  stripeSubId String?
+  createdAt   DateTime @default(now())
+  seller      Seller   @relation(fields: [sellerId], references: [id])
+}
+
