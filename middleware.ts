@@ -21,7 +21,8 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (request.nextUrl.pathname.startsWith('/api/auth') ||
+  // Only rate limit the sign-in endpoint, not all auth routes
+  if (request.nextUrl.pathname === '/api/auth/signin' ||
       request.nextUrl.pathname.startsWith('/api/register')) {
     const ip = request.headers.get('x-forwarded-for') || 'anonymous'
     const { success } = await ratelimit.limit(ip)
