@@ -1,11 +1,13 @@
 import { prisma } from '@/lib/db'
-import ShareButtons from '@/app/components/ShareButtons'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import ShareButtons from '@/app/components/ShareButtons'
 
-export default async function ProductPage({ params }: { params: { slug: string } }) {
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+
   const product = await prisma.product.findUnique({
-    where: { id: params.slug },
+    where: { id: slug },
     include: { seller: true }
   })
 
@@ -23,8 +25,6 @@ export default async function ProductPage({ params }: { params: { slug: string }
       <div className="max-w-5xl mx-auto px-6 py-10">
         <div className="bg-white rounded-2xl shadow-md overflow-hidden">
           <div className="grid md:grid-cols-2 gap-0">
-
-            {/* Photos */}
             <div className="p-6" style={{background: '#f0f4ff'}}>
               {photos.length > 0 ? (
                 <div className="space-y-3">
@@ -47,7 +47,6 @@ export default async function ProductPage({ params }: { params: { slug: string }
               )}
             </div>
 
-            {/* Details */}
             <div className="p-8 flex flex-col justify-between">
               <div>
                 {product.category && (
@@ -60,7 +59,6 @@ export default async function ProductPage({ params }: { params: { slug: string }
                 <p className="text-gray-600 leading-relaxed mb-6">{product.description}</p>
               </div>
 
-              {/* Seller info */}
               <div className="border-t pt-6">
                 <p className="text-sm text-gray-400 uppercase tracking-wide font-semibold mb-3">Sold by</p>
                 <div className="bg-blue-50 rounded-xl p-4">
@@ -71,11 +69,11 @@ export default async function ProductPage({ params }: { params: { slug: string }
                     style={{background: '#1e3a8a'}}>
                     ✉️ Contact Seller
                   </a>
-                  <ShareButtons title={product.title} id={product.id} />
                   <a href={`tel:${product.seller.phone}`}
                     className="block w-full text-center bg-yellow-400 text-gray-900 py-3 rounded-xl font-bold text-lg hover:bg-yellow-300 mt-2">
                     📞 Call Seller
                   </a>
+                  <ShareButtons title={product.title} id={product.id} />
                 </div>
               </div>
             </div>
