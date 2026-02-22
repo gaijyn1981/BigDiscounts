@@ -42,3 +42,11 @@ model Product {
   createdAt   DateTime @default(now())
   seller      Seller   @relation(fields: [sellerId], references: [id])
 }
+model Favourite {
+  id        String   @id @default(cuid())
+  buyerEmail String
+  productId String
+  createdAt DateTime @default(now())
+
+  @@unique([buyerEmail, productId])
+}

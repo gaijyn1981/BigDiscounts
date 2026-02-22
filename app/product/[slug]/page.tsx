@@ -2,6 +2,7 @@ import { prisma } from '@/lib/db'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ShareButtons from '@/app/components/ShareButtons'
+import FavouriteButton from '@/app/components/FavouriteButton'
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -79,6 +80,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                     className="block w-full text-center bg-yellow-400 text-gray-900 py-3 rounded-xl font-bold text-lg hover:bg-yellow-300 mt-2">
                     📞 Call Seller
                   </a>
+                  <FavouriteButton productId={product.id} />
                   <ShareButtons title={product.title} id={product.id} />
                 </div>
               </div>
