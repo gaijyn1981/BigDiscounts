@@ -53,6 +53,7 @@ export default function BrowsePage() {
         <Link href="/" className="text-2xl font-bold text-white">💰 BigDiscounts</Link>
         <div className="flex gap-4 items-center">
           <Link href="/login" className="text-blue-200 hover:text-white">Login</Link>
+          <Link href="/buyer/favourites" className="text-blue-200 hover:text-white">❤️ Saved</Link>
           <Link href="/register" className="bg-yellow-400 text-gray-900 px-4 py-2 rounded-lg font-semibold hover:bg-yellow-300">Sign Up</Link>
         </div>
       </nav>
