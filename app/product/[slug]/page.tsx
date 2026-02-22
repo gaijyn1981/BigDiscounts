@@ -13,6 +13,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   if (!product) notFound()
 
+  await prisma.product.update({
+    where: { id: slug },
+    data: { views: { increment: 1 } }
+  })
+
   const photos = JSON.parse(product.photos || '[]')
 
   return (
@@ -55,8 +60,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                   </span>
                 )}
                 <h1 className="text-3xl font-black text-gray-900 mt-3 mb-2">{product.title}</h1>
-                <p className="text-4xl font-black mb-6" style={{color: '#1e3a8a'}}>£{product.price.toFixed(2)}</p>
-                <p className="text-gray-600 leading-relaxed mb-6">{product.description}</p>
+                <p className="text-4xl font-black mb-4" style={{color: '#1e3a8a'}}>£{product.price.toFixed(2)}</p>
+                <p className="text-sm text-gray-400 mb-4">👁️ {product.views} views</p>
+                <p className="text-gray-600 leading-relaxed mb-4">{product.description}</p>
               </div>
 
               <div className="border-t pt-6">

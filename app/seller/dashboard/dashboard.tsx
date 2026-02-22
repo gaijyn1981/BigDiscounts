@@ -11,6 +11,7 @@ interface Product {
   category: string
   active: boolean
   stripeSubId: string | null
+  views: number
 }
 
 export default function Dashboard() {
@@ -115,9 +116,12 @@ export default function Dashboard() {
                 <div>
                   <h3 className="font-semibold text-lg">{product.title}</h3>
                   <p className="text-gray-500">£{product.price.toFixed(2)} · {product.category || 'No category'}</p>
-                  <span className={`text-sm px-2 py-1 rounded-full ${product.active ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                    {product.active ? 'Active' : 'Pending payment'}
-                  </span>
+                  <div className="flex items-center gap-3 mt-1">
+                    <span className={`text-sm px-2 py-1 rounded-full ${product.active ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                      {product.active ? 'Active' : 'Pending payment'}
+                    </span>
+                    <span className="text-sm text-gray-400">👁️ {product.views} views</span>
+                  </div>
                 </div>
                 <div className="flex gap-3 items-center flex-wrap justify-end">
                   {!product.active && (
@@ -129,7 +133,7 @@ export default function Dashboard() {
                     <button onClick={() => cancelSubscription(product.id)}
                       disabled={cancelling === product.id}
                       className="bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-lg text-sm hover:bg-red-100 disabled:opacity-50">
-                      {cancelling === product.id ? 'Cancelling...' : 'Cancel Subscription'}
+                      {cancelling === product.id ? 'Cancelling...' : 'Cancel Sub'}
                     </button>
                   )}
                   <Link href={`/seller/products/${product.id}/edit`} className="text-blue-600 hover:underline">Edit</Link>
