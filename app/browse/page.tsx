@@ -8,6 +8,7 @@ interface Product {
   price: number
   category: string
   photos: string
+  createdAt: string
   seller: { companyName: string }
 }
 
@@ -27,6 +28,13 @@ export default function BrowsePage() {
     return matchSearch && matchCategory
   })
 
+  function isNew(createdAt: string) {
+    const created = new Date(createdAt)
+    const now = new Date()
+    const diffDays = (now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24)
+    return diffDays < 7
+  }
+
   return (
     <main className="min-h-screen" style={{background: '#f0f4ff'}}>
       <nav style={{background: '#1e3a8a'}} className="px-6 py-4 flex justify-between items-center">
@@ -37,7 +45,6 @@ export default function BrowsePage() {
         </div>
       </nav>
 
-      {/* Compact search bar - not full blue hero */}
       <div className="bg-white border-b border-gray-200 px-6 py-5 shadow-sm">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-2xl font-black text-gray-900 mb-4">Browse Deals 🔍</h1>
@@ -77,7 +84,12 @@ export default function BrowsePage() {
               const photo = photos[0]
               return (
                 <Link key={product.id} href={`/product/${product.id}`}
-                  className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow overflow-hidden group">
+                  className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow overflow-hidden group relative">
+                  {isNew(product.createdAt) && (
+                    <div className="absolute top-3 left-3 z-10 bg-yellow-400 text-gray-900 text-xs font-black px-2 py-1 rounded-full uppercase">
+                      🆕 New
+                    </div>
+                  )}
                   <div className="h-48 flex items-center justify-center overflow-hidden" style={{background: '#f0f4ff'}}>
                     {photo ? (
                       <img src={photo} alt={product.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
