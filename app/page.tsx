@@ -98,6 +98,12 @@ export default function Home() {
         <Link href="/terms" className="hover:text-white mx-3">Terms &amp; Conditions</Link>
         <p className="mt-2 text-blue-400">© 2026 BigDiscounts. Sole trader: Petrica Marin, Gloucester, UK</p>
         <p className="mt-1 text-blue-400">Contact: <a href="mailto:petricamarin1981@icloud.com" className="hover:text-white">petricamarin1981@icloud.com</a></p>
+        <div className="mt-3 flex justify-center gap-4 flex-wrap">
+          <a href="/privacy" className="hover:text-white">Privacy Policy</a>
+          <a href="/terms" className="hover:text-white">Terms &amp; Conditions</a>
+          <a href="/cookies" className="hover:text-white">Cookie Policy</a>
+          <a href="/data-request" className="hover:text-white">Data Request</a>
+        </div>
       </footer>
     </main>
   )
