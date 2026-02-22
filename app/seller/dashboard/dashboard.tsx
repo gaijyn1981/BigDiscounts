@@ -101,6 +101,7 @@ export default function Dashboard() {
 
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">My Products</h1>
+          <Link href="/seller/profile" className="text-blue-600 border border-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50">Profile</Link>
           <Link href="/seller/products/new" className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">+ Add Product</Link>
         </div>
 

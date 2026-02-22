@@ -71,6 +71,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 <div className="bg-blue-50 rounded-xl p-4">
                   <p className="font-bold text-gray-900 text-lg">{product.seller.companyName}</p>
                   <p className="text-gray-500 text-sm mb-3">{product.seller.contactName}</p>
+                  {product.seller.paypalMe && (
+                    <a href={`https://paypal.me/${product.seller.paypalMe}/${product.price}`}
+                      target="_blank" rel="noopener noreferrer"
+                      className="block w-full text-center bg-blue-500 text-white py-3 rounded-xl font-bold text-lg hover:bg-blue-600 mb-2">
+                      💳 Buy Now via PayPal
+                    </a>
+                  )}
                   <a href={`mailto:${product.seller.email}`}
                     className="block w-full text-center text-white py-3 rounded-xl font-bold text-lg hover:opacity-90"
                     style={{background: '#1e3a8a'}}>

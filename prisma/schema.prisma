@@ -15,6 +15,7 @@ model Seller {
   companyName      String
   contactName      String
   phone            String
+  paypalMe         String?
   stripeCustomerId String?
   createdAt        DateTime  @default(now())
   products         Product[]
