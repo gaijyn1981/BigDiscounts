@@ -13,47 +13,68 @@ export default async function ProductPage({ params }: { params: { slug: string }
   const photos = JSON.parse(product.photos || '[]')
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-blue-600">BigDiscounts</Link>
-        <Link href="/browse" className="text-gray-600 hover:text-blue-600">← Back to Browse</Link>
+    <main className="min-h-screen" style={{background: '#f0f4ff'}}>
+      <nav style={{background: '#1e3a8a'}} className="px-6 py-4 flex justify-between items-center">
+        <Link href="/" className="text-2xl font-bold text-white">💰 BigDiscounts</Link>
+        <Link href="/browse" className="text-blue-200 hover:text-white">← Back to Browse</Link>
       </nav>
 
-      <div className="max-w-4xl mx-auto px-6 py-10">
-        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div className="max-w-5xl mx-auto px-6 py-10">
+        <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+          <div className="grid md:grid-cols-2 gap-0">
 
-          {photos.length > 0 ? (
-            <div className="grid grid-cols-2 gap-2 p-2">
-              {photos.map((photo: string, index: number) => (
-                <img key={index} src={photo} alt={`${product.title} photo ${index + 1}`}
-                  className="w-full h-56 object-cover rounded-lg" />
-              ))}
+            {/* Photos */}
+            <div className="p-6" style={{background: '#f0f4ff'}}>
+              {photos.length > 0 ? (
+                <div className="space-y-3">
+                  <img src={photos[0]} alt={product.title}
+                    className="w-full h-72 object-cover rounded-xl" />
+                  {photos.length > 1 && (
+                    <div className="grid grid-cols-3 gap-2">
+                      {photos.slice(1).map((photo: string, i: number) => (
+                        <img key={i} src={photo} alt={product.title}
+                          className="w-full h-24 object-cover rounded-lg" />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="w-full h-72 rounded-xl flex items-center justify-center text-8xl"
+                  style={{background: '#e0e8ff'}}>
+                  📦
+                </div>
+              )}
             </div>
-          ) : (
-            <div className="w-full h-72 bg-gray-100 flex items-center justify-center text-gray-400 text-6xl">📦</div>
-          )}
 
-          <div className="p-8">
-            <p className="text-sm text-blue-600 font-medium mb-2">{product.category}</p>
-            <h1 className="text-3xl font-bold text-gray-900 mb-3">{product.title}</h1>
-            <p className="text-4xl font-bold text-blue-600 mb-6">£{product.price.toFixed(2)}</p>
-            <p className="text-gray-600 text-lg leading-relaxed mb-8">{product.description}</p>
+            {/* Details */}
+            <div className="p-8 flex flex-col justify-between">
+              <div>
+                {product.category && (
+                  <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                    {product.category}
+                  </span>
+                )}
+                <h1 className="text-3xl font-black text-gray-900 mt-3 mb-2">{product.title}</h1>
+                <p className="text-4xl font-black mb-6" style={{color: '#1e3a8a'}}>£{product.price.toFixed(2)}</p>
+                <p className="text-gray-600 leading-relaxed mb-6">{product.description}</p>
+              </div>
 
-            <div className="border-t pt-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Sold by</h2>
-              <div className="bg-gray-50 rounded-xl p-6">
-                <h3 className="font-semibold text-lg mb-1">{product.seller.companyName}</h3>
-                <p className="text-gray-600 mb-4">Contact: {product.seller.contactName}</p>
-                {product.seller.phone && (
+              {/* Seller info */}
+              <div className="border-t pt-6">
+                <p className="text-sm text-gray-400 uppercase tracking-wide font-semibold mb-3">Sold by</p>
+                <div className="bg-blue-50 rounded-xl p-4">
+                  <p className="font-bold text-gray-900 text-lg">{product.seller.companyName}</p>
+                  <p className="text-gray-500 text-sm mb-3">{product.seller.contactName}</p>
+                  <a href={`mailto:${product.seller.email}`}
+                    className="block w-full text-center text-white py-3 rounded-xl font-bold text-lg hover:opacity-90"
+                    style={{background: '#1e3a8a'}}>
+                    ✉️ Contact Seller
+                  </a>
                   <a href={`tel:${product.seller.phone}`}
-                    className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 mr-3">
+                    className="block w-full text-center bg-yellow-400 text-gray-900 py-3 rounded-xl font-bold text-lg hover:bg-yellow-300 mt-2">
                     📞 Call Seller
                   </a>
-                )}
-                <a href={`mailto:${product.seller.email}`}
-                  className="inline-block border-2 border-blue-600 text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50">
-                  ✉️ Email Seller
-                </a>
+                </div>
               </div>
             </div>
           </div>
