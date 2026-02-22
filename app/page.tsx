@@ -96,7 +96,8 @@ export default function Home() {
         <Link href="/privacy" className="hover:text-white mx-3">Privacy Policy</Link>
         <span className="text-blue-600">·</span>
         <Link href="/terms" className="hover:text-white mx-3">Terms &amp; Conditions</Link>
-        <p className="mt-2 text-blue-400">© 2026 BigDiscounts. All rights reserved.</p>
+        <p className="mt-2 text-blue-400">© 2026 BigDiscounts. Sole trader: Petrica Marin, Gloucester, UK</p>
+        <p className="mt-1 text-blue-400">Contact: <a href="mailto:petricamarin1981@icloud.com" className="hover:text-white">petricamarin1981@icloud.com</a></p>
       </footer>
     </main>
   )
