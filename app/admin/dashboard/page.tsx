@@ -1,5 +1,4 @@
 'use client'
-import { useSession, signOut } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
@@ -22,116 +21,104 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null)
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
-  const [password, setPassword] = useState('')
-  const [authed, setAuthed] = useState(false)
-  const [error, setError] = useState('')
 
-  function handleLogin(e: React.FormEvent) {
-    e.preventDefault()
-    if (password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD || password === 'admin123') {
-      setAuthed(true)
-      fetchData()
-    } else {
-      setError('Incorrect password')
-    }
-  }
-
-  async function fetchData() {
-    const res = await fetch('/api/admin/stats')
-    const data = await res.json()
-    setStats(data.stats)
-    setProducts(data.products)
-    setLoading(false)
-  }
-
-  async function toggleProduct(id: string, active: boolean) {
-    await fetch(`/api/admin/products/${id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ active: !active })
+  useEffect(() => {
+    Promise.all([
+      fetch('/api/admin/stats').then(r => r.json()),
+      fetch('/api/admin/products').then(r => r.json())
+    ]).then(([statsData, productsData]) => {
+      setStats(statsData)
+      setProducts(productsData)
+      setLoading(false)
     })
-    fetchData()
-  }
+  }, [])
 
   async function deleteProduct(id: string) {
     if (!confirm('Delete this product?')) return
     await fetch(`/api/admin/products/${id}`, { method: 'DELETE' })
-    fetchData()
+    setProducts(products.filter(p => p.id !== id))
   }
 
-  if (!authed) {
-    return (
-      <main className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-xl shadow-sm w-full max-w-sm">
-          <h1 className="text-2xl font-bold mb-6">Admin Login</h1>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <input type="password" placeholder="Admin password" value={password}
-              onChange={e => setPassword(e.target.value)}
-              className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            {error && <p className="text-red-500 text-sm">{error}</p>}
-            <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
-              Login
-            </button>
-          </form>
-        </div>
-      </main>
-    )
-  }
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center" style={{background: '#f0f4ff'}}>
+      <p className="text-gray-500 text-lg">Loading...</p>
+    </div>
+  )
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>
+  const monthlyRevenue = (stats?.activeProducts || 0) * 1
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-blue-600">BigDiscounts Admin</Link>
-        <button onClick={() => setAuthed(false)} className="text-gray-600 hover:text-red-500">Logout</button>
+    <main className="min-h-screen" style={{background: '#f0f4ff'}}>
+      <nav style={{background: '#1e3a8a'}} className="px-6 py-4 flex justify-between items-center">
+        <Link href="/" className="text-2xl font-bold text-white">💰 BigDiscounts</Link>
+        <span className="text-blue-200 font-semibold">Admin Dashboard</span>
       </nav>
 
       <div className="max-w-6xl mx-auto px-6 py-10">
-        {stats && (
-          <div className="grid grid-cols-4 gap-6 mb-10">
-            <div className="bg-white rounded-xl p-6 shadow-sm text-center">
-              <p className="text-3xl font-bold text-blue-600">{stats.totalSellers}</p>
-              <p className="text-gray-600 mt-1">Sellers</p>
-            </div>
-            <div className="bg-white rounded-xl p-6 shadow-sm text-center">
-              <p className="text-3xl font-bold text-blue-600">{stats.totalBuyers}</p>
-              <p className="text-gray-600 mt-1">Buyers</p>
-            </div>
-            <div className="bg-white rounded-xl p-6 shadow-sm text-center">
-              <p className="text-3xl font-bold text-blue-600">{stats.totalProducts}</p>
-              <p className="text-gray-600 mt-1">Total Listings</p>
-            </div>
-            <div className="bg-white rounded-xl p-6 shadow-sm text-center">
-              <p className="text-3xl font-bold text-green-600">{stats.activeProducts}</p>
-              <p className="text-gray-600 mt-1">Active Listings</p>
-            </div>
-          </div>
-        )}
+        <h1 className="text-3xl font-black text-gray-900 mb-8">Admin Overview</h1>
 
-        <h2 className="text-2xl font-bold mb-6">All Products</h2>
-        <div className="space-y-4">
-          {products.map(product => (
-            <div key={product.id} className="bg-white rounded-xl p-6 shadow-sm flex justify-between items-center">
-              <div>
-                <h3 className="font-semibold text-lg">{product.title}</h3>
-                <p className="text-gray-500">£{product.price.toFixed(2)} · {product.seller.companyName} · {product.seller.email}</p>
-                <span className={`text-sm px-2 py-1 rounded-full ${product.active ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                  {product.active ? 'Active' : 'Inactive'}
-                </span>
-              </div>
-              <div className="flex gap-3">
-                <button onClick={() => toggleProduct(product.id, product.active)}
-                  className={`px-4 py-2 rounded-lg text-sm text-white ${product.active ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-green-600 hover:bg-green-700'}`}>
-                  {product.active ? 'Deactivate' : 'Activate'}
-                </button>
-                <button onClick={() => deleteProduct(product.id)}
-                  className="px-4 py-2 rounded-lg text-sm bg-red-500 text-white hover:bg-red-600">
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
+        {/* Stats cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
+          <div className="bg-white rounded-2xl shadow-md p-6 border-t-4 border-blue-600">
+            <p className="text-gray-400 text-sm uppercase tracking-wide font-semibold">Total Sellers</p>
+            <p className="text-4xl font-black text-gray-900 mt-2">{stats?.totalSellers}</p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-md p-6 border-t-4 border-yellow-400">
+            <p className="text-gray-400 text-sm uppercase tracking-wide font-semibold">Total Buyers</p>
+            <p className="text-4xl font-black text-gray-900 mt-2">{stats?.totalBuyers}</p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-md p-6 border-t-4 border-green-500">
+            <p className="text-gray-400 text-sm uppercase tracking-wide font-semibold">Active Listings</p>
+            <p className="text-4xl font-black text-gray-900 mt-2">{stats?.activeProducts}</p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-md p-6 border-t-4 border-purple-500">
+            <p className="text-gray-400 text-sm uppercase tracking-wide font-semibold">Monthly Revenue</p>
+            <p className="text-4xl font-black text-gray-900 mt-2">£{monthlyRevenue}</p>
+          </div>
+        </div>
+
+        {/* Products table */}
+        <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+            <h2 className="text-xl font-black text-gray-900">All Products ({stats?.totalProducts})</h2>
+            <span className="text-sm text-gray-400">{stats?.activeProducts} active · {(stats?.totalProducts || 0) - (stats?.activeProducts || 0)} pending</span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead style={{background: '#f0f4ff'}}>
+                <tr>
+                  <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Product</th>
+                  <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Seller</th>
+                  <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Price</th>
+                  <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Status</th>
+                  <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((product, i) => (
+                  <tr key={product.id} style={{background: i % 2 === 0 ? 'white' : '#f9fafb'}}>
+                    <td className="px-6 py-4 font-semibold text-gray-900">{product.title}</td>
+                    <td className="px-6 py-4">
+                      <p className="font-semibold text-gray-900">{product.seller.companyName}</p>
+                      <p className="text-sm text-gray-400">{product.seller.email}</p>
+                    </td>
+                    <td className="px-6 py-4 font-bold text-blue-700">£{product.price.toFixed(2)}</td>
+                    <td className="px-6 py-4">
+                      <span className={`text-xs font-bold px-3 py-1 rounded-full ${product.active ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                        {product.active ? 'Active' : 'Pending'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <button onClick={() => deleteProduct(product.id)}
+                        className="text-red-500 hover:text-red-700 font-semibold text-sm">
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </main>
