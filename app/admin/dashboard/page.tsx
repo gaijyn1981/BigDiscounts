@@ -47,7 +47,7 @@ export default function AdminDashboard() {
   return (
     <main className="min-h-screen" style={{background: '#f0f4ff'}}>
       <nav style={{background: '#1e3a8a'}} className="px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-white">💰 BigDiscounts</Link>
+        <Link href="/" className="text-2xl font-bold text-white">🇬🇧 BigDiscounts</Link>
         <span className="text-blue-200 font-semibold">Admin Dashboard</span>
       </nav>
 

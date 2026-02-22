@@ -30,7 +30,7 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen" style={{background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)'}}>
       <nav className="px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-white">💰 BigDiscounts</Link>
+        <Link href="/" className="text-2xl font-bold text-white">🇬🇧 BigDiscounts</Link>
       </nav>
       <div className="flex items-center justify-center px-6 py-16">
         <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">

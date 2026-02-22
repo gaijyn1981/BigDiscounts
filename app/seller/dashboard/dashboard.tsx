@@ -71,7 +71,7 @@ export default function Dashboard() {
   return (
     <main className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-blue-600">💰 BigDiscounts</Link>
+        <Link href="/" className="text-2xl font-bold text-blue-600">🇬🇧 BigDiscounts</Link>
         <div className="flex items-center gap-4">
           <span className="text-gray-600">Welcome, {session?.user?.name}</span>
           <button onClick={() => signOut({ callbackUrl: '/' })} className="text-gray-600 hover:text-red-500">Logout</button>

@@ -50,7 +50,7 @@ export default function BrowsePage() {
   return (
     <main className="min-h-screen" style={{background: '#f0f4ff'}}>
       <nav style={{background: '#1e3a8a'}} className="px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-white">💰 BigDiscounts</Link>
+        <Link href="/" className="text-2xl font-bold text-white">🇬🇧 BigDiscounts</Link>
         <div className="flex gap-4 items-center">
           <Link href="/login" className="text-blue-200 hover:text-white">Login</Link>
           <Link href="/buyer/favourites" className="text-blue-200 hover:text-white">❤️ Saved</Link>

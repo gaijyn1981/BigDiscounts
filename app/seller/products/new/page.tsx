@@ -53,7 +53,7 @@ export default function NewProductPage() {
   return (
     <main className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-blue-600">💰 BigDiscounts</Link>
+        <Link href="/" className="text-2xl font-bold text-blue-600">🇬🇧 BigDiscounts</Link>
         <Link href="/seller/dashboard" className="text-gray-600 hover:text-blue-600">← Back</Link>
       </nav>
       <div className="max-w-2xl mx-auto px-6 py-10">
