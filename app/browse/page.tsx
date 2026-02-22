@@ -16,17 +16,12 @@ export default function BrowsePage() {
   const [products, setProducts] = useState<Product[]>([])
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('')
+  const [sort, setSort] = useState('')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     fetch('/api/products').then(r => r.json()).then(data => { setProducts(data); setLoading(false) })
   }, [])
-
-  const filtered = products.filter(p => {
-    const matchSearch = p.title.toLowerCase().includes(search.toLowerCase())
-    const matchCategory = !category || p.category === category
-    return matchSearch && matchCategory
-  })
 
   function isNew(createdAt: string) {
     const created = new Date(createdAt)
@@ -34,6 +29,19 @@ export default function BrowsePage() {
     const diffDays = (now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24)
     return diffDays < 7
   }
+
+  const filtered = products
+    .filter(p => {
+      const matchSearch = p.title.toLowerCase().includes(search.toLowerCase())
+      const matchCategory = !category || p.category === category
+      return matchSearch && matchCategory
+    })
+    .sort((a, b) => {
+      if (sort === 'low') return a.price - b.price
+      if (sort === 'high') return b.price - a.price
+      if (sort === 'new') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      return 0
+    })
 
   return (
     <main className="min-h-screen" style={{background: '#f0f4ff'}}>
@@ -48,9 +56,9 @@ export default function BrowsePage() {
       <div className="bg-white border-b border-gray-200 px-6 py-5 shadow-sm">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-2xl font-black text-gray-900 mb-4">Browse Deals 🔍</h1>
-          <div className="flex gap-3">
+          <div className="flex gap-3 flex-wrap">
             <input type="text" placeholder="Search products..." value={search} onChange={e => setSearch(e.target.value)}
-              className="flex-1 px-5 py-3 rounded-xl border border-gray-200 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base" />
+              className="flex-1 px-5 py-3 rounded-xl border border-gray-200 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base min-w-48" />
             <select value={category} onChange={e => setCategory(e.target.value)}
               className="px-4 py-3 rounded-xl border border-gray-200 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
               <option value="">All Categories</option>
@@ -63,6 +71,13 @@ export default function BrowsePage() {
               <option value="Food & Drink">Food & Drink</option>
               <option value="Health & Beauty">Health & Beauty</option>
               <option value="Other">Other</option>
+            </select>
+            <select value={sort} onChange={e => setSort(e.target.value)}
+              className="px-4 py-3 rounded-xl border border-gray-200 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="">Sort by</option>
+              <option value="low">Price: Low to High</option>
+              <option value="high">Price: High to Low</option>
+              <option value="new">Newest First</option>
             </select>
           </div>
         </div>
