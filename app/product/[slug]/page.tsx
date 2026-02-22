@@ -3,6 +3,25 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ShareButtons from '@/app/components/ShareButtons'
 import FavouriteButton from '@/app/components/FavouriteButton'
+import type { Metadata } from 'next'
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const product = await prisma.product.findUnique({
+    where: { id: slug },
+    include: { seller: true }
+  })
+  if (!product) return {}
+  return {
+    title: `${product.title} - £${product.price.toFixed(2)} | BigDiscounts`,
+    description: `${product.description.slice(0, 150)} - Sold by ${product.seller.companyName} on BigDiscounts.`,
+    openGraph: {
+      title: `${product.title} - £${product.price.toFixed(2)}`,
+      description: `${product.description.slice(0, 150)}`,
+      url: `https://www.bigdiscounts.uk/product/${slug}`,
+    }
+  }
+}
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
