@@ -38,6 +38,7 @@ model Product {
   category    String?
   active      Boolean  @default(false)
   stripeSubId String?
+  views       Int      @default(0)
   createdAt   DateTime @default(now())
   seller      Seller   @relation(fields: [sellerId], references: [id])
 }
