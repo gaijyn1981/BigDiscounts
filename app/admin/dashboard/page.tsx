@@ -23,12 +23,9 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    Promise.all([
-      fetch('/api/admin/stats').then(r => r.json()),
-      fetch('/api/admin/products').then(r => r.json())
-    ]).then(([statsData, productsData]) => {
-      setStats(statsData)
-      setProducts(productsData)
+    fetch('/api/admin/stats').then(r => r.json()).then(data => {
+      setStats(data.stats)
+      setProducts(data.products)
       setLoading(false)
     })
   }, [])
@@ -57,7 +54,6 @@ export default function AdminDashboard() {
       <div className="max-w-6xl mx-auto px-6 py-10">
         <h1 className="text-3xl font-black text-gray-900 mb-8">Admin Overview</h1>
 
-        {/* Stats cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
           <div className="bg-white rounded-2xl shadow-md p-6 border-t-4 border-blue-600">
             <p className="text-gray-400 text-sm uppercase tracking-wide font-semibold">Total Sellers</p>
@@ -77,7 +73,6 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Products table */}
         <div className="bg-white rounded-2xl shadow-md overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
             <h2 className="text-xl font-black text-gray-900">All Products ({stats?.totalProducts})</h2>
