@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/db'
+import ShareButtons from '@/app/components/ShareButtons'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -70,6 +71,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
                     style={{background: '#1e3a8a'}}>
                     ✉️ Contact Seller
                   </a>
+                  <ShareButtons title={product.title} id={product.id} />
                   <a href={`tel:${product.seller.phone}`}
                     className="block w-full text-center bg-yellow-400 text-gray-900 py-3 rounded-xl font-bold text-lg hover:bg-yellow-300 mt-2">
                     📞 Call Seller
