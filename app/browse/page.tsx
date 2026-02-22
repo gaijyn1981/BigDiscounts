@@ -17,6 +17,8 @@ export default function BrowsePage() {
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('')
   const [sort, setSort] = useState('')
+  const [minPrice, setMinPrice] = useState('')
+  const [maxPrice, setMaxPrice] = useState('')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -34,7 +36,9 @@ export default function BrowsePage() {
     .filter(p => {
       const matchSearch = p.title.toLowerCase().includes(search.toLowerCase())
       const matchCategory = !category || p.category === category
-      return matchSearch && matchCategory
+      const matchMin = !minPrice || p.price >= parseFloat(minPrice)
+      const matchMax = !maxPrice || p.price <= parseFloat(maxPrice)
+      return matchSearch && matchCategory && matchMin && matchMax
     })
     .sort((a, b) => {
       if (sort === 'low') return a.price - b.price
@@ -54,7 +58,7 @@ export default function BrowsePage() {
       </nav>
 
       <div className="bg-white border-b border-gray-200 px-6 py-5 shadow-sm">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <h1 className="text-2xl font-black text-gray-900 mb-4">Browse Deals 🔍</h1>
           <div className="flex gap-3 flex-wrap">
             <input type="text" placeholder="Search products..." value={search} onChange={e => setSearch(e.target.value)}
@@ -79,6 +83,18 @@ export default function BrowsePage() {
               <option value="high">Price: High to Low</option>
               <option value="new">Newest First</option>
             </select>
+          </div>
+          <div className="flex gap-3 mt-3 items-center">
+            <span className="text-sm text-gray-500 font-semibold">Price range:</span>
+            <input type="number" placeholder="Min £" value={minPrice} onChange={e => setMinPrice(e.target.value)}
+              className="w-24 px-3 py-2 rounded-xl border border-gray-200 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
+            <span className="text-gray-400">to</span>
+            <input type="number" placeholder="Max £" value={maxPrice} onChange={e => setMaxPrice(e.target.value)}
+              className="w-24 px-3 py-2 rounded-xl border border-gray-200 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
+            {(minPrice || maxPrice) && (
+              <button onClick={() => { setMinPrice(''); setMaxPrice('') }}
+                className="text-sm text-red-500 hover:underline">Clear</button>
+            )}
           </div>
         </div>
       </div>
