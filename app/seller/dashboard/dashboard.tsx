@@ -10,6 +10,7 @@ interface Product {
   price: number
   category: string
   active: boolean
+  stripeSubId: string | null
 }
 
 export default function Dashboard() {
@@ -18,6 +19,7 @@ export default function Dashboard() {
   const searchParams = useSearchParams()
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
+  const [cancelling, setCancelling] = useState<string | null>(null)
 
   const success = searchParams.get('success')
   const cancelled = searchParams.get('cancelled')
@@ -50,6 +52,19 @@ export default function Dashboard() {
     if (data.url) window.location.href = data.url
   }
 
+  async function cancelSubscription(id: string) {
+    if (!confirm('Cancel subscription? Your listing will be deactivated immediately.')) return
+    setCancelling(id)
+    const res = await fetch('/api/stripe/cancel', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ productId: id })
+    })
+    if (res.ok) fetchProducts()
+    else alert('Failed to cancel. Please try again.')
+    setCancelling(null)
+  }
+
   if (status === 'loading' || loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>
 
   return (
@@ -63,7 +78,6 @@ export default function Dashboard() {
       </nav>
 
       <div className="max-w-4xl mx-auto px-6 py-10">
-
         {success && (
           <div className="bg-green-50 border border-green-200 rounded-xl px-6 py-4 mb-6 flex items-center gap-3">
             <span className="text-2xl">🎉</span>
@@ -105,10 +119,17 @@ export default function Dashboard() {
                     {product.active ? 'Active' : 'Pending payment'}
                   </span>
                 </div>
-                <div className="flex gap-3 items-center">
+                <div className="flex gap-3 items-center flex-wrap justify-end">
                   {!product.active && (
                     <button onClick={() => activateProduct(product.id)} className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700">
                       Activate £1/mo
+                    </button>
+                  )}
+                  {product.active && product.stripeSubId && (
+                    <button onClick={() => cancelSubscription(product.id)}
+                      disabled={cancelling === product.id}
+                      className="bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-lg text-sm hover:bg-red-100 disabled:opacity-50">
+                      {cancelling === product.id ? 'Cancelling...' : 'Cancel Subscription'}
                     </button>
                   )}
                   <Link href={`/seller/products/${product.id}/edit`} className="text-blue-600 hover:underline">Edit</Link>
