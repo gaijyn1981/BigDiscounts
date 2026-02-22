@@ -92,6 +92,12 @@ export default function Home() {
         <p className="text-blue-200 mb-6">Join hundreds of UK sellers already on BigDiscounts</p>
         <Link href="/register?role=seller" className="bg-yellow-400 text-gray-900 px-10 py-4 rounded-xl text-lg font-bold hover:bg-yellow-300">Get Started for £1 →</Link>
       </div>
+      <footer style={{background: "#0f2460"}} className="py-6 text-center text-blue-300 text-sm">
+        <Link href="/privacy" className="hover:text-white mx-3">Privacy Policy</Link>
+        <span className="text-blue-600">·</span>
+        <Link href="/terms" className="hover:text-white mx-3">Terms &amp; Conditions</Link>
+        <p className="mt-2 text-blue-400">© 2026 BigDiscounts. All rights reserved.</p>
+      </footer>
     </main>
   )
 }
