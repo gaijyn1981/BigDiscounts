@@ -36,7 +36,28 @@ export default function Terms() {
               </ul>
             </section>
             <section>
-              <h2 className="text-xl font-bold text-gray-900 mb-2">4. Prohibited Content</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-2">4. Payments via PayPal</h2>
+              <p>Some sellers may offer a PayPal payment option on their listings. Please note:</p>
+              <ul className="list-disc pl-6 mt-2 space-y-1">
+                <li>PayPal payments are made directly between buyer and seller</li>
+                <li>BigDiscounts is not a party to any PayPal transaction</li>
+                <li>BigDiscounts is not responsible for PayPal disputes, refunds, or chargebacks</li>
+                <li>Any disputes must be resolved directly between buyer and seller, or through PayPal's resolution centre</li>
+                <li>BigDiscounts does not store or process any payment information</li>
+              </ul>
+            </section>
+            <section>
+              <h2 className="text-xl font-bold text-gray-900 mb-2">5. Returns & Refunds</h2>
+              <p>Under the UK Consumer Contracts Regulations 2013, buyers have the right to cancel an online purchase within 14 days of receiving goods. Sellers are responsible for:</p>
+              <ul className="list-disc pl-6 mt-2 space-y-1">
+                <li>Accepting returns within 14 days for any reason</li>
+                <li>Refunding the buyer within 14 days of receiving the returned goods</li>
+                <li>Covering return postage costs if the item is faulty or not as described</li>
+              </ul>
+              <p className="mt-2">BigDiscounts is not responsible for enforcing returns or refunds between buyers and sellers.</p>
+            </section>
+            <section>
+              <h2 className="text-xl font-bold text-gray-900 mb-2">6. Prohibited Content</h2>
               <ul className="list-disc pl-6 space-y-1">
                 <li>Illegal products or services</li>
                 <li>Counterfeit or stolen goods</li>
@@ -46,19 +67,19 @@ export default function Terms() {
               </ul>
             </section>
             <section>
-              <h2 className="text-xl font-bold text-gray-900 mb-2">5. Payments & Refunds</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-2">7. Subscription Payments</h2>
               <p>Subscription fees of £1/month are non-refundable. Cancelling deactivates the listing at the end of the billing period. Payments handled by Stripe.</p>
             </section>
             <section>
-              <h2 className="text-xl font-bold text-gray-900 mb-2">6. Limitation of Liability</h2>
-              <p>BigDiscounts is a platform only. We are not responsible for the quality, safety, or legality of listed products, or disputes between buyers and sellers.</p>
+              <h2 className="text-xl font-bold text-gray-900 mb-2">8. Limitation of Liability</h2>
+              <p>BigDiscounts is a platform only. We are not responsible for the quality, safety, or legality of listed products, PayPal transactions, or disputes between buyers and sellers.</p>
             </section>
             <section>
-              <h2 className="text-xl font-bold text-gray-900 mb-2">7. Governing Law</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-2">9. Governing Law</h2>
               <p>These terms are governed by the laws of England and Wales.</p>
             </section>
             <section>
-              <h2 className="text-xl font-bold text-gray-900 mb-2">8. Contact</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-2">10. Contact</h2>
               <p>Email: <a href="mailto:legal@bigdiscounts.uk" className="text-blue-600 hover:underline">legal@bigdiscounts.uk</a></p>
             </section>
           </div>
@@ -67,6 +88,8 @@ export default function Terms() {
       <footer style={{background: '#1e3a8a'}} className="py-6 text-center text-blue-200 text-sm">
         <Link href="/privacy" className="hover:text-white mx-3">Privacy Policy</Link>
         <Link href="/terms" className="hover:text-white mx-3">Terms & Conditions</Link>
+        <Link href="/cookies" className="hover:text-white mx-3">Cookie Policy</Link>
+        <Link href="/data-request" className="hover:text-white mx-3">Data Request</Link>
       </footer>
     </main>
   )
