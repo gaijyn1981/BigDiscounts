@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ShareButtons from '@/app/components/ShareButtons'
 import FavouriteButton from '@/app/components/FavouriteButton'
+import ReportButton from '@/app/components/ReportButton'
 import type { Metadata } from 'next'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -108,6 +109,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                   </a>
                   <FavouriteButton productId={product.id} />
                   <ShareButtons title={product.title} id={product.id} />
+                  <ReportButton productId={product.id} />
                 </div>
               </div>
             </div>

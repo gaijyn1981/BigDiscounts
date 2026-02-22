@@ -17,15 +17,24 @@ interface Product {
   seller: { companyName: string, email: string }
 }
 
+interface Report {
+  id: string
+  productId: string
+  reason: string
+  createdAt: string
+}
+
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null)
   const [products, setProducts] = useState<Product[]>([])
+  const [reports, setReports] = useState<Report[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     fetch('/api/admin/stats').then(r => r.json()).then(data => {
       setStats(data.stats)
       setProducts(data.products)
+      setReports(data.reports || [])
       setLoading(false)
     })
   }, [])
@@ -72,6 +81,30 @@ export default function AdminDashboard() {
             <p className="text-4xl font-black text-gray-900 mt-2">£{monthlyRevenue}</p>
           </div>
         </div>
+
+        {reports.length > 0 && (
+          <div className="bg-white rounded-2xl shadow-md overflow-hidden mb-8">
+            <div className="px-6 py-4 border-b border-gray-100 bg-red-50">
+              <h2 className="text-xl font-black text-red-800">🚩 Reports ({reports.length})</h2>
+            </div>
+            <div className="divide-y">
+              {reports.map(report => (
+                <div key={report.id} className="px-6 py-4 flex justify-between items-center">
+                  <div>
+                    <p className="font-semibold text-gray-900">{report.reason}</p>
+                    <p className="text-sm text-gray-400">Product ID: {report.productId}</p>
+                  </div>
+                  <div className="flex gap-3">
+                    <Link href={`/product/${report.productId}`} target="_blank"
+                      className="text-blue-600 text-sm hover:underline">View</Link>
+                    <button onClick={() => deleteProduct(report.productId)}
+                      className="text-red-500 text-sm hover:underline">Delete Product</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="bg-white rounded-2xl shadow-md overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
