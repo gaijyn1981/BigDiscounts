@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
 
 interface Product {
@@ -14,6 +15,7 @@ interface Product {
 }
 
 export default function BrowsePage() {
+  const { data: session } = useSession()
   const [products, setProducts] = useState<Product[]>([])
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('')
@@ -56,8 +58,24 @@ export default function BrowsePage() {
         <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
         <div className="flex gap-4 items-center">
           <Link href="/buyer/favourites" className="text-gray-400 hover:text-white transition-colors">❤️ Saved</Link>
-          <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
-          <Link href="/register" style={{background: '#f59e0b'}} className="text-black px-5 py-2 rounded-lg font-bold hover:opacity-90">Sign Up</Link>
+          {session ? (
+            <>
+              <Link href={session.user && (session.user as any).role === 'seller' ? '/seller/dashboard' : '/buyer/dashboard'}
+                className="text-gray-400 hover:text-white transition-colors text-sm">
+                Hi, {session.user?.name?.split(' ')[0]}
+              </Link>
+              <button onClick={() => signOut({ callbackUrl: '/' })}
+                className="text-sm font-bold px-4 py-2 rounded-lg transition-opacity hover:opacity-80"
+                style={{background: '#1a1a1a', color: '#f87171', border: '1px solid #f87171'}}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
+              <Link href="/register" style={{background: '#f59e0b'}} className="text-black px-5 py-2 rounded-lg font-bold hover:opacity-90">Sign Up</Link>
+            </>
+          )}
         </div>
       </nav>
 
@@ -66,7 +84,7 @@ export default function BrowsePage() {
           <h1 className="text-2xl font-black text-white mb-4">Browse Deals 🔍</h1>
           <div className="flex gap-3 flex-wrap">
             <input type="text" placeholder="Search products..." value={search} onChange={e => setSearch(e.target.value)}
-              className="flex-1 px-5 py-3 rounded-xl text-white focus:outline-none focus:ring-2 min-w-48"
+              className="flex-1 px-5 py-3 rounded-xl text-white focus:outline-none min-w-48"
               style={{background: '#1a1a1a', border: '1px solid #333'}} />
             <select value={category} onChange={e => setCategory(e.target.value)}
               className="px-4 py-3 rounded-xl text-white focus:outline-none"
