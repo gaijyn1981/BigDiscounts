@@ -53,7 +53,7 @@ export default function FavouritesPage() {
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
         <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
-        <Link href="/browse" className="text-gray-400 hover:text-white transition-colors">← Back to Browse</Link>
+        <Link href="/buyer/dashboard" className="text-gray-400 hover:text-white transition-colors">← Back to Dashboard</Link>
       </nav>
 
       <div className="max-w-4xl mx-auto px-6 py-10">

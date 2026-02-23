@@ -29,7 +29,7 @@ export default function LoginPage() {
       if (profileRes.ok) {
         router.push('/seller/dashboard')
       } else {
-        router.push('/buyer/favourites')
+        router.push("/buyer/dashboard")
       }
     }
   }
