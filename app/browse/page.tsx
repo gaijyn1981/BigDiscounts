@@ -51,24 +51,26 @@ export default function BrowsePage() {
     })
 
   return (
-    <main className="min-h-screen" style={{background: '#f0f4ff'}}>
-      <nav style={{background: '#1e3a8a'}} className="px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-white">🇬🇧 BigDiscounts</Link>
+    <main className="min-h-screen" style={{background: '#0a0a0a'}}>
+      <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+        <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
         <div className="flex gap-4 items-center">
-          <Link href="/buyer/favourites" className="text-blue-200 hover:text-white">❤️ Saved</Link>
-          <Link href="/login" className="text-blue-200 hover:text-white">Login</Link>
-          <Link href="/register" className="bg-yellow-400 text-gray-900 px-4 py-2 rounded-lg font-semibold hover:bg-yellow-300">Sign Up</Link>
+          <Link href="/buyer/favourites" className="text-gray-400 hover:text-white transition-colors">❤️ Saved</Link>
+          <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
+          <Link href="/register" style={{background: '#f59e0b'}} className="text-black px-5 py-2 rounded-lg font-bold hover:opacity-90">Sign Up</Link>
         </div>
       </nav>
 
-      <div className="bg-white border-b border-gray-200 px-6 py-5 shadow-sm">
+      <div className="px-6 py-6" style={{background: '#111111', borderBottom: '1px solid #1a1a1a'}}>
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-2xl font-black text-gray-900 mb-4">Browse Deals 🔍</h1>
+          <h1 className="text-2xl font-black text-white mb-4">Browse Deals 🔍</h1>
           <div className="flex gap-3 flex-wrap">
             <input type="text" placeholder="Search products..." value={search} onChange={e => setSearch(e.target.value)}
-              className="flex-1 px-5 py-3 rounded-xl border border-gray-200 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base min-w-48" />
+              className="flex-1 px-5 py-3 rounded-xl text-white focus:outline-none focus:ring-2 min-w-48"
+              style={{background: '#1a1a1a', border: '1px solid #333', focusRingColor: '#f59e0b'}} />
             <select value={category} onChange={e => setCategory(e.target.value)}
-              className="px-4 py-3 rounded-xl border border-gray-200 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              className="px-4 py-3 rounded-xl text-white focus:outline-none"
+              style={{background: '#1a1a1a', border: '1px solid #333'}}>
               <option value="">All Categories</option>
               <option value="Electronics">Electronics</option>
               <option value="Clothing">Clothing</option>
@@ -81,7 +83,8 @@ export default function BrowsePage() {
               <option value="Other">Other</option>
             </select>
             <select value={sort} onChange={e => setSort(e.target.value)}
-              className="px-4 py-3 rounded-xl border border-gray-200 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              className="px-4 py-3 rounded-xl text-white focus:outline-none"
+              style={{background: '#1a1a1a', border: '1px solid #333'}}>
               <option value="">Sort by</option>
               <option value="low">Price: Low to High</option>
               <option value="high">Price: High to Low</option>
@@ -89,15 +92,17 @@ export default function BrowsePage() {
             </select>
           </div>
           <div className="flex gap-3 mt-3 items-center">
-            <span className="text-sm text-gray-500 font-semibold">Price range:</span>
+            <span className="text-sm font-semibold" style={{color: '#f59e0b'}}>Price range:</span>
             <input type="number" placeholder="Min £" value={minPrice} onChange={e => setMinPrice(e.target.value)}
-              className="w-24 px-3 py-2 rounded-xl border border-gray-200 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
-            <span className="text-gray-400">to</span>
+              className="w-24 px-3 py-2 rounded-xl text-white text-sm focus:outline-none"
+              style={{background: '#1a1a1a', border: '1px solid #333'}} />
+            <span className="text-gray-600">to</span>
             <input type="number" placeholder="Max £" value={maxPrice} onChange={e => setMaxPrice(e.target.value)}
-              className="w-24 px-3 py-2 rounded-xl border border-gray-200 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
+              className="w-24 px-3 py-2 rounded-xl text-white text-sm focus:outline-none"
+              style={{background: '#1a1a1a', border: '1px solid #333'}} />
             {(minPrice || maxPrice) && (
               <button onClick={() => { setMinPrice(''); setMaxPrice('') }}
-                className="text-sm text-red-500 hover:underline">Clear</button>
+                className="text-sm text-red-400 hover:text-red-300">Clear</button>
             )}
           </div>
         </div>
@@ -110,7 +115,7 @@ export default function BrowsePage() {
           <div className="text-center py-20">
             <div className="text-5xl mb-4">🔍</div>
             <p className="text-gray-500 text-lg">No products found.</p>
-            <p className="text-gray-400 text-sm mt-2">Try a different search or category</p>
+            <p className="text-gray-600 text-sm mt-2">Try a different search or category</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -119,9 +124,11 @@ export default function BrowsePage() {
               const photo = photos[0]
               return (
                 <Link key={product.id} href={`/product/${product.id}`}
-                  className={`bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow overflow-hidden group relative ${product.featured ? 'ring-2 ring-yellow-400' : ''}`}>
+                  className="rounded-2xl overflow-hidden group hover:transform hover:scale-105 transition-all duration-200 relative"
+                  style={{background: '#111111', border: product.featured ? '2px solid #f59e0b' : '1px solid #222'}}>
                   {product.featured && (
-                    <div className="absolute top-3 left-3 z-10 bg-yellow-400 text-gray-900 text-xs font-black px-2 py-1 rounded-full">
+                    <div className="absolute top-3 left-3 z-10 text-black text-xs font-black px-2 py-1 rounded-full"
+                      style={{background: '#f59e0b'}}>
                       ⭐ Featured
                     </div>
                   )}
@@ -130,18 +137,17 @@ export default function BrowsePage() {
                       🆕 New
                     </div>
                   )}
-                  <div className="h-48 flex items-center justify-center overflow-hidden" style={{background: '#f0f4ff'}}>
+                  <div className="h-48 flex items-center justify-center overflow-hidden" style={{background: '#1a1a1a'}}>
                     {photo ? (
-                      <img src={photo} alt={product.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                      <img src={photo} alt={product.title} className="w-full h-full object-cover" />
                     ) : (
                       <span className="text-6xl">📦</span>
                     )}
                   </div>
                   <div className="p-4">
-                    <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-full">{product.category || 'General'}</span>
-                    <h3 className="font-bold text-gray-900 mt-2 mb-1 truncate">{product.title}</h3>
-                    <p className="text-sm text-gray-500 mb-2">{product.seller?.companyName}</p>
-                    <p className="text-2xl font-black text-blue-700">£{product.price.toFixed(2)}</p>
+                    <h3 className="font-bold text-white mt-1 mb-1 truncate">{product.title}</h3>
+                    <p className="text-gray-500 text-sm mb-2">{product.seller?.companyName}</p>
+                    <p className="text-2xl font-black" style={{color: '#f59e0b'}}>£{product.price.toFixed(2)}</p>
                   </div>
                 </Link>
               )
