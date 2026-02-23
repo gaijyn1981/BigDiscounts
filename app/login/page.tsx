@@ -39,13 +39,13 @@ export default function LoginPage() {
             <div>
               <label className="block text-sm font-semibold text-gray-400 mb-1">Email</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)} required
-                className="w-full px-4 py-3 rounded-xl text-white focus:outline-none focus:ring-2"
+                className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
                 style={{background: '#1a1a1a', border: '1px solid #333'}} />
             </div>
             <div>
               <label className="block text-sm font-semibold text-gray-400 mb-1">Password</label>
               <input type="password" value={password} onChange={e => setPassword(e.target.value)} required
-                className="w-full px-4 py-3 rounded-xl text-white focus:outline-none focus:ring-2"
+                className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
                 style={{background: '#1a1a1a', border: '1px solid #333'}} />
             </div>
             {error && <p className="text-red-400 text-sm">{error}</p>}
@@ -55,10 +55,22 @@ export default function LoginPage() {
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
-          <p className="text-center text-gray-500 mt-6 text-sm">
-            Don't have an account?{' '}
-            <Link href="/register" style={{color: '#f59e0b'}} className="font-bold hover:opacity-80">Register here</Link>
-          </p>
+
+          <div className="mt-8 pt-6" style={{borderTop: '1px solid #222'}}>
+            <p className="text-center text-gray-500 text-sm mb-4">Don't have an account?</p>
+            <div className="grid grid-cols-2 gap-3">
+              <Link href="/register?type=seller"
+                className="py-3 rounded-xl font-bold text-sm text-black text-center transition-opacity hover:opacity-90"
+                style={{background: '#f59e0b'}}>
+                Register as Seller
+              </Link>
+              <Link href="/register?type=buyer"
+                className="py-3 rounded-xl font-bold text-sm text-white text-center transition-opacity hover:opacity-80"
+                style={{background: '#1a1a1a', border: '1px solid #333'}}>
+                Register as Buyer
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </main>
