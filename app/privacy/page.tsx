@@ -14,7 +14,7 @@ export default function Privacy() {
           <div className="space-y-6 text-gray-400 leading-relaxed">
             <section>
               <h2 className="text-xl font-black text-white mb-2">1. Who We Are</h2>
-              <p>BigDiscounts is operated by Petrica Marin, a sole trader based in Gloucester, UK. Contact: petricamarin1981@icloud.com</p>
+              <p>BigDiscounts is operated by Petrica Marin, a sole trader based in Gloucester, UK. Contact: hello@bigdiscounts.uk</p>
             </section>
             <section>
               <h2 className="text-xl font-black text-white mb-2">2. Data We Collect</h2>

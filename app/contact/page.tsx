@@ -12,7 +12,7 @@ export default function ContactPage() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    window.location.href = `mailto:petricamarin1981@icloud.com?subject=${encodeURIComponent(form.subject)}&body=${encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`)}`
+    window.location.href = `mailto:hello@bigdiscounts.uk?subject=${encodeURIComponent(form.subject)}&body=${encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`)}`
     setSubmitted(true)
   }
 
@@ -87,7 +87,7 @@ export default function ContactPage() {
             <div className="rounded-xl p-4" style={{background: '#1a1a1a'}}>
               <p className="text-2xl mb-1">✉️</p>
               <p className="text-sm font-semibold text-white">Email</p>
-              <a href="mailto:petricamarin1981@icloud.com" style={{color: '#f59e0b'}} className="text-sm hover:opacity-80">petricamarin1981@icloud.com</a>
+              <a href="mailto:hello@bigdiscounts.uk" style={{color: '#f59e0b'}} className="text-sm hover:opacity-80">hello@bigdiscounts.uk</a>
             </div>
             <div className="rounded-xl p-4" style={{background: '#1a1a1a'}}>
               <p className="text-2xl mb-1">⏰</p>

@@ -47,7 +47,7 @@ export default function AboutPage() {
             <h2 className="text-2xl font-black text-white mb-4">Who We Are</h2>
             <p className="text-gray-400 leading-relaxed mb-6">BigDiscounts is run by Petrica Marin, a sole trader based in Gloucester, UK. We're passionate about supporting UK small businesses and helping buyers find great deals.</p>
             <div className="flex gap-4 flex-wrap">
-              <a href="mailto:petricamarin1981@icloud.com"
+              <a href="mailto:hello@bigdiscounts.uk"
                 className="px-6 py-3 rounded-xl font-bold text-black transition-opacity hover:opacity-90"
                 style={{background: '#f59e0b'}}>
                 ✉️ Get in Touch
