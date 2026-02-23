@@ -17,6 +17,7 @@ model Seller {
   phone            String
   paypalMe         String?
   stripeCustomerId String?
+  verified         Boolean  @default(false)
   createdAt        DateTime  @default(now())
   products         Product[]
 }

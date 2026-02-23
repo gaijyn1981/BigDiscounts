@@ -89,7 +89,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <div className="border-t pt-6">
                 <p className="text-sm text-gray-400 uppercase tracking-wide font-semibold mb-3">Sold by</p>
                 <div className="bg-blue-50 rounded-xl p-4">
-                  <p className="font-bold text-gray-900 text-lg">{product.seller.companyName}</p>
+                  <div className="flex items-center gap-2 mb-1">
+                    <p className="font-bold text-gray-900 text-lg">{product.seller.companyName}</p>
+                    {product.seller.verified && (
+                      <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-full">✅ Verified</span>
+                    )}
+                  </div>
                   <p className="text-gray-500 text-sm mb-3">{product.seller.contactName}</p>
                   {product.seller.paypalMe && (
                     <a href={`https://paypal.me/${product.seller.paypalMe}/${product.price}`}

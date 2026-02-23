@@ -24,17 +24,33 @@ interface Report {
   createdAt: string
 }
 
+interface Seller {
+  id: string
+  email: string
+  companyName: string
+  contactName: string
+  phone: string
+  verified: boolean
+  _count: { products: number }
+}
+
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null)
   const [products, setProducts] = useState<Product[]>([])
   const [reports, setReports] = useState<Report[]>([])
+  const [sellers, setSellers] = useState<Seller[]>([])
   const [loading, setLoading] = useState(true)
+  const [tab, setTab] = useState<'products' | 'sellers'>('products')
 
   useEffect(() => {
-    fetch('/api/admin/stats').then(r => r.json()).then(data => {
-      setStats(data.stats)
-      setProducts(data.products)
-      setReports(data.reports || [])
+    Promise.all([
+      fetch('/api/admin/stats').then(r => r.json()),
+      fetch('/api/admin/sellers').then(r => r.json())
+    ]).then(([statsData, sellersData]) => {
+      setStats(statsData.stats)
+      setProducts(statsData.products)
+      setReports(statsData.reports || [])
+      setSellers(sellersData)
       setLoading(false)
     })
   }, [])
@@ -43,6 +59,15 @@ export default function AdminDashboard() {
     if (!confirm('Delete this product?')) return
     await fetch(`/api/admin/products/${id}`, { method: 'DELETE' })
     setProducts(products.filter(p => p.id !== id))
+  }
+
+  async function toggleVerified(id: string, verified: boolean) {
+    await fetch(`/api/admin/sellers/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ verified: !verified })
+    })
+    setSellers(sellers.map(s => s.id === id ? { ...s, verified: !verified } : s))
   }
 
   if (loading) return (
@@ -106,48 +131,109 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        <div className="bg-white rounded-2xl shadow-md overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-            <h2 className="text-xl font-black text-gray-900">All Products ({stats?.totalProducts})</h2>
-            <span className="text-sm text-gray-400">{stats?.activeProducts} active · {(stats?.totalProducts || 0) - (stats?.activeProducts || 0)} pending</span>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead style={{background: '#f0f4ff'}}>
-                <tr>
-                  <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Product</th>
-                  <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Seller</th>
-                  <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Price</th>
-                  <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Status</th>
-                  <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {products.map((product, i) => (
-                  <tr key={product.id} style={{background: i % 2 === 0 ? 'white' : '#f9fafb'}}>
-                    <td className="px-6 py-4 font-semibold text-gray-900">{product.title}</td>
-                    <td className="px-6 py-4">
-                      <p className="font-semibold text-gray-900">{product.seller.companyName}</p>
-                      <p className="text-sm text-gray-400">{product.seller.email}</p>
-                    </td>
-                    <td className="px-6 py-4 font-bold text-blue-700">£{product.price.toFixed(2)}</td>
-                    <td className="px-6 py-4">
-                      <span className={`text-xs font-bold px-3 py-1 rounded-full ${product.active ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                        {product.active ? 'Active' : 'Pending'}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <button onClick={() => deleteProduct(product.id)}
-                        className="text-red-500 hover:text-red-700 font-semibold text-sm">
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        {/* Tabs */}
+        <div className="flex gap-2 mb-6">
+          <button onClick={() => setTab('products')}
+            className={`px-6 py-3 rounded-xl font-bold text-sm ${tab === 'products' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}>
+            Products ({stats?.totalProducts})
+          </button>
+          <button onClick={() => setTab('sellers')}
+            className={`px-6 py-3 rounded-xl font-bold text-sm ${tab === 'sellers' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}>
+            Sellers ({stats?.totalSellers})
+          </button>
         </div>
+
+        {tab === 'products' && (
+          <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+              <h2 className="text-xl font-black text-gray-900">All Products</h2>
+              <span className="text-sm text-gray-400">{stats?.activeProducts} active · {(stats?.totalProducts || 0) - (stats?.activeProducts || 0)} pending</span>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead style={{background: '#f0f4ff'}}>
+                  <tr>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Product</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Seller</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Price</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Status</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {products.map((product, i) => (
+                    <tr key={product.id} style={{background: i % 2 === 0 ? 'white' : '#f9fafb'}}>
+                      <td className="px-6 py-4 font-semibold text-gray-900">{product.title}</td>
+                      <td className="px-6 py-4">
+                        <p className="font-semibold text-gray-900">{product.seller.companyName}</p>
+                        <p className="text-sm text-gray-400">{product.seller.email}</p>
+                      </td>
+                      <td className="px-6 py-4 font-bold text-blue-700">£{product.price.toFixed(2)}</td>
+                      <td className="px-6 py-4">
+                        <span className={`text-xs font-bold px-3 py-1 rounded-full ${product.active ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                          {product.active ? 'Active' : 'Pending'}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <button onClick={() => deleteProduct(product.id)}
+                          className="text-red-500 hover:text-red-700 font-semibold text-sm">
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {tab === 'sellers' && (
+          <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-100">
+              <h2 className="text-xl font-black text-gray-900">All Sellers</h2>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead style={{background: '#f0f4ff'}}>
+                  <tr>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Company</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Contact</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Listings</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Status</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sellers.map((seller, i) => (
+                    <tr key={seller.id} style={{background: i % 2 === 0 ? 'white' : '#f9fafb'}}>
+                      <td className="px-6 py-4">
+                        <p className="font-semibold text-gray-900">{seller.companyName}</p>
+                        <p className="text-sm text-gray-400">{seller.email}</p>
+                      </td>
+                      <td className="px-6 py-4">
+                        <p className="text-gray-700">{seller.contactName}</p>
+                        <p className="text-sm text-gray-400">{seller.phone}</p>
+                      </td>
+                      <td className="px-6 py-4 font-bold text-gray-900">{seller._count.products}</td>
+                      <td className="px-6 py-4">
+                        <span className={`text-xs font-bold px-3 py-1 rounded-full ${seller.verified ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                          {seller.verified ? '✅ Verified' : 'Unverified'}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <button onClick={() => toggleVerified(seller.id, seller.verified)}
+                          className={`text-sm font-semibold ${seller.verified ? 'text-red-500 hover:text-red-700' : 'text-green-600 hover:text-green-800'}`}>
+                          {seller.verified ? 'Unverify' : 'Verify'}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   )
