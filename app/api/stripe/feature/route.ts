@@ -21,8 +21,22 @@ export async function POST(req: Request) {
 
     if (!product) return NextResponse.json({ error: 'Product not found' }, { status: 404 })
 
+    let customerId = seller.stripeCustomerId
+    if (!customerId) {
+      const customer = await stripe.customers.create({
+        email: seller.email,
+        name: seller.companyName,
+      })
+      customerId = customer.id
+      await prisma.seller.update({
+        where: { id: seller.id },
+        data: { stripeCustomerId: customerId }
+      })
+    }
+
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'subscription',
+      customer: customerId,
       payment_method_types: ['card'],
       line_items: [{
         price: process.env.STRIPE_FEATURED_PRICE_ID,
