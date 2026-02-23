@@ -42,16 +42,16 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const photos = JSON.parse(product.photos || '[]')
 
   return (
-    <main className="min-h-screen" style={{background: '#f0f4ff'}}>
-      <nav style={{background: '#1e3a8a'}} className="px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-white">🇬🇧 BigDiscounts</Link>
-        <Link href="/browse" className="text-blue-200 hover:text-white">← Back to Browse</Link>
+    <main className="min-h-screen" style={{background: '#0a0a0a'}}>
+      <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+        <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
+        <Link href="/browse" className="text-gray-400 hover:text-white transition-colors">← Back to Browse</Link>
       </nav>
 
       <div className="max-w-5xl mx-auto px-6 py-10">
-        <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+        <div className="rounded-2xl overflow-hidden" style={{background: '#111111', border: '1px solid #222'}}>
           <div className="grid md:grid-cols-2 gap-0">
-            <div className="p-6" style={{background: '#f0f4ff'}}>
+            <div className="p-6" style={{background: '#1a1a1a'}}>
               {photos.length > 0 ? (
                 <div className="space-y-3">
                   <img src={photos[0]} alt={product.title}
@@ -67,7 +67,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 </div>
               ) : (
                 <div className="w-full h-72 rounded-xl flex items-center justify-center text-8xl"
-                  style={{background: '#e0e8ff'}}>
+                  style={{background: '#222'}}>
                   📦
                 </div>
               )}
@@ -76,40 +76,46 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <div className="p-8 flex flex-col justify-between">
               <div>
                 {product.category && (
-                  <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                  <span className="text-xs font-semibold px-3 py-1 rounded-full"
+                    style={{background: '#1a1400', color: '#f59e0b', border: '1px solid #f59e0b'}}>
                     {product.category}
                   </span>
                 )}
-                <h1 className="text-3xl font-black text-gray-900 mt-3 mb-2">{product.title}</h1>
-                <p className="text-4xl font-black mb-4" style={{color: '#1e3a8a'}}>£{product.price.toFixed(2)}</p>
-                <p className="text-sm text-gray-400 mb-4">👁️ {product.views} views</p>
-                <p className="text-gray-600 leading-relaxed mb-4">{product.description}</p>
+                <h1 className="text-3xl font-black text-white mt-3 mb-2">{product.title}</h1>
+                <p className="text-4xl font-black mb-4" style={{color: '#f59e0b'}}>£{product.price.toFixed(2)}</p>
+                <p className="text-sm text-gray-600 mb-4">👁️ {product.views} views</p>
+                <p className="text-gray-400 leading-relaxed mb-4">{product.description}</p>
               </div>
 
-              <div className="border-t pt-6">
-                <p className="text-sm text-gray-400 uppercase tracking-wide font-semibold mb-3">Sold by</p>
-                <div className="bg-blue-50 rounded-xl p-4">
+              <div style={{borderTop: '1px solid #222'}} className="pt-6">
+                <p className="text-xs text-gray-600 uppercase tracking-wide font-semibold mb-3">Sold by</p>
+                <div className="rounded-xl p-4" style={{background: '#1a1a1a', border: '1px solid #2a2a2a'}}>
                   <div className="flex items-center gap-2 mb-1">
-                    <p className="font-bold text-gray-900 text-lg">{product.seller.companyName}</p>
+                    <p className="font-bold text-white text-lg">{product.seller.companyName}</p>
                     {product.seller.verified && (
-                      <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-full">✅ Verified</span>
+                      <span className="text-xs font-bold px-2 py-1 rounded-full"
+                        style={{background: '#0a1a0a', color: '#4ade80', border: '1px solid #4ade80'}}>
+                        ✅ Verified
+                      </span>
                     )}
                   </div>
-                  <p className="text-gray-500 text-sm mb-3">{product.seller.contactName}</p>
+                  <p className="text-gray-500 text-sm mb-4">{product.seller.contactName}</p>
                   {product.seller.paypalMe && (
                     <a href={`https://paypal.me/${product.seller.paypalMe}/${product.price}`}
                       target="_blank" rel="noopener noreferrer"
-                      className="block w-full text-center bg-blue-500 text-white py-3 rounded-xl font-bold text-lg hover:bg-blue-600 mb-2">
+                      className="block w-full text-center py-3 rounded-xl font-bold text-lg mb-2 transition-opacity hover:opacity-90"
+                      style={{background: '#003087', color: 'white'}}>
                       💳 Buy Now via PayPal
                     </a>
                   )}
                   <a href={`mailto:${product.seller.email}`}
-                    className="block w-full text-center text-white py-3 rounded-xl font-bold text-lg hover:opacity-90"
-                    style={{background: '#1e3a8a'}}>
+                    className="block w-full text-center py-3 rounded-xl font-bold text-lg mb-2 transition-opacity hover:opacity-90"
+                    style={{background: '#f59e0b', color: 'black'}}>
                     ✉️ Contact Seller
                   </a>
                   <a href={`tel:${product.seller.phone}`}
-                    className="block w-full text-center bg-yellow-400 text-gray-900 py-3 rounded-xl font-bold text-lg hover:bg-yellow-300 mt-2">
+                    className="block w-full text-center py-3 rounded-xl font-bold text-lg transition-opacity hover:opacity-90"
+                    style={{background: '#1a1a1a', color: 'white', border: '1px solid #333'}}>
                     📞 Call Seller
                   </a>
                   <FavouriteButton productId={product.id} />
