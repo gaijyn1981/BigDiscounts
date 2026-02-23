@@ -15,14 +15,22 @@ export default function LoginPage() {
     e.preventDefault()
     setLoading(true)
     setError('')
+
     const res = await signIn('credentials', {
       email, password, redirect: false
     })
+
     if (res?.error) {
       setError('Invalid email or password')
       setLoading(false)
     } else {
-      router.push('/seller/dashboard')
+      // Check if seller or buyer and redirect accordingly
+      const profileRes = await fetch('/api/seller/profile')
+      if (profileRes.ok) {
+        router.push('/seller/dashboard')
+      } else {
+        router.push('/buyer/favourites')
+      }
     }
   }
 
@@ -34,7 +42,8 @@ export default function LoginPage() {
           <p className="text-gray-500 mt-2">Sign in to your account</p>
         </div>
         <div className="rounded-2xl p-8" style={{background: '#111111', border: '1px solid #222'}}>
-          <h1 className="text-2xl font-black text-white mb-6">Welcome Back</h1>
+          <h1 className="text-2xl font-black text-white mb-2">Welcome Back</h1>
+          <p className="text-gray-500 text-sm mb-6">Sign in as a seller or buyer — we'll take you to the right place.</p>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-semibold text-gray-400 mb-1">Email</label>
