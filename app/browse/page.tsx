@@ -67,7 +67,7 @@ export default function BrowsePage() {
           <div className="flex gap-3 flex-wrap">
             <input type="text" placeholder="Search products..." value={search} onChange={e => setSearch(e.target.value)}
               className="flex-1 px-5 py-3 rounded-xl text-white focus:outline-none focus:ring-2 min-w-48"
-              style={{background: '#1a1a1a', border: '1px solid #333', focusRingColor: '#f59e0b'}} />
+              style={{background: '#1a1a1a', border: '1px solid #333'}} />
             <select value={category} onChange={e => setCategory(e.target.value)}
               className="px-4 py-3 rounded-xl text-white focus:outline-none"
               style={{background: '#1a1a1a', border: '1px solid #333'}}>
