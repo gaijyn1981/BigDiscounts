@@ -14,6 +14,7 @@ interface Product {
   title: string
   price: number
   active: boolean
+  featured: boolean
   seller: { companyName: string, email: string }
 }
 
@@ -71,59 +72,59 @@ export default function AdminDashboard() {
   }
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center" style={{background: '#f0f4ff'}}>
-      <p className="text-gray-500 text-lg">Loading...</p>
+    <div className="min-h-screen flex items-center justify-center" style={{background: '#0a0a0a'}}>
+      <p style={{color: '#f59e0b'}} className="text-lg font-bold">Loading...</p>
     </div>
   )
 
   const monthlyRevenue = (stats?.activeProducts || 0) * 1
 
   return (
-    <main className="min-h-screen" style={{background: '#f0f4ff'}}>
-      <nav style={{background: '#1e3a8a'}} className="px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-white">🇬🇧 BigDiscounts</Link>
-        <span className="text-blue-200 font-semibold">Admin Dashboard</span>
+    <main className="min-h-screen" style={{background: '#0a0a0a'}}>
+      <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+        <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
+        <span className="text-gray-400 font-semibold">Admin Dashboard</span>
       </nav>
 
       <div className="max-w-6xl mx-auto px-6 py-10">
-        <h1 className="text-3xl font-black text-gray-900 mb-8">Admin Overview</h1>
+        <h1 className="text-3xl font-black text-white mb-8">Admin Overview</h1>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
-          <div className="bg-white rounded-2xl shadow-md p-6 border-t-4 border-blue-600">
-            <p className="text-gray-400 text-sm uppercase tracking-wide font-semibold">Total Sellers</p>
-            <p className="text-4xl font-black text-gray-900 mt-2">{stats?.totalSellers}</p>
+          <div className="rounded-2xl p-6" style={{background: '#111111', border: '1px solid #f59e0b'}}>
+            <p className="text-gray-500 text-sm uppercase tracking-wide font-semibold">Total Sellers</p>
+            <p className="text-4xl font-black text-white mt-2">{stats?.totalSellers}</p>
           </div>
-          <div className="bg-white rounded-2xl shadow-md p-6 border-t-4 border-yellow-400">
-            <p className="text-gray-400 text-sm uppercase tracking-wide font-semibold">Total Buyers</p>
-            <p className="text-4xl font-black text-gray-900 mt-2">{stats?.totalBuyers}</p>
+          <div className="rounded-2xl p-6" style={{background: '#111111', border: '1px solid #333'}}>
+            <p className="text-gray-500 text-sm uppercase tracking-wide font-semibold">Total Buyers</p>
+            <p className="text-4xl font-black text-white mt-2">{stats?.totalBuyers}</p>
           </div>
-          <div className="bg-white rounded-2xl shadow-md p-6 border-t-4 border-green-500">
-            <p className="text-gray-400 text-sm uppercase tracking-wide font-semibold">Active Listings</p>
-            <p className="text-4xl font-black text-gray-900 mt-2">{stats?.activeProducts}</p>
+          <div className="rounded-2xl p-6" style={{background: '#111111', border: '1px solid #333'}}>
+            <p className="text-gray-500 text-sm uppercase tracking-wide font-semibold">Active Listings</p>
+            <p className="text-4xl font-black text-white mt-2">{stats?.activeProducts}</p>
           </div>
-          <div className="bg-white rounded-2xl shadow-md p-6 border-t-4 border-purple-500">
-            <p className="text-gray-400 text-sm uppercase tracking-wide font-semibold">Monthly Revenue</p>
-            <p className="text-4xl font-black text-gray-900 mt-2">£{monthlyRevenue}</p>
+          <div className="rounded-2xl p-6" style={{background: '#111111', border: '1px solid #f59e0b'}}>
+            <p className="text-gray-500 text-sm uppercase tracking-wide font-semibold">Monthly Revenue</p>
+            <p className="text-4xl font-black mt-2" style={{color: '#f59e0b'}}>£{monthlyRevenue}</p>
           </div>
         </div>
 
         {reports.length > 0 && (
-          <div className="bg-white rounded-2xl shadow-md overflow-hidden mb-8">
-            <div className="px-6 py-4 border-b border-gray-100 bg-red-50">
-              <h2 className="text-xl font-black text-red-800">🚩 Reports ({reports.length})</h2>
+          <div className="rounded-2xl overflow-hidden mb-8" style={{background: '#111111', border: '1px solid #f87171'}}>
+            <div className="px-6 py-4" style={{borderBottom: '1px solid #1a1a1a', background: '#1a0a0a'}}>
+              <h2 className="text-xl font-black text-red-400">🚩 Reports ({reports.length})</h2>
             </div>
-            <div className="divide-y">
+            <div className="divide-y" style={{borderColor: '#1a1a1a'}}>
               {reports.map(report => (
                 <div key={report.id} className="px-6 py-4 flex justify-between items-center">
                   <div>
-                    <p className="font-semibold text-gray-900">{report.reason}</p>
-                    <p className="text-sm text-gray-400">Product ID: {report.productId}</p>
+                    <p className="font-semibold text-white">{report.reason}</p>
+                    <p className="text-sm text-gray-600">Product ID: {report.productId}</p>
                   </div>
                   <div className="flex gap-3">
                     <Link href={`/product/${report.productId}`} target="_blank"
-                      className="text-blue-600 text-sm hover:underline">View</Link>
+                      style={{color: '#f59e0b'}} className="text-sm hover:opacity-80">View</Link>
                     <button onClick={() => deleteProduct(report.productId)}
-                      className="text-red-500 text-sm hover:underline">Delete Product</button>
+                      className="text-red-400 text-sm hover:opacity-80">Delete Product</button>
                   </div>
                 </div>
               ))}
@@ -131,52 +132,57 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* Tabs */}
         <div className="flex gap-2 mb-6">
           <button onClick={() => setTab('products')}
-            className={`px-6 py-3 rounded-xl font-bold text-sm ${tab === 'products' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}>
+            className="px-6 py-3 rounded-xl font-bold text-sm transition-all"
+            style={tab === 'products' ? {background: '#f59e0b', color: 'black'} : {background: '#111111', color: '#888', border: '1px solid #333'}}>
             Products ({stats?.totalProducts})
           </button>
           <button onClick={() => setTab('sellers')}
-            className={`px-6 py-3 rounded-xl font-bold text-sm ${tab === 'sellers' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}>
+            className="px-6 py-3 rounded-xl font-bold text-sm transition-all"
+            style={tab === 'sellers' ? {background: '#f59e0b', color: 'black'} : {background: '#111111', color: '#888', border: '1px solid #333'}}>
             Sellers ({stats?.totalSellers})
           </button>
         </div>
 
         {tab === 'products' && (
-          <div className="bg-white rounded-2xl shadow-md overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-              <h2 className="text-xl font-black text-gray-900">All Products</h2>
-              <span className="text-sm text-gray-400">{stats?.activeProducts} active · {(stats?.totalProducts || 0) - (stats?.activeProducts || 0)} pending</span>
+          <div className="rounded-2xl overflow-hidden" style={{background: '#111111', border: '1px solid #222'}}>
+            <div className="px-6 py-4 flex justify-between items-center" style={{borderBottom: '1px solid #1a1a1a'}}>
+              <h2 className="text-xl font-black text-white">All Products</h2>
+              <span className="text-sm text-gray-600">{stats?.activeProducts} active · {(stats?.totalProducts || 0) - (stats?.activeProducts || 0)} pending</span>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead style={{background: '#f0f4ff'}}>
+                <thead style={{background: '#1a1a1a'}}>
                   <tr>
-                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Product</th>
-                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Seller</th>
-                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Price</th>
-                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Status</th>
-                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Action</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Product</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Seller</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Price</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Status</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {products.map((product, i) => (
-                    <tr key={product.id} style={{background: i % 2 === 0 ? 'white' : '#f9fafb'}}>
-                      <td className="px-6 py-4 font-semibold text-gray-900">{product.title}</td>
+                    <tr key={product.id} style={{borderTop: '1px solid #1a1a1a', background: i % 2 === 0 ? '#111111' : '#0f0f0f'}}>
                       <td className="px-6 py-4">
-                        <p className="font-semibold text-gray-900">{product.seller.companyName}</p>
-                        <p className="text-sm text-gray-400">{product.seller.email}</p>
+                        <p className="font-semibold text-white">{product.title}</p>
+                        {product.featured && <span className="text-xs font-bold" style={{color: '#f59e0b'}}>⭐ Featured</span>}
                       </td>
-                      <td className="px-6 py-4 font-bold text-blue-700">£{product.price.toFixed(2)}</td>
                       <td className="px-6 py-4">
-                        <span className={`text-xs font-bold px-3 py-1 rounded-full ${product.active ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                        <p className="font-semibold text-white">{product.seller.companyName}</p>
+                        <p className="text-sm text-gray-600">{product.seller.email}</p>
+                      </td>
+                      <td className="px-6 py-4 font-bold" style={{color: '#f59e0b'}}>£{product.price.toFixed(2)}</td>
+                      <td className="px-6 py-4">
+                        <span className="text-xs font-bold px-3 py-1 rounded-full"
+                          style={product.active ? {background: '#0a1a0a', color: '#4ade80', border: '1px solid #4ade80'} : {background: '#1a1000', color: '#f97316', border: '1px solid #f97316'}}>
                           {product.active ? 'Active' : 'Pending'}
                         </span>
                       </td>
                       <td className="px-6 py-4">
                         <button onClick={() => deleteProduct(product.id)}
-                          className="text-red-500 hover:text-red-700 font-semibold text-sm">
+                          className="text-red-400 hover:opacity-80 font-semibold text-sm">
                           Delete
                         </button>
                       </td>
@@ -189,41 +195,43 @@ export default function AdminDashboard() {
         )}
 
         {tab === 'sellers' && (
-          <div className="bg-white rounded-2xl shadow-md overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-100">
-              <h2 className="text-xl font-black text-gray-900">All Sellers</h2>
+          <div className="rounded-2xl overflow-hidden" style={{background: '#111111', border: '1px solid #222'}}>
+            <div className="px-6 py-4" style={{borderBottom: '1px solid #1a1a1a'}}>
+              <h2 className="text-xl font-black text-white">All Sellers</h2>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead style={{background: '#f0f4ff'}}>
+                <thead style={{background: '#1a1a1a'}}>
                   <tr>
-                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Company</th>
-                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Contact</th>
-                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Listings</th>
-                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Status</th>
-                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-600">Action</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Company</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Contact</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Listings</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Status</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {sellers.map((seller, i) => (
-                    <tr key={seller.id} style={{background: i % 2 === 0 ? 'white' : '#f9fafb'}}>
+                    <tr key={seller.id} style={{borderTop: '1px solid #1a1a1a', background: i % 2 === 0 ? '#111111' : '#0f0f0f'}}>
                       <td className="px-6 py-4">
-                        <p className="font-semibold text-gray-900">{seller.companyName}</p>
-                        <p className="text-sm text-gray-400">{seller.email}</p>
+                        <p className="font-semibold text-white">{seller.companyName}</p>
+                        <p className="text-sm text-gray-600">{seller.email}</p>
                       </td>
                       <td className="px-6 py-4">
-                        <p className="text-gray-700">{seller.contactName}</p>
-                        <p className="text-sm text-gray-400">{seller.phone}</p>
+                        <p className="text-gray-400">{seller.contactName}</p>
+                        <p className="text-sm text-gray-600">{seller.phone}</p>
                       </td>
-                      <td className="px-6 py-4 font-bold text-gray-900">{seller._count.products}</td>
+                      <td className="px-6 py-4 font-bold text-white">{seller._count.products}</td>
                       <td className="px-6 py-4">
-                        <span className={`text-xs font-bold px-3 py-1 rounded-full ${seller.verified ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                        <span className="text-xs font-bold px-3 py-1 rounded-full"
+                          style={seller.verified ? {background: '#0a1a0a', color: '#4ade80', border: '1px solid #4ade80'} : {background: '#1a1a1a', color: '#666', border: '1px solid #333'}}>
                           {seller.verified ? '✅ Verified' : 'Unverified'}
                         </span>
                       </td>
                       <td className="px-6 py-4">
                         <button onClick={() => toggleVerified(seller.id, seller.verified)}
-                          className={`text-sm font-semibold ${seller.verified ? 'text-red-500 hover:text-red-700' : 'text-green-600 hover:text-green-800'}`}>
+                          className="text-sm font-semibold hover:opacity-80"
+                          style={{color: seller.verified ? '#f87171' : '#f59e0b'}}>
                           {seller.verified ? 'Unverify' : 'Verify'}
                         </button>
                       </td>
