@@ -40,7 +40,7 @@ export default function LoginPage() {
               <label className="block text-sm font-semibold text-gray-400 mb-1">Email</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)} required
                 className="w-full px-4 py-3 rounded-xl text-white focus:outline-none focus:ring-2"
-                style={{background: '#1a1a1a', border: '1px solid #333', focusRingColor: '#f59e0b'}} />
+                style={{background: '#1a1a1a', border: '1px solid #333'}} />
             </div>
             <div>
               <label className="block text-sm font-semibold text-gray-400 mb-1">Password</label>
