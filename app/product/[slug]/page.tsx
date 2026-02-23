@@ -5,6 +5,7 @@ import ShareButtons from '@/app/components/ShareButtons'
 import FavouriteButton from '@/app/components/FavouriteButton'
 import ReportButton from '@/app/components/ReportButton'
 import type { Metadata } from 'next'
+import { getServerSession } from 'next-auth'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -40,12 +41,25 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   })
 
   const photos = JSON.parse(product.photos || '[]')
+  const session = await getServerSession()
 
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
         <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
-        <Link href="/browse" className="text-gray-400 hover:text-white transition-colors">← Back to Browse</Link>
+        <div className="flex items-center gap-4">
+          <Link href="/browse" className="text-gray-400 hover:text-white transition-colors">← Browse</Link>
+          {session?.user ? (
+            <Link href="/seller/dashboard" className="text-gray-400 hover:text-white transition-colors text-sm">
+              Dashboard
+            </Link>
+          ) : (
+            <>
+              <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
+              <Link href="/register" style={{background: '#f59e0b'}} className="text-black px-5 py-2 rounded-lg font-bold hover:opacity-90">Sign Up</Link>
+            </>
+          )}
+        </div>
       </nav>
 
       <div className="max-w-5xl mx-auto px-6 py-10">

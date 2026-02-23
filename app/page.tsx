@@ -1,7 +1,10 @@
 import Link from 'next/link'
 import { prisma } from '@/lib/db'
+import { getServerSession } from 'next-auth'
 
 export default async function Home() {
+  const session = await getServerSession()
+
   const recentProducts = await prisma.product.findMany({
     where: { active: true },
     orderBy: { createdAt: 'desc' },
@@ -14,21 +17,35 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
-      {/* Nav */}
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
         <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
         <div className="flex gap-4 items-center">
           <Link href="/browse" className="text-gray-400 hover:text-white transition-colors">Browse</Link>
           <Link href="/about" className="text-gray-400 hover:text-white transition-colors">About</Link>
           <Link href="/contact" className="text-gray-400 hover:text-white transition-colors">Contact</Link>
-          <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
-          <Link href="/register" style={{background: '#f59e0b'}} className="text-black px-5 py-2 rounded-lg font-bold hover:opacity-90 transition-opacity">
-            Get Started
-          </Link>
+          {session?.user ? (
+            <>
+              <Link href="/seller/dashboard"
+                className="text-gray-400 hover:text-white transition-colors text-sm">
+                Hi, {session.user.name?.split(' ')[0]}
+              </Link>
+              <Link href="/seller/dashboard"
+                className="px-5 py-2 rounded-lg font-bold hover:opacity-90 transition-opacity text-sm"
+                style={{background: '#f59e0b', color: 'black'}}>
+                Dashboard
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
+              <Link href="/register" style={{background: '#f59e0b'}} className="text-black px-5 py-2 rounded-lg font-bold hover:opacity-90 transition-opacity">
+                Get Started
+              </Link>
+            </>
+          )}
         </div>
       </nav>
 
-      {/* Hero */}
       <section className="px-6 py-24 text-center" style={{background: 'linear-gradient(180deg, #111111 0%, #0a0a0a 100%)'}}>
         <div className="max-w-4xl mx-auto">
           <div className="inline-block mb-6 px-4 py-2 rounded-full text-sm font-bold" style={{background: '#1a1400', border: '1px solid #f59e0b', color: '#f59e0b'}}>
@@ -42,10 +59,17 @@ export default async function Home() {
             List your products for just £1/month. No hidden fees. No commissions. Connect directly with UK buyers today.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <Link href="/register?type=seller" style={{background: '#f59e0b'}}
-              className="text-black px-8 py-4 rounded-xl font-black text-lg hover:opacity-90 transition-opacity">
-              Start Selling — £1/mo
-            </Link>
+            {session?.user ? (
+              <Link href="/seller/dashboard" style={{background: '#f59e0b'}}
+                className="text-black px-8 py-4 rounded-xl font-black text-lg hover:opacity-90 transition-opacity">
+                Go to Dashboard
+              </Link>
+            ) : (
+              <Link href="/register?type=seller" style={{background: '#f59e0b'}}
+                className="text-black px-8 py-4 rounded-xl font-black text-lg hover:opacity-90 transition-opacity">
+                Start Selling — £1/mo
+              </Link>
+            )}
             <Link href="/browse"
               className="text-white px-8 py-4 rounded-xl font-black text-lg transition-colors"
               style={{background: '#1a1a1a', border: '1px solid #333'}}>
@@ -55,7 +79,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Stats */}
       <section className="px-6 py-12" style={{background: '#111111', borderTop: '1px solid #1a1a1a', borderBottom: '1px solid #1a1a1a'}}>
         <div className="max-w-4xl mx-auto grid grid-cols-3 gap-8 text-center">
           <div>
@@ -73,7 +96,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Recent Products */}
       {recentProducts.length > 0 && (
         <section className="px-6 py-16">
           <div className="max-w-6xl mx-auto">
@@ -109,7 +131,6 @@ export default async function Home() {
         </section>
       )}
 
-      {/* How it works */}
       <section className="px-6 py-16" style={{background: '#111111'}}>
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-black text-white mb-12">How It Works</h2>
@@ -133,19 +154,24 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="px-6 py-20 text-center" style={{background: '#0a0a0a'}}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl font-black text-white mb-4">Ready to Start Selling?</h2>
           <p className="text-gray-400 mb-8 text-lg">Join hundreds of UK sellers already using BigDiscounts.</p>
-          <Link href="/register?type=seller" style={{background: '#f59e0b'}}
-            className="text-black px-10 py-4 rounded-xl font-black text-xl hover:opacity-90 transition-opacity inline-block">
-            Start for £1/month
-          </Link>
+          {session?.user ? (
+            <Link href="/seller/dashboard" style={{background: '#f59e0b'}}
+              className="text-black px-10 py-4 rounded-xl font-black text-xl hover:opacity-90 transition-opacity inline-block">
+              Go to Dashboard
+            </Link>
+          ) : (
+            <Link href="/register?type=seller" style={{background: '#f59e0b'}}
+              className="text-black px-10 py-4 rounded-xl font-black text-xl hover:opacity-90 transition-opacity inline-block">
+              Start for £1/month
+            </Link>
+          )}
         </div>
       </section>
 
-      {/* Footer */}
       <footer style={{background: '#111111', borderTop: '1px solid #1a1a1a'}} className="px-6 py-10">
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-wrap justify-between gap-8 mb-8">
