@@ -3,6 +3,7 @@ import { useSession, signOut } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { Toast, useToast } from '@/app/components/Toast'
 
 interface Product {
   id: string
@@ -23,6 +24,7 @@ export default function Dashboard() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [cancelling, setCancelling] = useState<string | null>(null)
+  const { toast, showToast, hideToast } = useToast()
 
   const success = searchParams.get('success')
   const cancelled = searchParams.get('cancelled')
@@ -44,6 +46,7 @@ export default function Dashboard() {
     if (!confirm('Delete this product?')) return
     await fetch(`/api/seller/products/${id}`, { method: 'DELETE' })
     fetchProducts()
+    showToast('Product deleted successfully', 'success')
   }
 
   async function activateProduct(id: string) {
@@ -74,8 +77,12 @@ export default function Dashboard() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ productId: id, type })
     })
-    if (res.ok) fetchProducts()
-    else alert('Failed to cancel. Please try again.')
+    if (res.ok) {
+      fetchProducts()
+      showToast(`${type === 'featured' ? 'Featured' : ''} subscription cancelled`, 'info')
+    } else {
+      showToast('Failed to cancel. Please try again.', 'error')
+    }
     setCancelling(null)
   }
 
@@ -83,6 +90,8 @@ export default function Dashboard() {
 
   return (
     <main className="min-h-screen bg-gray-50">
+      {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
+
       <nav className="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold text-blue-600">🇬🇧 BigDiscounts</Link>
         <div className="flex items-center gap-4">
