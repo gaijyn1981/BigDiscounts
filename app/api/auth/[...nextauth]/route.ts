@@ -10,30 +10,31 @@ const handler = NextAuth({
       credentials: {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
-        role: { label: 'Role', type: 'text' }
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null
 
-        const role = credentials.role || 'buyer'
-
-        if (role === 'seller') {
-          const seller = await prisma.seller.findUnique({
-            where: { email: credentials.email }
-          })
-          if (!seller) return null
+        // Try seller first
+        const seller = await prisma.seller.findUnique({
+          where: { email: credentials.email }
+        })
+        if (seller) {
           const valid = await bcrypt.compare(credentials.password, seller.password)
           if (!valid) return null
           return { id: seller.id, email: seller.email, name: seller.companyName, role: 'seller' }
-        } else {
-          const buyer = await prisma.buyer.findUnique({
-            where: { email: credentials.email }
-          })
-          if (!buyer) return null
+        }
+
+        // Try buyer
+        const buyer = await prisma.buyer.findUnique({
+          where: { email: credentials.email }
+        })
+        if (buyer) {
           const valid = await bcrypt.compare(credentials.password, buyer.password)
           if (!valid) return null
           return { id: buyer.id, email: buyer.email, name: buyer.name, role: 'buyer' }
         }
+
+        return null
       }
     })
   ],
