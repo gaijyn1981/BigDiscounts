@@ -1,13 +1,12 @@
 'use client'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 export default function RegisterPage() {
-  const router = useRouter()
   const [type, setType] = useState<'seller' | 'buyer'>('seller')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [sent, setSent] = useState(false)
   const [form, setForm] = useState({
     email: '', password: '', name: '', companyName: '', contactName: '', phone: ''
   })
@@ -28,8 +27,25 @@ export default function RegisterPage() {
     })
     const data = await res.json()
     if (!res.ok) { setError(data.error || 'Error'); setLoading(false) }
-    else router.push('/login')
+    else setSent(true)
   }
+
+  if (sent) return (
+    <main className="min-h-screen flex items-center justify-center px-4" style={{background: '#0a0a0a'}}>
+      <div className="w-full max-w-md text-center">
+        <div className="rounded-2xl p-8" style={{background: '#111111', border: '1px solid #222'}}>
+          <div className="text-5xl mb-4">📧</div>
+          <h1 className="text-2xl font-black text-white mb-2">Check Your Email!</h1>
+          <p className="text-gray-400 mb-6">We sent a verification link to <span style={{color: '#f59e0b'}}>{form.email}</span>. Click it to activate your account.</p>
+          <Link href="/login"
+            className="block w-full py-3 rounded-xl font-black text-lg text-black transition-opacity hover:opacity-90"
+            style={{background: '#f59e0b'}}>
+            Go to Login
+          </Link>
+        </div>
+      </div>
+    </main>
+  )
 
   return (
     <main className="min-h-screen flex items-center justify-center px-4 py-10" style={{background: '#0a0a0a'}}>

@@ -20,6 +20,8 @@ model Seller {
   verified         Boolean  @default(false)
   createdAt        DateTime  @default(now())
   products         Product[]
+  emailVerified Boolean @default(false)
+  verifyToken   String?
 }
 
 model Buyer {
@@ -28,6 +30,8 @@ model Buyer {
   password  String
   name      String
   createdAt DateTime @default(now())
+  emailVerified Boolean @default(false)
+  verifyToken   String?
 }
 
 model Product {
