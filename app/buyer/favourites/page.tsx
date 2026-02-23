@@ -27,12 +27,7 @@ export default function FavouritesPage() {
   async function fetchFavourites() {
     const idsRes = await fetch('/api/favourites')
     const ids = await idsRes.json()
-
-    if (!Array.isArray(ids) || ids.length === 0) {
-      setLoading(false)
-      return
-    }
-
+    if (!Array.isArray(ids) || ids.length === 0) { setLoading(false); return }
     const allRes = await fetch('/api/products')
     const all = await allRes.json()
     setProducts(all.filter((p: Product) => ids.includes(p.id)))
@@ -49,26 +44,28 @@ export default function FavouritesPage() {
   }
 
   if (status === 'loading' || loading) return (
-    <div className="min-h-screen flex items-center justify-center" style={{background: '#f0f4ff'}}>
-      <p className="text-gray-500">Loading...</p>
+    <div className="min-h-screen flex items-center justify-center" style={{background: '#0a0a0a'}}>
+      <p style={{color: '#f59e0b'}} className="text-lg font-bold">Loading...</p>
     </div>
   )
 
   return (
-    <main className="min-h-screen" style={{background: '#f0f4ff'}}>
-      <nav style={{background: '#1e3a8a'}} className="px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-white">🇬🇧 BigDiscounts</Link>
-        <Link href="/browse" className="text-blue-200 hover:text-white">← Back to Browse</Link>
+    <main className="min-h-screen" style={{background: '#0a0a0a'}}>
+      <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+        <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
+        <Link href="/browse" className="text-gray-400 hover:text-white transition-colors">← Back to Browse</Link>
       </nav>
 
       <div className="max-w-4xl mx-auto px-6 py-10">
-        <h1 className="text-3xl font-black text-gray-900 mb-8">❤️ My Saved Products</h1>
+        <h1 className="text-3xl font-black text-white mb-8">❤️ My Saved Products</h1>
 
         {products.length === 0 ? (
-          <div className="bg-white rounded-2xl p-12 text-center shadow-md">
+          <div className="rounded-2xl p-12 text-center" style={{background: '#111111', border: '1px solid #222'}}>
             <div className="text-5xl mb-4">🤍</div>
             <p className="text-gray-500 text-lg mb-4">You haven't saved any products yet.</p>
-            <Link href="/browse" className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700">
+            <Link href="/browse"
+              className="px-6 py-3 rounded-xl font-bold text-black inline-block"
+              style={{background: '#f59e0b'}}>
               Browse Deals
             </Link>
           </div>
@@ -78,13 +75,15 @@ export default function FavouritesPage() {
               const photos = JSON.parse(product.photos || '[]')
               const photo = photos[0]
               return (
-                <div key={product.id} className="bg-white rounded-2xl shadow-md overflow-hidden relative">
+                <div key={product.id} className="rounded-2xl overflow-hidden relative"
+                  style={{background: '#111111', border: '1px solid #222'}}>
                   <button onClick={() => removeFavourite(product.id)}
-                    className="absolute top-3 right-3 z-10 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow text-red-500 hover:bg-red-50">
+                    className="absolute top-3 right-3 z-10 rounded-full w-8 h-8 flex items-center justify-center text-red-400 hover:opacity-80"
+                    style={{background: '#1a1a1a', border: '1px solid #333'}}>
                     ❤️
                   </button>
                   <Link href={`/product/${product.id}`}>
-                    <div className="h-48 flex items-center justify-center overflow-hidden" style={{background: '#f0f4ff'}}>
+                    <div className="h-48 flex items-center justify-center overflow-hidden" style={{background: '#1a1a1a'}}>
                       {photo ? (
                         <img src={photo} alt={product.title} className="w-full h-full object-cover hover:scale-105 transition-transform" />
                       ) : (
@@ -92,10 +91,9 @@ export default function FavouritesPage() {
                       )}
                     </div>
                     <div className="p-4">
-                      <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-full">{product.category || 'General'}</span>
-                      <h3 className="font-bold text-gray-900 mt-2 mb-1 truncate">{product.title}</h3>
-                      <p className="text-sm text-gray-500 mb-2">{product.seller?.companyName}</p>
-                      <p className="text-2xl font-black text-blue-700">£{product.price.toFixed(2)}</p>
+                      <h3 className="font-bold text-white mb-1 truncate">{product.title}</h3>
+                      <p className="text-gray-500 text-sm mb-2">{product.seller?.companyName}</p>
+                      <p className="text-2xl font-black" style={{color: '#f59e0b'}}>£{product.price.toFixed(2)}</p>
                     </div>
                   </Link>
                 </div>
