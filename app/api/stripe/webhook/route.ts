@@ -21,12 +21,20 @@ export async function POST(req: Request) {
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session
-    const { productId } = session.metadata!
+    const { productId, type } = session.metadata!
     const subscriptionId = session.subscription as string
-    await prisma.product.update({
-      where: { id: productId },
-      data: { active: true, stripeSubId: subscriptionId }
-    })
+
+    if (type === 'featured') {
+      await prisma.product.update({
+        where: { id: productId },
+        data: { featured: true, featuredSubId: subscriptionId }
+      })
+    } else {
+      await prisma.product.update({
+        where: { id: productId },
+        data: { active: true, stripeSubId: subscriptionId }
+      })
+    }
   }
 
   if (event.type === 'customer.subscription.deleted' || event.type === 'customer.subscription.paused') {
@@ -34,6 +42,10 @@ export async function POST(req: Request) {
     await prisma.product.updateMany({
       where: { stripeSubId: subscription.id },
       data: { active: false }
+    })
+    await prisma.product.updateMany({
+      where: { featuredSubId: subscription.id },
+      data: { featured: false }
     })
   }
 
@@ -44,6 +56,10 @@ export async function POST(req: Request) {
       await prisma.product.updateMany({
         where: { stripeSubId: subscriptionId },
         data: { active: false }
+      })
+      await prisma.product.updateMany({
+        where: { featuredSubId: subscriptionId },
+        data: { featured: false }
       })
     }
   }

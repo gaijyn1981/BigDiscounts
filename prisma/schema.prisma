@@ -39,6 +39,8 @@ model Product {
   photos      String   @default("[]")
   category    String?
   active      Boolean  @default(false)
+  featured    Boolean  @default(false)
+  featuredSubId String?
   stripeSubId String?
   views       Int      @default(0)
   createdAt   DateTime @default(now())

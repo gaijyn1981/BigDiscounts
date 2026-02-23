@@ -13,21 +13,29 @@ export async function POST(req: Request) {
     const seller = await prisma.seller.findUnique({ where: { email: session.user.email } })
     if (!seller) return NextResponse.json({ error: 'Seller not found' }, { status: 404 })
 
-    const { productId } = await req.json()
+    const { productId, type } = await req.json()
 
     const product = await prisma.product.findFirst({
       where: { id: productId, sellerId: seller.id }
     })
 
     if (!product) return NextResponse.json({ error: 'Product not found' }, { status: 404 })
-    if (!product.stripeSubId) return NextResponse.json({ error: 'No active subscription' }, { status: 400 })
 
-    await stripe.subscriptions.cancel(product.stripeSubId)
-
-    await prisma.product.update({
-      where: { id: productId },
-      data: { active: false, stripeSubId: null }
-    })
+    if (type === 'featured') {
+      if (!product.featuredSubId) return NextResponse.json({ error: 'No featured subscription' }, { status: 400 })
+      await stripe.subscriptions.cancel(product.featuredSubId)
+      await prisma.product.update({
+        where: { id: productId },
+        data: { featured: false, featuredSubId: null }
+      })
+    } else {
+      if (!product.stripeSubId) return NextResponse.json({ error: 'No active subscription' }, { status: 400 })
+      await stripe.subscriptions.cancel(product.stripeSubId)
+      await prisma.product.update({
+        where: { id: productId },
+        data: { active: false, stripeSubId: null }
+      })
+    }
 
     return NextResponse.json({ success: true })
   } catch (error: any) {

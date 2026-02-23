@@ -9,6 +9,7 @@ interface Product {
   category: string
   photos: string
   createdAt: string
+  featured: boolean
   seller: { companyName: string }
 }
 
@@ -41,6 +42,8 @@ export default function BrowsePage() {
       return matchSearch && matchCategory && matchMin && matchMax
     })
     .sort((a, b) => {
+      if (a.featured && !b.featured) return -1
+      if (!a.featured && b.featured) return 1
       if (sort === 'low') return a.price - b.price
       if (sort === 'high') return b.price - a.price
       if (sort === 'new') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -52,8 +55,8 @@ export default function BrowsePage() {
       <nav style={{background: '#1e3a8a'}} className="px-6 py-4 flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold text-white">🇬🇧 BigDiscounts</Link>
         <div className="flex gap-4 items-center">
-          <Link href="/login" className="text-blue-200 hover:text-white">Login</Link>
           <Link href="/buyer/favourites" className="text-blue-200 hover:text-white">❤️ Saved</Link>
+          <Link href="/login" className="text-blue-200 hover:text-white">Login</Link>
           <Link href="/register" className="bg-yellow-400 text-gray-900 px-4 py-2 rounded-lg font-semibold hover:bg-yellow-300">Sign Up</Link>
         </div>
       </nav>
@@ -116,9 +119,14 @@ export default function BrowsePage() {
               const photo = photos[0]
               return (
                 <Link key={product.id} href={`/product/${product.id}`}
-                  className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow overflow-hidden group relative">
-                  {isNew(product.createdAt) && (
-                    <div className="absolute top-3 left-3 z-10 bg-yellow-400 text-gray-900 text-xs font-black px-2 py-1 rounded-full uppercase">
+                  className={`bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow overflow-hidden group relative ${product.featured ? 'ring-2 ring-yellow-400' : ''}`}>
+                  {product.featured && (
+                    <div className="absolute top-3 left-3 z-10 bg-yellow-400 text-gray-900 text-xs font-black px-2 py-1 rounded-full">
+                      ⭐ Featured
+                    </div>
+                  )}
+                  {!product.featured && isNew(product.createdAt) && (
+                    <div className="absolute top-3 left-3 z-10 bg-blue-600 text-white text-xs font-black px-2 py-1 rounded-full">
                       🆕 New
                     </div>
                   )}
