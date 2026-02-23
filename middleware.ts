@@ -11,9 +11,10 @@ const ratelimit = new Ratelimit({
 export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/admin')) {
     const authHeader = request.headers.get('authorization')
-    const validPassword = process.env.ADMIN_PASSWORD || 'bigdiscounts-admin-2024'
+    const validUsername = process.env.ADMIN_USERNAME || 'admin'
+    const validPassword = process.env.ADMIN_PASSWORD || 'admin123'
 
-    if (!authHeader || authHeader !== `Basic ${Buffer.from(`admin:${validPassword}`).toString('base64')}`) {
+    if (!authHeader || authHeader !== `Basic ${Buffer.from(`${validUsername}:${validPassword}`).toString('base64')}`) {
       return new NextResponse('Unauthorized', {
         status: 401,
         headers: { 'WWW-Authenticate': 'Basic realm="Admin Area"' }
@@ -21,7 +22,6 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Only rate limit the sign-in endpoint, not all auth routes
   if (request.nextUrl.pathname === '/api/auth/signin' ||
       request.nextUrl.pathname.startsWith('/api/register')) {
     const ip = request.headers.get('x-forwarded-for') || 'anonymous'
