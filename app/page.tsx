@@ -104,6 +104,7 @@ export default function Home() {
           <a href="/cookies" className="hover:text-white">Cookie Policy</a>
           <a href="/data-request" className="hover:text-white">Data Request</a>
           <a href="/about" className="hover:text-white">About Us</a>
+          <a href="/contact" className="hover:text-white">Contact Us</a>
         </div>
       </footer>
     </main>
