@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 import { prisma } from '@/lib/db'
 
 export async function GET(req: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params
-  const session = await getServerSession()
+  const session = await getServerSession(authOptions)
   if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const product = await prisma.product.findUnique({ where: { id } })
   return NextResponse.json(product)
@@ -12,7 +13,7 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
 
 export async function PATCH(req: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params
-  const session = await getServerSession()
+  const session = await getServerSession(authOptions)
   if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const seller = await prisma.seller.findUnique({ where: { email: session.user.email } })
   if (!seller) return NextResponse.json({ error: 'Seller not found' }, { status: 404 })
@@ -26,7 +27,7 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
 
 export async function DELETE(req: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params
-  const session = await getServerSession()
+  const session = await getServerSession(authOptions)
   if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const seller = await prisma.seller.findUnique({ where: { email: session.user.email } })
   if (!seller) return NextResponse.json({ error: 'Seller not found' }, { status: 404 })
