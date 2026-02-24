@@ -161,6 +161,10 @@ export default function Dashboard() {
             </Link>
           </div>
         ) : (
+          <div className="rounded-xl p-4 mb-6" style={{background: '#1a1400', border: '1px solid #f59e0b'}}>
+            <p className="font-bold mb-1" style={{color: '#f59e0b'}}>📦 Seller Responsibilities</p>
+            <p className="text-gray-400 text-sm">As a seller you are responsible for: shipping products to buyers, accepting returns within 14 days under UK Consumer Contracts Regulations 2013, and issuing refunds where applicable. BigDiscounts is not liable for any disputes between buyers and sellers.</p>
+          </div>
           <div className="space-y-4">
             {products.map(product => (
               <div key={product.id} className="rounded-xl p-6 flex justify-between items-center"

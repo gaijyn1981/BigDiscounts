@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import ShareButtons from '@/app/components/ShareButtons'
 import FavouriteButton from '@/app/components/FavouriteButton'
 import ReportButton from '@/app/components/ReportButton'
+import ContactSellerButtons from '@/app/components/ContactSellerButtons'
 import type { Metadata } from 'next'
 import { getServerSession } from 'next-auth'
 
@@ -114,24 +115,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                     )}
                   </div>
                   <p className="text-gray-500 text-sm mb-4">{product.seller.contactName}</p>
-                  {product.seller.paypalMe && (
-                    <a href={`https://paypal.me/${product.seller.paypalMe}/${product.price}`}
-                      target="_blank" rel="noopener noreferrer"
-                      className="block w-full text-center py-3 rounded-xl font-bold text-lg mb-2 transition-opacity hover:opacity-90"
-                      style={{background: '#003087', color: 'white'}}>
-                      💳 Buy Now via PayPal
-                    </a>
-                  )}
-                  <a href={`mailto:${product.seller.email}`}
-                    className="block w-full text-center py-3 rounded-xl font-bold text-lg mb-2 transition-opacity hover:opacity-90"
-                    style={{background: '#f59e0b', color: 'black'}}>
-                    ✉️ Contact Seller
-                  </a>
-                  <a href={`tel:${product.seller.phone}`}
-                    className="block w-full text-center py-3 rounded-xl font-bold text-lg transition-opacity hover:opacity-90"
-                    style={{background: '#1a1a1a', color: 'white', border: '1px solid #333'}}>
-                    📞 Call Seller
-                  </a>
+                  <ContactSellerButtons
+                    email={product.seller.email}
+                    phone={product.seller.phone}
+                    paypalMe={product.seller.paypalMe}
+                    price={product.price}
+                  />
                   <FavouriteButton productId={product.id} />
                   <ShareButtons title={product.title} id={product.id} />
                   <ReportButton productId={product.id} />
