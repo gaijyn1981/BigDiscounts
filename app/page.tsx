@@ -200,7 +200,7 @@ export default async function Home() {
             </div>
           </div>
           <div style={{borderTop: '1px solid #1a1a1a'}} className="pt-6 text-center">
-            <p className="text-gray-600 text-sm">Sole Trader: Petrica Marin · Gloucester, UK · hello@bigdiscounts.uk</p>
+            <p className="text-gray-600 text-sm">hello@bigdiscounts.uk</p>
             <p className="text-gray-700 text-xs mt-1">© 2026 BigDiscounts. All rights reserved.</p>
           </div>
         </div>
