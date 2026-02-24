@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 
 export async function GET() {
-  const session = await getServerSession()
-  if (!session?.user?.email) return NextResponse.json([], { status: 401 })
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.email) return NextResponse.json([])
 
   const favourites = await prisma.favourite.findMany({
     where: { buyerEmail: session.user.email }
@@ -14,7 +15,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const session = await getServerSession()
+  const session = await getServerSession(authOptions)
   if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { productId } = await req.json()
