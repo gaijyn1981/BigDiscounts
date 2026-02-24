@@ -3,6 +3,7 @@ import { useSession, signOut } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import DeleteAccountButton from '@/app/components/DeleteAccountButton'
 
 interface Product {
   id: string
@@ -121,7 +122,7 @@ export default function BuyerDashboard() {
         )}
 
         {favourites.length === 0 && (
-          <div className="rounded-2xl p-12 text-center" style={{background: '#111111', border: '1px solid #222'}}>
+          <div className="rounded-2xl p-12 text-center mb-8" style={{background: '#111111', border: '1px solid #222'}}>
             <div className="text-5xl mb-4">🛍️</div>
             <h2 className="text-xl font-black text-white mb-2">No saved products yet</h2>
             <p className="text-gray-500 mb-6">Browse deals and save products you like!</p>
@@ -132,6 +133,12 @@ export default function BuyerDashboard() {
             </Link>
           </div>
         )}
+
+        <div className="rounded-2xl p-6" style={{background: '#111111', border: '1px solid #f87171'}}>
+          <h2 className="text-xl font-black text-white mb-2">Danger Zone</h2>
+          <p className="text-gray-500 text-sm mb-4">Permanently delete your account and all saved products.</p>
+          <DeleteAccountButton type="buyer" />
+        </div>
       </div>
     </main>
   )

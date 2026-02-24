@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import DeleteAccountButton from '@/app/components/DeleteAccountButton'
 
 export default function SellerProfile() {
   const { data: session, status } = useSession()
@@ -51,7 +52,7 @@ export default function SellerProfile() {
       <div className="max-w-2xl mx-auto px-6 py-10">
         <h1 className="text-3xl font-black text-white mb-8">Seller Profile</h1>
 
-        <div className="rounded-2xl p-6" style={{background: '#111111', border: '1px solid #222'}}>
+        <div className="rounded-2xl p-6 mb-6" style={{background: '#111111', border: '1px solid #222'}}>
           <h2 className="text-xl font-black text-white mb-2">Payment Settings</h2>
           <p className="text-gray-500 mb-6 text-sm">Add your PayPal.me link so buyers can pay you directly.</p>
 
@@ -81,6 +82,12 @@ export default function SellerProfile() {
               {saving ? 'Saving...' : 'Save Profile'}
             </button>
           </form>
+        </div>
+
+        <div className="rounded-2xl p-6" style={{background: '#111111', border: '1px solid #f87171'}}>
+          <h2 className="text-xl font-black text-white mb-2">Danger Zone</h2>
+          <p className="text-gray-500 text-sm mb-4">Permanently delete your account and all your listings.</p>
+          <DeleteAccountButton type="seller" />
         </div>
       </div>
     </main>
