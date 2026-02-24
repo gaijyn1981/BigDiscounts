@@ -15,7 +15,7 @@ export default function BuyerTermsModal({ onAccept, onDecline }: Props) {
       <div className="w-full max-w-md rounded-2xl p-8"
         style={{background: '#111111', border: '1px solid #f59e0b'}}>
         <h2 className="text-2xl font-black text-white mb-2">Before You Continue</h2>
-        <p className="text-gray-400 text-sm mb-4">By contacting this seller you agree to our Terms & Conditions including:</p>
+        <p className="text-gray-400 text-sm mb-4">By contacting this seller or buying this product you agree to our Terms & Conditions including:</p>
         <ul className="text-gray-400 text-sm space-y-2 mb-6">
           <li className="flex gap-2"><span style={{color: '#f59e0b'}}>•</span> Transactions are directly between you and the seller</li>
           <li className="flex gap-2"><span style={{color: '#f59e0b'}}>•</span> BigDiscounts is not responsible for payments or disputes</li>
