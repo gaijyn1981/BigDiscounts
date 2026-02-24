@@ -21,8 +21,8 @@ export default async function Home() {
         <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
         <div className="flex gap-4 items-center">
           <Link href="/browse" className="text-gray-400 hover:text-white transition-colors">Browse</Link>
-          <Link href="/about" className="text-gray-400 hover:text-white transition-colors">About</Link>
-          <Link href="/contact" className="text-gray-400 hover:text-white transition-colors">Contact</Link>
+          
+          
           {session?.user ? (
             <>
               <Link href="/seller/dashboard"
