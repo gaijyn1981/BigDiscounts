@@ -28,9 +28,11 @@ export default function BuyerDashboard() {
   async function fetchFavourites() {
     try {
       const idsRes = await fetch('/api/favourites')
+      if (!idsRes.ok) { setLoading(false); return }
       const ids = await idsRes.json()
       if (!Array.isArray(ids) || ids.length === 0) { setLoading(false); return }
       const allRes = await fetch('/api/products')
+      if (!allRes.ok) { setLoading(false); return }
       const all = await allRes.json()
       if (Array.isArray(all)) {
         setFavourites(all.filter((p: Product) => ids.includes(p.id)))
