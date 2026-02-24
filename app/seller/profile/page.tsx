@@ -15,6 +15,7 @@ export default function SellerProfile() {
 
   useEffect(() => {
     if (status === 'unauthenticated') router.push('/login')
+    if (status === 'authenticated' && (session?.user as any)?.role !== 'seller') router.push('/buyer/dashboard')
     if (status === 'authenticated') {
       fetch('/api/seller/profile').then(r => r.json()).then(data => {
         setPaypalMe(data.paypalMe || '')

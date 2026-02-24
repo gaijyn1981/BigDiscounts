@@ -32,6 +32,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (status === 'unauthenticated') router.push('/login')
+    if (status === 'authenticated' && (session?.user as any)?.role !== 'seller') router.push('/buyer/dashboard')
     if (status === 'authenticated') fetchProducts()
   }, [status])
 
