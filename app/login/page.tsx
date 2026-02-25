@@ -38,7 +38,7 @@ export default function LoginPage() {
     <main className="min-h-screen flex items-center justify-center px-4" style={{background: '#0a0a0a'}}>
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/" className="text-3xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
+          <Link href="/" className="text-3xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
           <p className="text-gray-500 mt-2">Sign in to your account</p>
         </div>
         <div className="rounded-2xl p-8" style={{background: '#111111', border: '1px solid #222'}}>
@@ -60,18 +60,18 @@ export default function LoginPage() {
             {error && <p className="text-red-400 text-sm">{error}</p>}
             <button type="submit" disabled={loading}
               className="w-full py-3 rounded-xl font-black text-lg text-black transition-opacity hover:opacity-90 disabled:opacity-50"
-              style={{background: '#f59e0b'}}>
+              style={{background: '#fcd968'}}>
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
-          <p className="text-right mt-2"><Link href="/forgot-password" style={{color: '#f59e0b'}} className="text-sm hover:opacity-80">Forgot password?</Link></p>
+          <p className="text-right mt-2"><Link href="/forgot-password" style={{color: '#fcd968'}} className="text-sm hover:opacity-80">Forgot password?</Link></p>
 
           <div className="mt-8 pt-6" style={{borderTop: '1px solid #222'}}>
             <p className="text-center text-gray-500 text-sm mb-4">Don't have an account?</p>
             <div className="grid grid-cols-2 gap-3">
               <Link href="/register?type=seller"
                 className="py-3 rounded-xl font-bold text-sm text-black text-center transition-opacity hover:opacity-90"
-                style={{background: '#f59e0b'}}>
+                style={{background: '#fcd968'}}>
                 Register as Seller
               </Link>
               <Link href="/register?type=buyer"

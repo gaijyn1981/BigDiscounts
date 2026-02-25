@@ -45,14 +45,14 @@ export default function FavouritesPage() {
 
   if (status === 'loading' || loading) return (
     <div className="min-h-screen flex items-center justify-center" style={{background: '#0a0a0a'}}>
-      <p style={{color: '#f59e0b'}} className="text-lg font-bold">Loading...</p>
+      <p style={{color: '#fcd968'}} className="text-lg font-bold">Loading...</p>
     </div>
   )
 
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
+        <Link href="/" className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
         <Link href="/buyer/dashboard" className="text-gray-400 hover:text-white transition-colors">← Back to Dashboard</Link>
       </nav>
 
@@ -65,7 +65,7 @@ export default function FavouritesPage() {
             <p className="text-gray-500 text-lg mb-4">You haven't saved any products yet.</p>
             <Link href="/browse"
               className="px-6 py-3 rounded-xl font-bold text-black inline-block"
-              style={{background: '#f59e0b'}}>
+              style={{background: '#fcd968'}}>
               Browse Deals
             </Link>
           </div>
@@ -93,7 +93,7 @@ export default function FavouritesPage() {
                     <div className="p-4">
                       <h3 className="font-bold text-white mb-1 truncate">{product.title}</h3>
                       <p className="text-gray-500 text-sm mb-2">{product.seller?.companyName}</p>
-                      <p className="text-2xl font-black" style={{color: '#f59e0b'}}>£{product.price.toFixed(2)}</p>
+                      <p className="text-2xl font-black" style={{color: '#fcd968'}}>£{product.price.toFixed(2)}</p>
                     </div>
                   </Link>
                 </div>

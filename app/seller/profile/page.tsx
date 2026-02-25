@@ -39,14 +39,14 @@ export default function SellerProfile() {
 
   if (status === 'loading' || loading) return (
     <div className="min-h-screen flex items-center justify-center" style={{background: '#0a0a0a'}}>
-      <p style={{color: '#f59e0b'}} className="text-lg font-bold">Loading...</p>
+      <p style={{color: '#fcd968'}} className="text-lg font-bold">Loading...</p>
     </div>
   )
 
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
+        <Link href="/" className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
         <Link href="/seller/dashboard" className="text-gray-400 hover:text-white transition-colors">← Back to Dashboard</Link>
       </nav>
 
@@ -79,7 +79,7 @@ export default function SellerProfile() {
 
             <button type="submit" disabled={saving}
               className="w-full py-3 rounded-xl font-black text-lg text-black transition-opacity hover:opacity-90 disabled:opacity-50"
-              style={{background: '#f59e0b'}}>
+              style={{background: '#fcd968'}}>
               {saving ? 'Saving...' : 'Save Profile'}
             </button>
           </form>

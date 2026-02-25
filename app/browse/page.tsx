@@ -55,7 +55,7 @@ export default function BrowsePage() {
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
+        <Link href="/" className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
         <div className="flex gap-4 items-center">
           <Link href="/buyer/favourites" className="text-gray-400 hover:text-white transition-colors">❤️ Saved</Link>
           {session ? (
@@ -73,7 +73,7 @@ export default function BrowsePage() {
           ) : (
             <>
               <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
-              <Link href="/register" style={{background: '#f59e0b'}} className="text-black px-5 py-2 rounded-lg font-bold hover:opacity-90">Sign Up</Link>
+              <Link href="/register" style={{background: '#fcd968'}} className="text-black px-5 py-2 rounded-lg font-bold hover:opacity-90">Sign Up</Link>
             </>
           )}
         </div>
@@ -110,7 +110,7 @@ export default function BrowsePage() {
             </select>
           </div>
           <div className="flex gap-3 mt-3 items-center">
-            <span className="text-sm font-semibold" style={{color: '#f59e0b'}}>Price range:</span>
+            <span className="text-sm font-semibold" style={{color: '#fcd968'}}>Price range:</span>
             <input type="number" placeholder="Min £" value={minPrice} onChange={e => setMinPrice(e.target.value)}
               className="w-24 px-3 py-2 rounded-xl text-white text-sm focus:outline-none"
               style={{background: '#1a1a1a', border: '1px solid #333'}} />
@@ -143,10 +143,10 @@ export default function BrowsePage() {
               return (
                 <Link key={product.id} href={`/product/${product.id}`}
                   className="rounded-2xl overflow-hidden group hover:transform hover:scale-105 transition-all duration-200 relative"
-                  style={{background: '#111111', border: product.featured ? '2px solid #f59e0b' : '1px solid #222'}}>
+                  style={{background: '#111111', border: product.featured ? '2px solid #fcd968' : '1px solid #222'}}>
                   {product.featured && (
                     <div className="absolute top-3 left-3 z-10 text-black text-xs font-black px-2 py-1 rounded-full"
-                      style={{background: '#f59e0b'}}>
+                      style={{background: '#fcd968'}}>
                       ⭐ Featured
                     </div>
                   )}
@@ -165,7 +165,7 @@ export default function BrowsePage() {
                   <div className="p-4">
                     <h3 className="font-bold text-white mt-1 mb-1 truncate">{product.title}</h3>
                     <p className="text-gray-500 text-sm mb-2">{product.seller?.companyName}</p>
-                    <p className="text-2xl font-black" style={{color: '#f59e0b'}}>£{product.price.toFixed(2)}</p>
+                    <p className="text-2xl font-black" style={{color: '#fcd968'}}>£{product.price.toFixed(2)}</p>
                   </div>
                 </Link>
               )

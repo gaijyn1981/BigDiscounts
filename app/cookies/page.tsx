@@ -4,7 +4,7 @@ export default function Cookies() {
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
+        <Link href="/" className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
         <Link href="/" className="text-gray-400 hover:text-white transition-colors">← Back to Home</Link>
       </nav>
       <div className="max-w-3xl mx-auto px-6 py-12">
@@ -31,17 +31,17 @@ export default function Cookies() {
                     <tr style={{borderTop: '1px solid #1a1a1a'}}>
                       <td className="px-4 py-3 text-gray-400">next-auth.session-token</td>
                       <td className="px-4 py-3 text-gray-400">Keeps you logged in</td>
-                      <td className="px-4 py-3" style={{color: '#f59e0b'}}>Essential</td>
+                      <td className="px-4 py-3" style={{color: '#fcd968'}}>Essential</td>
                     </tr>
                     <tr style={{borderTop: '1px solid #1a1a1a', background: '#111111'}}>
                       <td className="px-4 py-3 text-gray-400">next-auth.csrf-token</td>
                       <td className="px-4 py-3 text-gray-400">Security protection</td>
-                      <td className="px-4 py-3" style={{color: '#f59e0b'}}>Essential</td>
+                      <td className="px-4 py-3" style={{color: '#fcd968'}}>Essential</td>
                     </tr>
                     <tr style={{borderTop: '1px solid #1a1a1a'}}>
                       <td className="px-4 py-3 text-gray-400">cookiesAccepted</td>
                       <td className="px-4 py-3 text-gray-400">Remembers cookie consent</td>
-                      <td className="px-4 py-3" style={{color: '#f59e0b'}}>Essential</td>
+                      <td className="px-4 py-3" style={{color: '#fcd968'}}>Essential</td>
                     </tr>
                   </tbody>
                 </table>
@@ -57,7 +57,7 @@ export default function Cookies() {
             </section>
             <section>
               <h2 className="text-xl font-black text-white mb-2">Contact</h2>
-              <p>Email: <a href="mailto:privacy@bigdiscounts.uk" style={{color: '#f59e0b'}} className="hover:opacity-80">privacy@bigdiscounts.uk</a></p>
+              <p>Email: <a href="mailto:privacy@bigdiscounts.uk" style={{color: '#fcd968'}} className="hover:opacity-80">privacy@bigdiscounts.uk</a></p>
             </section>
           </div>
         </div>

@@ -23,10 +23,10 @@ export async function POST(req: Request) {
         subject: 'Reset your BigDiscounts password',
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: white; padding: 40px; border-radius: 16px;">
-            <h1 style="color: #f59e0b; font-size: 28px; margin-bottom: 8px;">🇬🇧 BigDiscounts</h1>
+            <h1 style="color: #fcd968; font-size: 28px; margin-bottom: 8px;">🇬🇧 BigDiscounts</h1>
             <h2 style="color: white; margin-bottom: 16px;">Password Reset Request</h2>
             <p style="color: #9ca3af; margin-bottom: 24px;">Click the button below to reset your password. This link expires in 1 hour.</p>
-            <a href="${resetUrl}" style="background: #f59e0b; color: black; padding: 14px 32px; border-radius: 12px; font-weight: bold; text-decoration: none; display: inline-block; font-size: 16px;">
+            <a href="${resetUrl}" style="background: #fcd968; color: black; padding: 14px 32px; border-radius: 12px; font-weight: bold; text-decoration: none; display: inline-block; font-size: 16px;">
               Reset Password
             </a>
             <p style="color: #6b7280; margin-top: 24px; font-size: 14px;">If you didn't request this, ignore this email. Your password won't change.</p>
@@ -46,10 +46,10 @@ export async function POST(req: Request) {
         subject: 'Reset your BigDiscounts password',
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: white; padding: 40px; border-radius: 16px;">
-            <h1 style="color: #f59e0b; font-size: 28px; margin-bottom: 8px;">🇬🇧 BigDiscounts</h1>
+            <h1 style="color: #fcd968; font-size: 28px; margin-bottom: 8px;">🇬🇧 BigDiscounts</h1>
             <h2 style="color: white; margin-bottom: 16px;">Password Reset Request</h2>
             <p style="color: #9ca3af; margin-bottom: 24px;">Click the button below to reset your password. This link expires in 1 hour.</p>
-            <a href="${resetUrl}" style="background: #f59e0b; color: black; padding: 14px 32px; border-radius: 12px; font-weight: bold; text-decoration: none; display: inline-block; font-size: 16px;">
+            <a href="${resetUrl}" style="background: #fcd968; color: black; padding: 14px 32px; border-radius: 12px; font-weight: bold; text-decoration: none; display: inline-block; font-size: 16px;">
               Reset Password
             </a>
             <p style="color: #6b7280; margin-top: 24px; font-size: 14px;">If you didn't request this, ignore this email. Your password won't change.</p>

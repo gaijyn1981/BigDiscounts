@@ -73,7 +73,7 @@ export default function AdminDashboard() {
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center" style={{background: '#0a0a0a'}}>
-      <p style={{color: '#f59e0b'}} className="text-lg font-bold">Loading...</p>
+      <p style={{color: '#fcd968'}} className="text-lg font-bold">Loading...</p>
     </div>
   )
 
@@ -82,7 +82,7 @@ export default function AdminDashboard() {
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
+        <Link href="/" className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
         <span className="text-gray-400 font-semibold">Admin Dashboard</span>
         <a href="/logout" className="text-sm font-bold px-4 py-2 rounded-lg" style={{background: '#1a1a1a', color: '#f87171', border: '1px solid #f87171'}}>Logout</a>
       </nav>
@@ -91,7 +91,7 @@ export default function AdminDashboard() {
         <h1 className="text-3xl font-black text-white mb-8">Admin Overview</h1>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
-          <div className="rounded-2xl p-6" style={{background: '#111111', border: '1px solid #f59e0b'}}>
+          <div className="rounded-2xl p-6" style={{background: '#111111', border: '1px solid #fcd968'}}>
             <p className="text-gray-500 text-sm uppercase tracking-wide font-semibold">Total Sellers</p>
             <p className="text-4xl font-black text-white mt-2">{stats?.totalSellers}</p>
           </div>
@@ -103,9 +103,9 @@ export default function AdminDashboard() {
             <p className="text-gray-500 text-sm uppercase tracking-wide font-semibold">Active Listings</p>
             <p className="text-4xl font-black text-white mt-2">{stats?.activeProducts}</p>
           </div>
-          <div className="rounded-2xl p-6" style={{background: '#111111', border: '1px solid #f59e0b'}}>
+          <div className="rounded-2xl p-6" style={{background: '#111111', border: '1px solid #fcd968'}}>
             <p className="text-gray-500 text-sm uppercase tracking-wide font-semibold">Monthly Revenue</p>
-            <p className="text-4xl font-black mt-2" style={{color: '#f59e0b'}}>£{monthlyRevenue}</p>
+            <p className="text-4xl font-black mt-2" style={{color: '#fcd968'}}>£{monthlyRevenue}</p>
           </div>
         </div>
 
@@ -123,7 +123,7 @@ export default function AdminDashboard() {
                   </div>
                   <div className="flex gap-3">
                     <Link href={`/product/${report.productId}`} target="_blank"
-                      style={{color: '#f59e0b'}} className="text-sm hover:opacity-80">View</Link>
+                      style={{color: '#fcd968'}} className="text-sm hover:opacity-80">View</Link>
                     <button onClick={() => deleteProduct(report.productId)}
                       className="text-red-400 text-sm hover:opacity-80">Delete Product</button>
                   </div>
@@ -136,12 +136,12 @@ export default function AdminDashboard() {
         <div className="flex gap-2 mb-6">
           <button onClick={() => setTab('products')}
             className="px-6 py-3 rounded-xl font-bold text-sm transition-all"
-            style={tab === 'products' ? {background: '#f59e0b', color: 'black'} : {background: '#111111', color: '#888', border: '1px solid #333'}}>
+            style={tab === 'products' ? {background: '#fcd968', color: 'black'} : {background: '#111111', color: '#888', border: '1px solid #333'}}>
             Products ({stats?.totalProducts})
           </button>
           <button onClick={() => setTab('sellers')}
             className="px-6 py-3 rounded-xl font-bold text-sm transition-all"
-            style={tab === 'sellers' ? {background: '#f59e0b', color: 'black'} : {background: '#111111', color: '#888', border: '1px solid #333'}}>
+            style={tab === 'sellers' ? {background: '#fcd968', color: 'black'} : {background: '#111111', color: '#888', border: '1px solid #333'}}>
             Sellers ({stats?.totalSellers})
           </button>
         </div>
@@ -168,13 +168,13 @@ export default function AdminDashboard() {
                     <tr key={product.id} style={{borderTop: '1px solid #1a1a1a', background: i % 2 === 0 ? '#111111' : '#0f0f0f'}}>
                       <td className="px-6 py-4">
                         <p className="font-semibold text-white">{product.title}</p>
-                        {product.featured && <span className="text-xs font-bold" style={{color: '#f59e0b'}}>⭐ Featured</span>}
+                        {product.featured && <span className="text-xs font-bold" style={{color: '#fcd968'}}>⭐ Featured</span>}
                       </td>
                       <td className="px-6 py-4">
                         <p className="font-semibold text-white">{product.seller.companyName}</p>
                         <p className="text-sm text-gray-600">{product.seller.email}</p>
                       </td>
-                      <td className="px-6 py-4 font-bold" style={{color: '#f59e0b'}}>£{product.price.toFixed(2)}</td>
+                      <td className="px-6 py-4 font-bold" style={{color: '#fcd968'}}>£{product.price.toFixed(2)}</td>
                       <td className="px-6 py-4">
                         <span className="text-xs font-bold px-3 py-1 rounded-full"
                           style={product.active ? {background: '#0a1a0a', color: '#4ade80', border: '1px solid #4ade80'} : {background: '#1a1000', color: '#f97316', border: '1px solid #f97316'}}>
@@ -232,7 +232,7 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4">
                         <button onClick={() => toggleVerified(seller.id, seller.verified)}
                           className="text-sm font-semibold hover:opacity-80"
-                          style={{color: seller.verified ? '#f87171' : '#f59e0b'}}>
+                          style={{color: seller.verified ? '#f87171' : '#fcd968'}}>
                           {seller.verified ? 'Unverify' : 'Verify'}
                         </button>
                       </td>

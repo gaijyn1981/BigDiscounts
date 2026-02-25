@@ -47,7 +47,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
+        <Link href="/" className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
         <div className="flex items-center gap-4">
           <Link href="/browse" className="text-gray-400 hover:text-white transition-colors">← Browse</Link>
           {session?.user ? (
@@ -57,7 +57,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           ) : (
             <>
               <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
-              <Link href="/register" style={{background: '#f59e0b'}} className="text-black px-5 py-2 rounded-lg font-bold hover:opacity-90">Sign Up</Link>
+              <Link href="/register" style={{background: '#fcd968'}} className="text-black px-5 py-2 rounded-lg font-bold hover:opacity-90">Sign Up</Link>
             </>
           )}
         </div>
@@ -92,12 +92,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <div>
                 {product.category && (
                   <span className="text-xs font-semibold px-3 py-1 rounded-full"
-                    style={{background: '#1a1400', color: '#f59e0b', border: '1px solid #f59e0b'}}>
+                    style={{background: '#1a1400', color: '#fcd968', border: '1px solid #fcd968'}}>
                     {product.category}
                   </span>
                 )}
                 <h1 className="text-3xl font-black text-white mt-3 mb-2">{product.title}</h1>
-                <p className="text-4xl font-black mb-4" style={{color: '#f59e0b'}}>£{product.price.toFixed(2)}</p>
+                <p className="text-4xl font-black mb-4" style={{color: '#fcd968'}}>£{product.price.toFixed(2)}</p>
                 <p className="text-sm text-gray-600 mb-4">👁️ {product.views} views</p>
                 <p className="text-gray-400 leading-relaxed mb-4">{product.description}</p>
               </div>

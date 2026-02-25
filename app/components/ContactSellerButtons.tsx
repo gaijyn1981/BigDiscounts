@@ -44,7 +44,7 @@ export default function ContactSellerButtons({ email, phone, paypalMe, price }: 
       )}
       <button onClick={() => handleClick('email')}
         className="block w-full text-center py-3 rounded-xl font-bold text-lg mb-2 transition-opacity hover:opacity-90"
-        style={{background: '#f59e0b', color: 'black'}}>
+        style={{background: '#fcd968', color: 'black'}}>
         ✉️ Contact Seller
       </button>
       <button onClick={() => handleClick('phone')}

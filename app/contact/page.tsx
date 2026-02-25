@@ -19,13 +19,13 @@ export default function ContactPage() {
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
+        <Link href="/" className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
         <Link href="/" className="text-gray-400 hover:text-white transition-colors">← Back to Home</Link>
       </nav>
 
       <div className="max-w-2xl mx-auto px-6 py-12">
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-black text-white mb-2">Contact <span style={{color: '#f59e0b'}}>Us</span></h1>
+          <h1 className="text-4xl font-black text-white mb-2">Contact <span style={{color: '#fcd968'}}>Us</span></h1>
           <p className="text-gray-500">We aim to respond within 24 hours.</p>
         </div>
 
@@ -37,7 +37,7 @@ export default function ContactPage() {
               <p className="text-gray-500 mb-6">We'll get back to you within 24 hours.</p>
               <Link href="/"
                 className="px-6 py-3 rounded-xl font-bold text-black inline-block"
-                style={{background: '#f59e0b'}}>
+                style={{background: '#fcd968'}}>
                 Back to Home
               </Link>
             </div>
@@ -77,7 +77,7 @@ export default function ContactPage() {
               </div>
               <button type="submit"
                 className="w-full py-3 rounded-xl font-black text-lg text-black transition-opacity hover:opacity-90"
-                style={{background: '#f59e0b'}}>
+                style={{background: '#fcd968'}}>
                 Send Message
               </button>
             </form>
@@ -87,7 +87,7 @@ export default function ContactPage() {
             <div className="rounded-xl p-4" style={{background: '#1a1a1a'}}>
               <p className="text-2xl mb-1">✉️</p>
               <p className="text-sm font-semibold text-white">Email</p>
-              <a href="mailto:hello@bigdiscounts.uk" style={{color: '#f59e0b'}} className="text-sm hover:opacity-80">hello@bigdiscounts.uk</a>
+              <a href="mailto:hello@bigdiscounts.uk" style={{color: '#fcd968'}} className="text-sm hover:opacity-80">hello@bigdiscounts.uk</a>
             </div>
             <div className="rounded-xl p-4" style={{background: '#1a1a1a'}}>
               <p className="text-2xl mb-1">⏰</p>

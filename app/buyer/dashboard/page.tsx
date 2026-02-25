@@ -45,14 +45,14 @@ export default function BuyerDashboard() {
 
   if (status === 'loading' || loading) return (
     <div className="min-h-screen flex items-center justify-center" style={{background: '#0a0a0a'}}>
-      <p style={{color: '#f59e0b'}} className="text-lg font-bold">Loading...</p>
+      <p style={{color: '#fcd968'}} className="text-lg font-bold">Loading...</p>
     </div>
   )
 
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <Link href="/buyer/dashboard" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
+        <Link href="/buyer/dashboard" className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
         <div className="flex items-center gap-4">
           <Link href="/browse" className="text-gray-400 hover:text-white transition-colors">Browse</Link>
           <Link href="/buyer/favourites" className="text-gray-400 hover:text-white transition-colors">❤️ Saved</Link>
@@ -74,7 +74,7 @@ export default function BuyerDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           <Link href="/browse"
             className="rounded-2xl p-8 flex items-center gap-6 hover:opacity-90 transition-opacity"
-            style={{background: '#111111', border: '2px solid #f59e0b'}}>
+            style={{background: '#111111', border: '2px solid #fcd968'}}>
             <span className="text-5xl">🔍</span>
             <div>
               <h2 className="text-xl font-black text-white mb-1">Browse Deals</h2>
@@ -113,7 +113,7 @@ export default function BuyerDashboard() {
                     <div className="p-4">
                       <h3 className="font-bold text-white truncate mb-1">{product.title}</h3>
                       <p className="text-gray-500 text-sm mb-1">{product.seller?.companyName}</p>
-                      <p className="text-xl font-black" style={{color: '#f59e0b'}}>£{product.price.toFixed(2)}</p>
+                      <p className="text-xl font-black" style={{color: '#fcd968'}}>£{product.price.toFixed(2)}</p>
                     </div>
                   </Link>
                 )
@@ -121,7 +121,7 @@ export default function BuyerDashboard() {
             </div>
             {favourites.length > 6 && (
               <div className="text-center mt-6">
-                <Link href="/buyer/favourites" style={{color: '#f59e0b'}} className="font-bold hover:opacity-80">
+                <Link href="/buyer/favourites" style={{color: '#fcd968'}} className="font-bold hover:opacity-80">
                   View all {favourites.length} saved products →
                 </Link>
               </div>
@@ -136,7 +136,7 @@ export default function BuyerDashboard() {
             <p className="text-gray-500 mb-6">Browse deals and save products you like!</p>
             <Link href="/browse"
               className="px-6 py-3 rounded-xl font-bold text-black inline-block"
-              style={{background: '#f59e0b'}}>
+              style={{background: '#fcd968'}}>
               Browse Deals
             </Link>
           </div>

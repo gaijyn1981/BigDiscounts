@@ -89,7 +89,7 @@ export default function Dashboard() {
 
   if (status === 'loading' || loading) return (
     <div className="min-h-screen flex items-center justify-center" style={{background: '#0a0a0a'}}>
-      <p style={{color: '#f59e0b'}} className="text-lg font-bold">Loading...</p>
+      <p style={{color: '#fcd968'}} className="text-lg font-bold">Loading...</p>
     </div>
   )
 
@@ -98,7 +98,7 @@ export default function Dashboard() {
       {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
 
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
+        <Link href="/" className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
         <div className="flex items-center gap-4">
           <span className="text-gray-400 text-sm">Welcome, {session?.user?.name}</span>
           <button onClick={() => signOut({ callbackUrl: '/' })} className="text-gray-500 hover:text-red-400 text-sm">Logout</button>
@@ -119,10 +119,10 @@ export default function Dashboard() {
 
         {featured && (
           <div className="rounded-xl px-6 py-4 mb-6 flex items-center gap-3"
-            style={{background: '#1a1400', border: '1px solid #f59e0b'}}>
+            style={{background: '#1a1400', border: '1px solid #fcd968'}}>
             <span className="text-2xl">⭐</span>
             <div>
-              <p className="font-bold" style={{color: '#f59e0b'}}>Listing featured successfully!</p>
+              <p className="font-bold" style={{color: '#fcd968'}}>Listing featured successfully!</p>
               <p className="text-yellow-600 text-sm">Your product will appear at the top of the browse page.</p>
             </div>
           </div>
@@ -139,8 +139,8 @@ export default function Dashboard() {
           </div>
         )}
 
-        <div className="rounded-xl p-4 mb-6" style={{background: '#1a1400', border: '1px solid #f59e0b'}}>
-          <p className="font-bold mb-1" style={{color: '#f59e0b'}}>📦 Seller Responsibilities</p>
+        <div className="rounded-xl p-4 mb-6" style={{background: '#1a1400', border: '1px solid #fcd968'}}>
+          <p className="font-bold mb-1" style={{color: '#fcd968'}}>📦 Seller Responsibilities</p>
           <p className="text-gray-400 text-sm">As a seller you are responsible for: shipping products to buyers, accepting returns within 14 days under UK Consumer Contracts Regulations 2013, and issuing refunds where applicable. BigDiscounts is not liable for any disputes between buyers and sellers.</p>
         </div>
 
@@ -149,12 +149,12 @@ export default function Dashboard() {
           <div className="flex gap-3">
             <Link href="/seller/profile"
               className="px-5 py-2 rounded-lg font-bold text-sm transition-opacity hover:opacity-80"
-              style={{background: '#1a1a1a', color: '#f59e0b', border: '1px solid #f59e0b'}}>
+              style={{background: '#1a1a1a', color: '#fcd968', border: '1px solid #fcd968'}}>
               Profile
             </Link>
             <Link href="/seller/products/new"
               className="px-5 py-2 rounded-lg font-bold text-sm text-black transition-opacity hover:opacity-90"
-              style={{background: '#f59e0b'}}>
+              style={{background: '#fcd968'}}>
               + Add Product
             </Link>
           </div>
@@ -165,7 +165,7 @@ export default function Dashboard() {
             <p className="text-gray-500 text-lg mb-4">You haven't listed any products yet.</p>
             <Link href="/seller/products/new"
               className="px-6 py-3 rounded-lg font-bold text-black"
-              style={{background: '#f59e0b'}}>
+              style={{background: '#fcd968'}}>
               List Your First Product
             </Link>
           </div>
@@ -173,13 +173,13 @@ export default function Dashboard() {
           <div className="space-y-4">
             {products.map(product => (
               <div key={product.id} className="rounded-xl p-6 flex justify-between items-center"
-                style={{background: '#111111', border: product.featured ? '2px solid #f59e0b' : '1px solid #222'}}>
+                style={{background: '#111111', border: product.featured ? '2px solid #fcd968' : '1px solid #222'}}>
                 <div>
                   <div className="flex items-center gap-2">
                     <h3 className="font-bold text-white text-lg">{product.title}</h3>
                     {product.featured && (
                       <span className="text-xs font-black px-2 py-1 rounded-full text-black"
-                        style={{background: '#f59e0b'}}>⭐ Featured</span>
+                        style={{background: '#fcd968'}}>⭐ Featured</span>
                     )}
                   </div>
                   <p className="text-gray-500 text-sm">£{product.price.toFixed(2)} · {product.category || 'No category'}</p>
@@ -204,7 +204,7 @@ export default function Dashboard() {
                   {product.active && !product.featured && (
                     <button onClick={() => featureProduct(product.id)}
                       className="px-4 py-2 rounded-lg text-sm font-black text-black hover:opacity-90"
-                      style={{background: '#f59e0b'}}>
+                      style={{background: '#fcd968'}}>
                       ⭐ Feature £3/mo
                     </button>
                   )}
@@ -220,13 +220,13 @@ export default function Dashboard() {
                     <button onClick={() => cancelSubscription(product.id, 'featured')}
                       disabled={cancelling === product.id + 'featured'}
                       className="px-4 py-2 rounded-lg text-sm font-bold hover:opacity-80 disabled:opacity-30"
-                      style={{background: '#1a1400', color: '#f59e0b', border: '1px solid #f59e0b'}}>
+                      style={{background: '#1a1400', color: '#fcd968', border: '1px solid #fcd968'}}>
                       {cancelling === product.id + 'featured' ? 'Cancelling...' : 'Cancel Feature'}
                     </button>
                   )}
                   <Link href={`/seller/products/${product.id}/edit`}
                     className="px-4 py-2 rounded-lg text-sm font-bold hover:opacity-80"
-                    style={{color: '#f59e0b'}}>
+                    style={{color: '#fcd968'}}>
                     Edit
                   </Link>
                   <button onClick={() => deleteProduct(product.id)}

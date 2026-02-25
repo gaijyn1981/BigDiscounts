@@ -4,7 +4,7 @@ export default function Terms() {
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <Link href="/" className="text-2xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
+        <Link href="/" className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
         <Link href="/" className="text-gray-400 hover:text-white transition-colors">← Back to Home</Link>
       </nav>
       <div className="max-w-3xl mx-auto px-6 py-12">
@@ -50,7 +50,7 @@ export default function Terms() {
             </section>
             <section>
               <h2 className="text-xl font-black text-white mb-2">10. Contact</h2>
-              <p>Email: <a href="mailto:legal@bigdiscounts.uk" style={{color: '#f59e0b'}} className="hover:opacity-80">legal@bigdiscounts.uk</a></p>
+              <p>Email: <a href="mailto:legal@bigdiscounts.uk" style={{color: '#fcd968'}} className="hover:opacity-80">legal@bigdiscounts.uk</a></p>
             </section>
           </div>
         </div>

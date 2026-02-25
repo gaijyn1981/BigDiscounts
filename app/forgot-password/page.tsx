@@ -28,10 +28,10 @@ export default function ForgotPassword() {
         <div className="rounded-2xl p-8" style={{background: '#111111', border: '1px solid #222'}}>
           <div className="text-5xl mb-4">📧</div>
           <h1 className="text-2xl font-black text-white mb-2">Check Your Email!</h1>
-          <p className="text-gray-400 mb-6">We sent a password reset link to <span style={{color: '#f59e0b'}}>{email}</span>.</p>
+          <p className="text-gray-400 mb-6">We sent a password reset link to <span style={{color: '#fcd968'}}>{email}</span>.</p>
           <Link href="/login"
             className="block w-full py-3 rounded-xl font-black text-lg text-black transition-opacity hover:opacity-90"
-            style={{background: '#f59e0b'}}>
+            style={{background: '#fcd968'}}>
             Back to Login
           </Link>
         </div>
@@ -43,7 +43,7 @@ export default function ForgotPassword() {
     <main className="min-h-screen flex items-center justify-center px-4" style={{background: '#0a0a0a'}}>
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/" className="text-3xl font-black" style={{color: '#f59e0b'}}>🇬🇧 BigDiscounts</Link>
+          <Link href="/" className="text-3xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
           <p className="text-gray-500 mt-2">Reset your password</p>
         </div>
         <div className="rounded-2xl p-8" style={{background: '#111111', border: '1px solid #222'}}>
@@ -59,13 +59,13 @@ export default function ForgotPassword() {
             {error && <p className="text-red-400 text-sm">{error}</p>}
             <button type="submit" disabled={loading}
               className="w-full py-3 rounded-xl font-black text-lg text-black transition-opacity hover:opacity-90 disabled:opacity-50"
-              style={{background: '#f59e0b'}}>
+              style={{background: '#fcd968'}}>
               {loading ? 'Sending...' : 'Send Reset Link'}
             </button>
           </form>
           <p className="text-center text-gray-500 mt-6 text-sm">
             Remember your password?{' '}
-            <Link href="/login" style={{color: '#f59e0b'}} className="font-bold hover:opacity-80">Sign in</Link>
+            <Link href="/login" style={{color: '#fcd968'}} className="font-bold hover:opacity-80">Sign in</Link>
           </p>
         </div>
       </div>
