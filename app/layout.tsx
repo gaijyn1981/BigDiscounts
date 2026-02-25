@@ -34,6 +34,7 @@ export default function RootLayout({
           {children}
           <CookieBanner />
           <GoogleAnalytics />
+          <SchemaMarkup />
         </Providers>
       </body>
     </html>

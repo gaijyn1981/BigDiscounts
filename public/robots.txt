@@ -1,2 +1,10 @@
 User-agent: *
-Disallow: /control-panel
+Allow: /
+Disallow: /api/
+Disallow: /seller/dashboard
+Disallow: /seller/products
+Disallow: /seller/profile
+Disallow: /buyer/dashboard
+Disallow: /admin
+
+Sitemap: https://www.bigdiscounts.uk/sitemap.xml
