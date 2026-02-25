@@ -4,6 +4,7 @@ import './globals.css'
 import Providers from './providers'
 import CookieBanner from './components/CookieBanner'
 import GoogleAnalytics from './components/GoogleAnalytics'
+import SchemaMarkup from './components/SchemaMarkup'
 
 const inter = Inter({ subsets: ['latin'] })
 
