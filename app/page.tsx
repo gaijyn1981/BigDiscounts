@@ -78,7 +78,8 @@ export default async function Home() {
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl font-black text-white text-center mb-2">Why sellers choose BigDiscounts</h2>
           <p className="text-gray-500 text-center mb-8">Stop losing profits to commissions. Keep everything you earn.</p>
-          <div className="rounded-2xl overflow-hidden" style={{border: '1px solid #2a2a2a'}}>
+          <div className="rounded-2xl overflow-hidden w-full" style={{border: '1px solid #2a2a2a'}}>
+            <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr style={{background: '#1a1a1a', borderBottom: '1px solid #2a2a2a'}}>
@@ -91,30 +92,31 @@ export default async function Home() {
               <tbody>
                 <tr style={{borderBottom: '1px solid #1a1a1a'}}>
                   <td className="px-6 py-4 text-gray-300 font-medium">Amazon</td>
-                  <td className="px-6 py-4 text-center text-gray-400">£25–39/mo</td>
-                  <td className="px-6 py-4 text-center text-red-400">15–20%</td>
-                  <td className="px-6 py-4 text-center text-gray-400">~80%</td>
+                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-gray-400">£25–39/mo</td>
+                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-red-400">15–20%</td>
+                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-gray-400">~80%</td>
                 </tr>
                 <tr style={{borderBottom: '1px solid #1a1a1a'}}>
                   <td className="px-6 py-4 text-gray-300 font-medium">eBay</td>
-                  <td className="px-6 py-4 text-center text-gray-400">£0</td>
-                  <td className="px-6 py-4 text-center text-red-400">10–15%</td>
-                  <td className="px-6 py-4 text-center text-gray-400">~85%</td>
+                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-gray-400">£0</td>
+                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-red-400">10–15%</td>
+                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-gray-400">~85%</td>
                 </tr>
                 <tr style={{borderBottom: '1px solid #1a1a1a'}}>
                   <td className="px-6 py-4 text-gray-300 font-medium">Etsy</td>
-                  <td className="px-6 py-4 text-center text-gray-400">£0</td>
-                  <td className="px-6 py-4 text-center text-red-400">6.5% + fees</td>
-                  <td className="px-6 py-4 text-center text-gray-400">~90%</td>
+                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-gray-400">£0</td>
+                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-red-400">6.5% + fees</td>
+                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-gray-400">~90%</td>
                 </tr>
                 <tr style={{background: '#1a1400'}}>
-                  <td className="px-6 py-4 font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</td>
-                  <td className="px-6 py-4 text-center font-black" style={{color: '#fcd968'}}>£1/month</td>
-                  <td className="px-6 py-4 text-center font-black text-green-400">0%</td>
-                  <td className="px-6 py-4 text-center font-black text-green-400">100%</td>
+                  <td className="px-3 py-4 md:px-6 font-black text-sm md:text-base" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</td>
+                  <td className="px-3 py-3 md:px-6 md:py-4 text-center font-black" style={{color: '#fcd968'}}>£1/month</td>
+                  <td className="px-3 py-3 md:px-6 md:py-4 text-center font-black text-green-400">0%</td>
+                  <td className="px-3 py-3 md:px-6 md:py-4 text-center font-black text-green-400">100%</td>
                 </tr>
               </tbody>
             </table>
+            </div>
           </div>
           <p className="text-gray-600 text-xs text-center mt-3">Based on typical marketplace fees. BigDiscounts charges no selling commission.</p>
           <div className="text-center mt-6">
