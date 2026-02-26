@@ -47,11 +47,11 @@ export default async function Home() {
             🇬🇧 The UK's Seller-First Marketplace
           </div>
           <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
-            Sell More.<br/>
-            <span style={{color: '#fcd968'}}>Pay Less.</span>
+            Thousands of UK Deals.<br/>
+            <span style={{color: '#fcd968'}}>Buy direct. Sell for £1/month.</span>
           </h1>
           <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-            List your products for just £1/month. No hidden fees. No commissions. Connect directly with UK buyers today.
+            Browse thousands of UK deals and contact sellers directly — or list your own products for just £1/month with 0% commission.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             {session?.user ? (
