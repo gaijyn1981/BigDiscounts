@@ -224,7 +224,7 @@ export default async function Home() {
           <div className="flex flex-wrap justify-between gap-8 mb-8">
             <div>
               <p className="text-2xl font-black mb-2" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</p>
-              <p className="text-gray-500 text-sm max-w-xs">The UK's seller-first marketplace. List products for just £1/month with 0% commission.</p>
+              <p className="text-gray-500 text-sm max-w-xs">Buy direct or sell for just £1/month. No commissions. No hidden fees.</p>
             </div>
             <div className="flex gap-12">
               <div>
