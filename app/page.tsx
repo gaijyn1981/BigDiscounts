@@ -36,9 +36,7 @@ export default async function Home() {
               </Link>
             </>
           ) : (
-            <>
-              <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
-            </>
+            <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
           )}
         </div>
       </nav>
@@ -46,7 +44,7 @@ export default async function Home() {
       <section className="px-6 py-24 text-center" style={{background: 'linear-gradient(180deg, #111111 0%, #0a0a0a 100%)'}}>
         <div className="max-w-4xl mx-auto">
           <div className="inline-block mb-6 px-4 py-2 rounded-full text-sm font-bold" style={{background: '#1a1400', border: '1px solid #fcd968', color: '#fcd968'}}>
-            🇬🇧 The UK's Premium Discount Marketplace
+            🇬🇧 The UK's Seller-First Marketplace
           </div>
           <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
             Sell More.<br/>
@@ -118,6 +116,7 @@ export default async function Home() {
               </tbody>
             </table>
           </div>
+          <p className="text-gray-600 text-xs text-center mt-3">Based on typical marketplace fees. BigDiscounts charges no selling commission.</p>
           <div className="text-center mt-6">
             <Link href="/register?type=seller" style={{background: '#fcd968'}}
               className="text-black px-8 py-3 rounded-xl font-black text-base hover:opacity-90 transition-opacity inline-block">
@@ -227,7 +226,7 @@ export default async function Home() {
           <div className="flex flex-wrap justify-between gap-8 mb-8">
             <div>
               <p className="text-2xl font-black mb-2" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</p>
-              <p className="text-gray-500 text-sm max-w-xs">The UK's premium discount marketplace. List products for just £1/month.</p>
+              <p className="text-gray-500 text-sm max-w-xs">The UK's seller-first marketplace. List products for just £1/month with 0% commission.</p>
             </div>
             <div className="flex gap-12">
               <div>
@@ -252,6 +251,7 @@ export default async function Home() {
           </div>
           <div style={{borderTop: '1px solid #1a1a1a'}} className="pt-6 text-center">
             <p className="text-gray-600 text-sm">hello@bigdiscounts.uk</p>
+            <p className="text-gray-600 text-xs mt-1">BigDiscounts is operated by [Your Name], Sole Trader, United Kingdom.</p>
             <p className="text-gray-700 text-xs mt-1">© 2026 BigDiscounts. All rights reserved.</p>
           </div>
         </div>

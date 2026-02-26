@@ -29,9 +29,7 @@ export default async function SellPage() {
               </Link>
             </>
           ) : (
-            <>
-              <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
-            </>
+            <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
           )}
         </div>
       </nav>
@@ -42,11 +40,11 @@ export default async function SellPage() {
             🇬🇧 UK-Based Marketplace
           </div>
           <h1 className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight">
-            Sell online for <span style={{color: '#fcd968'}}>£1/month.</span><br/>
-            Keep 100% of your profits.
+            Sell Online for <span style={{color: '#fcd968'}}>£1/Month.</span><br/>
+            Keep 100% of Every Sale.
           </h1>
           <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-            No commission. No hidden fees. Buyers contact you directly. The UK marketplace that works for sellers, not against them.
+            No commission. No hidden fees. Buyers contact you directly. The UK marketplace built for sellers, not shareholders.
           </p>
           <Link href="/register?type=seller" style={{background: '#fcd968'}}
             className="text-black px-10 py-4 rounded-xl font-black text-xl hover:opacity-90 transition-opacity inline-block">
@@ -98,6 +96,7 @@ export default async function SellPage() {
               </tbody>
             </table>
           </div>
+          <p className="text-gray-600 text-xs text-center mt-3">Based on typical marketplace fees. BigDiscounts charges no selling commission.</p>
         </div>
       </section>
 
@@ -155,7 +154,7 @@ export default async function SellPage() {
               { icon: '✅', text: 'No hidden fees — ever' },
               { icon: '💬', text: 'Buyers contact you directly' },
               { icon: '🔒', text: 'Secure Stripe payments' },
-              { icon: '📊', text: 'Your own seller dashboard' },
+              { icon: '📣', text: 'Actively promoted across Google & social media' },
               { icon: '❌', text: 'Cancel anytime, no contract' },
             ].map(item => (
               <div key={item.text} className="flex items-center gap-3 p-4 rounded-xl" style={{background: '#1a1a1a', border: '1px solid #2a2a2a'}}>
@@ -170,7 +169,7 @@ export default async function SellPage() {
       <section className="px-6 py-24 text-center" style={{background: '#0a0a0a'}}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl font-black text-white mb-4">Ready to start?</h2>
-          <p className="text-gray-400 mb-8 text-lg">Join UK sellers keeping 100% of their profits on BigDiscounts.</p>
+          <p className="text-gray-400 mb-8 text-lg">Join UK sellers keeping 100% of every sale on BigDiscounts.</p>
           <Link href="/register?type=seller" style={{background: '#fcd968'}}
             className="text-black px-10 py-4 rounded-xl font-black text-xl hover:opacity-90 transition-opacity inline-block">
             Create your seller account — £1/month
@@ -183,6 +182,7 @@ export default async function SellPage() {
         <div className="max-w-4xl mx-auto text-center">
           <Link href="/" className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
           <p className="text-gray-600 text-sm mt-3">hello@bigdiscounts.uk</p>
+          <p className="text-gray-600 text-xs mt-1">BigDiscounts is operated by [Your Name], Sole Trader, United Kingdom.</p>
           <p className="text-gray-700 text-xs mt-1">© 2026 BigDiscounts. All rights reserved.</p>
         </div>
       </footer>
