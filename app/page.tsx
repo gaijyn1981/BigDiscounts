@@ -15,14 +15,16 @@ export default async function Home() {
   const totalProducts = await prisma.product.count({ where: { active: true } })
   const totalSellers = await prisma.seller.count()
 
+  const showCounters = totalSellers >= 50
+
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
         <Link href="/" className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
         <div className="flex gap-4 items-center">
           <Link href="/browse" className="text-gray-400 hover:text-white transition-colors">Browse</Link>
-          
-          
+          <Link href="/sell" className="text-gray-400 hover:text-white transition-colors">Sell</Link>
+
           {session?.user ? (
             <>
               <Link href="/seller/dashboard"
@@ -79,22 +81,75 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="px-6 py-12" style={{background: '#111111', borderTop: '1px solid #1a1a1a', borderBottom: '1px solid #1a1a1a'}}>
-        <div className="max-w-4xl mx-auto grid grid-cols-3 gap-8 text-center">
-          <div>
-            <p className="text-4xl font-black" style={{color: '#fcd968'}}>{totalProducts}+</p>
-            <p className="text-gray-400 mt-1">Active Listings</p>
+      <section className="px-6 py-14" style={{background: '#0a0a0a'}}>
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-2xl font-black text-white text-center mb-2">Why sellers choose BigDiscounts</h2>
+          <p className="text-gray-500 text-center mb-8">Stop losing profits to commissions. Keep everything you earn.</p>
+          <div className="rounded-2xl overflow-hidden" style={{border: '1px solid #2a2a2a'}}>
+            <table className="w-full text-sm">
+              <thead>
+                <tr style={{background: '#1a1a1a', borderBottom: '1px solid #2a2a2a'}}>
+                  <th className="text-left px-6 py-4 text-gray-400 font-bold">Platform</th>
+                  <th className="text-center px-6 py-4 text-gray-400 font-bold">Monthly Fee</th>
+                  <th className="text-center px-6 py-4 text-gray-400 font-bold">Commission</th>
+                  <th className="text-center px-6 py-4 text-gray-400 font-bold">You Keep</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style={{borderBottom: '1px solid #1a1a1a'}}>
+                  <td className="px-6 py-4 text-gray-300 font-medium">Amazon</td>
+                  <td className="px-6 py-4 text-center text-gray-400">£25–39/mo</td>
+                  <td className="px-6 py-4 text-center text-red-400">15–20%</td>
+                  <td className="px-6 py-4 text-center text-gray-400">~80%</td>
+                </tr>
+                <tr style={{borderBottom: '1px solid #1a1a1a'}}>
+                  <td className="px-6 py-4 text-gray-300 font-medium">eBay</td>
+                  <td className="px-6 py-4 text-center text-gray-400">£0</td>
+                  <td className="px-6 py-4 text-center text-red-400">10–15%</td>
+                  <td className="px-6 py-4 text-center text-gray-400">~85%</td>
+                </tr>
+                <tr style={{borderBottom: '1px solid #1a1a1a'}}>
+                  <td className="px-6 py-4 text-gray-300 font-medium">Etsy</td>
+                  <td className="px-6 py-4 text-center text-gray-400">£0</td>
+                  <td className="px-6 py-4 text-center text-red-400">6.5% + fees</td>
+                  <td className="px-6 py-4 text-center text-gray-400">~90%</td>
+                </tr>
+                <tr style={{background: '#1a1400'}}>
+                  <td className="px-6 py-4 font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</td>
+                  <td className="px-6 py-4 text-center font-black" style={{color: '#fcd968'}}>£1/month</td>
+                  <td className="px-6 py-4 text-center font-black text-green-400">0%</td>
+                  <td className="px-6 py-4 text-center font-black text-green-400">100%</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div>
-            <p className="text-4xl font-black" style={{color: '#fcd968'}}>{totalSellers}+</p>
-            <p className="text-gray-400 mt-1">UK Sellers</p>
-          </div>
-          <div>
-            <p className="text-4xl font-black" style={{color: '#fcd968'}}>£1</p>
-            <p className="text-gray-400 mt-1">Per Month</p>
+          <div className="text-center mt-6">
+            <Link href="/register?type=seller" style={{background: '#fcd968'}}
+              className="text-black px-8 py-3 rounded-xl font-black text-base hover:opacity-90 transition-opacity inline-block">
+              Start Selling — £1/month →
+            </Link>
           </div>
         </div>
       </section>
+
+      {showCounters && (
+        <section className="px-6 py-12" style={{background: '#111111', borderTop: '1px solid #1a1a1a', borderBottom: '1px solid #1a1a1a'}}>
+          <div className="max-w-4xl mx-auto grid grid-cols-3 gap-8 text-center">
+            <div>
+              <p className="text-4xl font-black" style={{color: '#fcd968'}}>{totalProducts}+</p>
+              <p className="text-gray-400 mt-1">Active Listings</p>
+            </div>
+            <div>
+              <p className="text-4xl font-black" style={{color: '#fcd968'}}>{totalSellers}+</p>
+              <p className="text-gray-400 mt-1">UK Sellers</p>
+            </div>
+            <div>
+              <p className="text-4xl font-black" style={{color: '#fcd968'}}>£1</p>
+              <p className="text-gray-400 mt-1">Per Month</p>
+            </div>
+          </div>
+        </section>
+      )}
 
       {recentProducts.length > 0 && (
         <section className="px-6 py-16">
@@ -157,7 +212,7 @@ export default async function Home() {
       <section className="px-6 py-20 text-center" style={{background: '#0a0a0a'}}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl font-black text-white mb-4">Ready to Start Selling?</h2>
-          <p className="text-gray-400 mb-8 text-lg">Join hundreds of UK sellers already using BigDiscounts.</p>
+          <p className="text-gray-400 mb-8 text-lg">Join UK sellers already using BigDiscounts.</p>
           {session?.user ? (
             <Link href="/seller/dashboard" style={{background: '#fcd968'}}
               className="text-black px-10 py-4 rounded-xl font-black text-xl hover:opacity-90 transition-opacity inline-block">
@@ -184,6 +239,7 @@ export default async function Home() {
                 <p className="text-white font-bold mb-3">Site</p>
                 <div className="space-y-2">
                   <Link href="/browse" className="block text-gray-500 hover:text-white text-sm">Browse</Link>
+                  <Link href="/sell" className="block text-gray-500 hover:text-white text-sm">Start Selling</Link>
                   <Link href="/about" className="block text-gray-500 hover:text-white text-sm">About Us</Link>
                   <Link href="/contact" className="block text-gray-500 hover:text-white text-sm">Contact Us</Link>
                 </div>
