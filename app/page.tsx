@@ -191,7 +191,7 @@ export default async function Home() {
                   </div>
                 </div>
               </div>
-              <Link href="/browse" className="inline-block mt-8 px-6 py-3 rounded-xl font-black hover:opacity-90 transition-opacity" style={{background: '#fcd968'}} className="inline-block mt-8 px-6 py-3 rounded-xl font-black text-black hover:opacity-90 transition-opacity">
+              <Link href="/browse" className="inline-block mt-8 px-6 py-3 rounded-xl font-black text-black hover:opacity-90 transition-opacity" style={{background: '#fcd968'}}>
                 Browse Deals →
               </Link>
             </div>
