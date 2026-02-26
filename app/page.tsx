@@ -40,8 +40,6 @@ export default async function Home() {
           ) : (
             <>
               <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
-              <Link href="/register" style={{background: '#fcd968'}} className="text-black px-5 py-2 rounded-lg font-bold hover:opacity-90 transition-opacity">
-                Get Started
               </Link>
             </>
           )}
