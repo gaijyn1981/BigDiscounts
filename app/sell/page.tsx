@@ -31,7 +31,6 @@ export default async function SellPage() {
           ) : (
             <>
               <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
-              </Link>
             </>
           )}
         </div>

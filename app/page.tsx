@@ -24,11 +24,9 @@ export default async function Home() {
         <div className="flex gap-4 items-center">
           <Link href="/browse" className="text-gray-400 hover:text-white transition-colors">Browse</Link>
           <Link href="/sell" className="text-gray-400 hover:text-white transition-colors">Sell</Link>
-
           {session?.user ? (
             <>
-              <Link href="/seller/dashboard"
-                className="text-gray-400 hover:text-white transition-colors text-sm">
+              <Link href="/seller/dashboard" className="text-gray-400 hover:text-white transition-colors text-sm">
                 Hi, {session.user.name?.split(' ')[0]}
               </Link>
               <Link href="/seller/dashboard"
@@ -40,7 +38,6 @@ export default async function Home() {
           ) : (
             <>
               <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
-              </Link>
             </>
           )}
         </div>
