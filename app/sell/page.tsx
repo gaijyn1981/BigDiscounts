@@ -106,7 +106,7 @@ export default async function SellPage() {
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-black text-white mb-12">Start selling in 3 simple steps</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-6 rounded-2xl" style={{background: '#1a1a1a', border: '1px solid #2a2a2a'}}>
+            <div className="p-6 rounded-2xl" style={{background: '#1a1a1a', border: '1px solid #fcd968'}}>
               <div className="text-4xl mb-4">👤</div>
               <h3 className="text-xl font-black text-white mb-2">1. Create your account</h3>
               <p className="text-gray-400">Register as a seller in under 2 minutes. No approval needed.</p>
@@ -116,7 +116,7 @@ export default async function SellPage() {
               <h3 className="text-xl font-black text-white mb-2">2. List your products</h3>
               <p className="text-gray-400">Add photos, description and price. Your listing goes live instantly.</p>
             </div>
-            <div className="p-6 rounded-2xl" style={{background: '#1a1a1a', border: '1px solid #2a2a2a'}}>
+            <div className="p-6 rounded-2xl" style={{background: '#1a1a1a', border: '1px solid #fcd968'}}>
               <div className="text-4xl mb-4">💰</div>
               <h3 className="text-xl font-black text-white mb-2">3. Get paid in full</h3>
               <p className="text-gray-400">Buyers contact you directly. You handle payment your way. We take nothing.</p>
