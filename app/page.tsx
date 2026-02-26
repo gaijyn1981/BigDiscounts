@@ -200,21 +200,22 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="px-6 py-20 text-center" style={{background: '#0a0a0a'}}>
+      <section className="px-6 py-24 text-center" style={{background: '#0a0a0a'}}>
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-4xl font-black text-white mb-4">Ready to Start Selling?</h2>
-          <p className="text-gray-400 mb-8 text-lg">Join UK sellers already using BigDiscounts.</p>
-          {session?.user ? (
-            <Link href="/seller/dashboard" style={{background: '#fcd968'}}
-              className="text-black px-10 py-4 rounded-xl font-black text-xl hover:opacity-90 transition-opacity inline-block">
-              Go to Dashboard
-            </Link>
-          ) : (
-            <Link href="/register?type=seller" style={{background: '#fcd968'}}
-              className="text-black px-10 py-4 rounded-xl font-black text-xl hover:opacity-90 transition-opacity inline-block">
-              Start for £1/month
-            </Link>
-          )}
+          <h2 className="text-4xl md:text-5xl font-black text-white mb-8 leading-tight">
+            A Smarter Way to Buy and Sell in the UK.
+          </h2>
+          <p className="text-gray-400 text-lg mb-12 leading-relaxed">
+            BigDiscounts is a transparent marketplace where buyers and businesses connect directly — without unnecessary mark-ups or hidden barriers.
+          </p>
+          <div className="space-y-3 mb-12">
+            <p className="text-white font-bold text-lg">Designed for fairness.</p>
+            <p className="text-white font-bold text-lg">Built for visibility.</p>
+            <p className="text-white font-bold text-lg">Grounded in trust.</p>
+          </div>
+          <p className="text-gray-500 text-base italic">
+            A marketplace that puts people before platforms — always.
+          </p>
         </div>
       </section>
 
