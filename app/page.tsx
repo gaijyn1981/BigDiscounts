@@ -166,21 +166,21 @@ export default async function Home() {
             </div>
 
             {/* For Buyers */}
-            <div className="p-8 rounded-2xl" style={{background: '#1a1a1a', border: '1px solid #2a2a2a'}}>
-              <p className="text-sm font-bold mb-6 inline-block px-3 py-1 rounded-full" style={{background: '#0a1a0a', color: '#4ade80', border: '1px solid #4ade80'}}>For Buyers</p>
+            <div className="p-8 rounded-2xl" style={{background: '#1a1a1a', border: '1px solid #fcd968'}}>
+              <p className="text-sm font-bold mb-6 inline-block px-3 py-1 rounded-full" style={{background: '#1a1400', color: '#fcd968', border: '1px solid #fcd968'}}>For Buyers</p>
               <div className="space-y-6">
                 <div className="flex gap-4 items-start">
                   <span className="text-2xl">🔍</span>
                   <div>
                     <p className="font-black text-white mb-1">1. Browse UK deals</p>
-                    <p className="text-gray-400 text-sm">Discover thousands of products from independent UK sellers.</p>
+                    <p className="text-gray-400 text-sm">Discover thousands of products from UK sellers and businesses.</p>
                   </div>
                 </div>
                 <div className="flex gap-4 items-start">
                   <span className="text-2xl">💬</span>
                   <div>
                     <p className="font-black text-white mb-1">2. Contact sellers directly</p>
-                    <p className="text-gray-400 text-sm">No middleman. Talk directly to the seller and agree a deal.</p>
+                    <p className="text-gray-400 text-sm">No middleman. Contact the seller directly and pay securely via PayPal.</p>
                   </div>
                 </div>
                 <div className="flex gap-4 items-start">
@@ -191,7 +191,7 @@ export default async function Home() {
                   </div>
                 </div>
               </div>
-              <Link href="/browse" className="inline-block mt-8 px-6 py-3 rounded-xl font-black hover:opacity-90 transition-opacity" style={{background: '#1a1a1a', border: '1px solid #4ade80', color: '#4ade80'}}>
+              <Link href="/browse" className="inline-block mt-8 px-6 py-3 rounded-xl font-black hover:opacity-90 transition-opacity" style={{background: '#fcd968'}} className="inline-block mt-8 px-6 py-3 rounded-xl font-black text-black hover:opacity-90 transition-opacity">
                 Browse Deals →
               </Link>
             </div>
