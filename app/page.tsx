@@ -130,24 +130,72 @@ export default async function Home() {
       )}
 
       <section className="px-6 py-16" style={{background: '#111111'}}>
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-black text-white mb-12">How It Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-6 rounded-2xl" style={{background: '#1a1a1a', border: '1px solid #2a2a2a'}}>
-              <div className="text-4xl mb-4">📝</div>
-              <h3 className="text-xl font-black text-white mb-2">1. List Your Product</h3>
-              <p className="text-gray-400">Create your listing in minutes with photos, description and price.</p>
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl font-black text-white text-center mb-12">How It Works</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            {/* For Sellers */}
+            <div className="p-8 rounded-2xl" style={{background: '#1a1a1a', border: '1px solid #fcd968'}}>
+              <p className="text-sm font-bold mb-6 inline-block px-3 py-1 rounded-full" style={{background: '#1a1400', color: '#fcd968', border: '1px solid #fcd968'}}>For Sellers</p>
+              <div className="space-y-6">
+                <div className="flex gap-4 items-start">
+                  <span className="text-2xl">📝</span>
+                  <div>
+                    <p className="font-black text-white mb-1">1. List your products</p>
+                    <p className="text-gray-400 text-sm">Create your listing in minutes with photos, description and price.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4 items-start">
+                  <span className="text-2xl">💳</span>
+                  <div>
+                    <p className="font-black text-white mb-1">2. Pay just £1/month</p>
+                    <p className="text-gray-400 text-sm">Activate your listing with our simple £1/month subscription.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4 items-start">
+                  <span className="text-2xl">💰</span>
+                  <div>
+                    <p className="font-black text-white mb-1">3. Keep 100% of every sale</p>
+                    <p className="text-gray-400 text-sm">Buyers contact you directly. No commission, no middleman.</p>
+                  </div>
+                </div>
+              </div>
+              <Link href="/sell" className="inline-block mt-8 px-6 py-3 rounded-xl font-black text-black hover:opacity-90 transition-opacity" style={{background: '#fcd968'}}>
+                Start Selling — £1/mo →
+              </Link>
             </div>
-            <div className="p-6 rounded-2xl" style={{background: '#1a1a1a', border: '1px solid #fcd968'}}>
-              <div className="text-4xl mb-4">💳</div>
-              <h3 className="text-xl font-black text-white mb-2">2. Pay Just £1/mo</h3>
-              <p className="text-gray-400">Activate your listing with our simple £1/month subscription.</p>
+
+            {/* For Buyers */}
+            <div className="p-8 rounded-2xl" style={{background: '#1a1a1a', border: '1px solid #2a2a2a'}}>
+              <p className="text-sm font-bold mb-6 inline-block px-3 py-1 rounded-full" style={{background: '#0a1a0a', color: '#4ade80', border: '1px solid #4ade80'}}>For Buyers</p>
+              <div className="space-y-6">
+                <div className="flex gap-4 items-start">
+                  <span className="text-2xl">🔍</span>
+                  <div>
+                    <p className="font-black text-white mb-1">1. Browse UK deals</p>
+                    <p className="text-gray-400 text-sm">Discover thousands of products from independent UK sellers.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4 items-start">
+                  <span className="text-2xl">💬</span>
+                  <div>
+                    <p className="font-black text-white mb-1">2. Contact sellers directly</p>
+                    <p className="text-gray-400 text-sm">No middleman. Talk directly to the seller and agree a deal.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4 items-start">
+                  <span className="text-2xl">🎉</span>
+                  <div>
+                    <p className="font-black text-white mb-1">3. No buyer fees, ever</p>
+                    <p className="text-gray-400 text-sm">Free to browse and buy. No hidden charges, no platform fees.</p>
+                  </div>
+                </div>
+              </div>
+              <Link href="/browse" className="inline-block mt-8 px-6 py-3 rounded-xl font-black hover:opacity-90 transition-opacity" style={{background: '#1a1a1a', border: '1px solid #4ade80', color: '#4ade80'}}>
+                Browse Deals →
+              </Link>
             </div>
-            <div className="p-6 rounded-2xl" style={{background: '#1a1a1a', border: '1px solid #2a2a2a'}}>
-              <div className="text-4xl mb-4">🤝</div>
-              <h3 className="text-xl font-black text-white mb-2">3. Connect & Sell</h3>
-              <p className="text-gray-400">Buyers contact you directly. No middleman, no commission.</p>
-            </div>
+
           </div>
         </div>
       </section>
