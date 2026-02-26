@@ -182,7 +182,7 @@ export default async function SellPage() {
         <div className="max-w-4xl mx-auto text-center">
           <Link href="/" className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
           <p className="text-gray-600 text-sm mt-3">hello@bigdiscounts.uk</p>
-          <p className="text-gray-600 text-xs mt-1">BigDiscounts is operated by [Your Name], Sole Trader, United Kingdom.</p>
+          <p className="text-gray-600 text-xs mt-1">BigDiscounts is operated by Petrica Marin, Sole Trader, United Kingdom.</p>
           <p className="text-gray-700 text-xs mt-1">© 2026 BigDiscounts. All rights reserved.</p>
         </div>
       </footer>
