@@ -102,15 +102,25 @@ export default function EditProductPage() {
             <select name="category" value={form.category} onChange={update}
               className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
               style={{background: '#1a1a1a', border: '1px solid #333'}}>
-              <option value="">Select</option>
-              <option value="Electronics">Electronics</option>
-              <option value="Clothing">Clothing</option>
-              <option value="Home & Garden">Home & Garden</option>
-              <option value="Sports">Sports</option>
-              <option value="Toys">Toys</option>
-              <option value="Books">Books</option>
-              <option value="Food & Drink">Food & Drink</option>
+                            <option value="">Select</option>
+              <option value="Electronics & Tech">Electronics & Tech</option>
+              <option value="Phone & Accessories">Phone & Accessories</option>
+              <option value="Clothing & Fashion">Clothing & Fashion</option>
+              <option value="Home & Living">Home & Living</option>
+              <option value="Garden & Outdoor">Garden & Outdoor</option>
+              <option value="Pets">Pets</option>
+              <option value="Baby & Kids">Baby & Kids</option>
               <option value="Health & Beauty">Health & Beauty</option>
+              <option value="Toys & Games">Toys & Games</option>
+              <option value="Sports & Fitness">Sports & Fitness</option>
+              <option value="Food & Drink">Food & Drink</option>
+              <option value="Books & Stationery">Books & Stationery</option>
+              <option value="Tools & DIY">Tools & DIY</option>
+              <option value="Automotive">Automotive</option>
+              <option value="Arts & Crafts">Arts & Crafts</option>
+              <option value="Office & Business">Office & Business</option>
+              <option value="Gifts & Seasonal">Gifts & Seasonal</option>
+              <option value="Cleaning & Household">Cleaning & Household</option>
               <option value="Other">Other</option>
             </select>
           </div>
