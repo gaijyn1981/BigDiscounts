@@ -66,67 +66,14 @@ export default async function Home() {
               </Link>
             )}
             <Link href="/browse"
-              className="text-white px-8 py-4 rounded-xl font-black text-lg transition-colors"
-              style={{background: '#1a1a1a', border: '1px solid #333'}}>
+              className="text-black px-8 py-4 rounded-xl font-black text-lg hover:opacity-90 transition-opacity"
+              style={{background: '#fcd968'}}>
               Browse Deals
             </Link>
           </div>
         </div>
       </section>
 
-      <section className="px-6 py-14" style={{background: '#0a0a0a'}}>
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl font-black text-white text-center mb-2">Why sellers choose BigDiscounts</h2>
-          <p className="text-gray-500 text-center mb-8">Stop losing profits to commissions. Keep everything you earn.</p>
-          <div className="rounded-2xl overflow-hidden w-full" style={{border: '1px solid #2a2a2a'}}>
-            <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr style={{background: '#1a1a1a', borderBottom: '1px solid #2a2a2a'}}>
-                  <th className="text-left px-6 py-4 text-gray-400 font-bold">Platform</th>
-                  <th className="text-center px-6 py-4 text-gray-400 font-bold">Monthly Fee</th>
-                  <th className="text-center px-6 py-4 text-gray-400 font-bold">Commission</th>
-                  <th className="text-center px-6 py-4 text-gray-400 font-bold">You Keep</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style={{borderBottom: '1px solid #1a1a1a'}}>
-                  <td className="px-6 py-4 text-gray-300 font-medium">Amazon</td>
-                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-gray-400">£25–39/mo</td>
-                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-red-400">15–20%</td>
-                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-gray-400">~80%</td>
-                </tr>
-                <tr style={{borderBottom: '1px solid #1a1a1a'}}>
-                  <td className="px-6 py-4 text-gray-300 font-medium">eBay</td>
-                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-gray-400">£0</td>
-                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-red-400">10–15%</td>
-                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-gray-400">~85%</td>
-                </tr>
-                <tr style={{borderBottom: '1px solid #1a1a1a'}}>
-                  <td className="px-6 py-4 text-gray-300 font-medium">Etsy</td>
-                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-gray-400">£0</td>
-                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-red-400">6.5% + fees</td>
-                  <td className="px-3 py-3 md:px-6 md:py-4 text-center text-gray-400">~90%</td>
-                </tr>
-                <tr style={{background: '#1a1400'}}>
-                  <td className="px-3 py-4 md:px-6 font-black text-sm md:text-base" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</td>
-                  <td className="px-3 py-3 md:px-6 md:py-4 text-center font-black" style={{color: '#fcd968'}}>£1/month</td>
-                  <td className="px-3 py-3 md:px-6 md:py-4 text-center font-black text-green-400">0%</td>
-                  <td className="px-3 py-3 md:px-6 md:py-4 text-center font-black text-green-400">100%</td>
-                </tr>
-              </tbody>
-            </table>
-            </div>
-          </div>
-          <p className="text-gray-600 text-xs text-center mt-3">Based on typical marketplace fees. BigDiscounts charges no selling commission.</p>
-          <div className="text-center mt-6">
-            <Link href="/register?type=seller" style={{background: '#fcd968'}}
-              className="text-black px-8 py-3 rounded-xl font-black text-base hover:opacity-90 transition-opacity inline-block">
-              Start Selling — £1/month →
-            </Link>
-          </div>
-        </div>
-      </section>
 
       {showCounters && (
         <section className="px-6 py-12" style={{background: '#111111', borderTop: '1px solid #1a1a1a', borderBottom: '1px solid #1a1a1a'}}>
