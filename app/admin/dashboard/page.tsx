@@ -42,6 +42,9 @@ export default function AdminDashboard() {
   const [sellers, setSellers] = useState<Seller[]>([])
   const [loading, setLoading] = useState(true)
   const [tab, setTab] = useState<'products' | 'sellers'>('products')
+  const [editingSeller, setEditingSeller] = useState<Seller | null>(null)
+  const [editForm, setEditForm] = useState({ companyName: '', contactName: '', email: '', phone: '' })
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     Promise.all([
@@ -71,6 +74,29 @@ export default function AdminDashboard() {
     setSellers(sellers.map(s => s.id === id ? { ...s, verified: !verified } : s))
   }
 
+  function openEditSeller(seller: Seller) {
+    setEditingSeller(seller)
+    setEditForm({
+      companyName: seller.companyName,
+      contactName: seller.contactName,
+      email: seller.email,
+      phone: seller.phone,
+    })
+  }
+
+  async function saveEditSeller() {
+    if (!editingSeller) return
+    setSaving(true)
+    await fetch(`/api/admin/sellers/${editingSeller.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(editForm)
+    })
+    setSellers(sellers.map(s => s.id === editingSeller.id ? { ...s, ...editForm } : s))
+    setSaving(false)
+    setEditingSeller(null)
+  }
+
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center" style={{background: '#0a0a0a'}}>
       <p style={{color: '#fcd968'}} className="text-lg font-bold">Loading...</p>
@@ -86,6 +112,53 @@ export default function AdminDashboard() {
         <span className="text-gray-400 font-semibold">Admin Dashboard</span>
         <a href="/logout" className="text-sm font-bold px-4 py-2 rounded-lg" style={{background: '#1a1a1a', color: '#f87171', border: '1px solid #f87171'}}>Logout</a>
       </nav>
+
+      {/* Edit Seller Modal */}
+      {editingSeller && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4" style={{background: 'rgba(0,0,0,0.8)'}}>
+          <div className="w-full max-w-md rounded-2xl p-8" style={{background: '#111111', border: '1px solid #fcd968'}}>
+            <h2 className="text-xl font-black text-white mb-6">Edit Seller</h2>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-400 mb-1">Company Name</label>
+                <input value={editForm.companyName} onChange={e => setEditForm({...editForm, companyName: e.target.value})}
+                  className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
+                  style={{background: '#1a1a1a', border: '1px solid #333'}} />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-400 mb-1">Contact Name</label>
+                <input value={editForm.contactName} onChange={e => setEditForm({...editForm, contactName: e.target.value})}
+                  className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
+                  style={{background: '#1a1a1a', border: '1px solid #333'}} />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-400 mb-1">Email</label>
+                <input value={editForm.email} onChange={e => setEditForm({...editForm, email: e.target.value})}
+                  className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
+                  style={{background: '#1a1a1a', border: '1px solid #333'}} />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-400 mb-1">Phone</label>
+                <input value={editForm.phone} onChange={e => setEditForm({...editForm, phone: e.target.value})}
+                  className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
+                  style={{background: '#1a1a1a', border: '1px solid #333'}} />
+              </div>
+            </div>
+            <div className="flex gap-3 mt-8">
+              <button onClick={saveEditSeller} disabled={saving}
+                className="flex-1 py-3 rounded-xl font-black text-black hover:opacity-90 transition-opacity"
+                style={{background: '#fcd968'}}>
+                {saving ? 'Saving...' : 'Save Changes'}
+              </button>
+              <button onClick={() => setEditingSeller(null)}
+                className="flex-1 py-3 rounded-xl font-bold text-gray-400 hover:opacity-80"
+                style={{background: '#1a1a1a', border: '1px solid #333'}}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="max-w-6xl mx-auto px-6 py-10">
         <h1 className="text-3xl font-black text-white mb-8">Admin Overview</h1>
@@ -160,7 +233,7 @@ export default function AdminDashboard() {
                     <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Seller</th>
                     <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Price</th>
                     <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Status</th>
-                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Action</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -182,10 +255,17 @@ export default function AdminDashboard() {
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        <button onClick={() => deleteProduct(product.id)}
-                          className="text-red-400 hover:opacity-80 font-semibold text-sm">
-                          Delete
-                        </button>
+                        <div className="flex gap-3">
+                          <Link href={`/seller/products/${product.id}/edit`}
+                            className="text-sm font-semibold hover:opacity-80"
+                            style={{color: '#fcd968'}}>
+                            Edit
+                          </Link>
+                          <button onClick={() => deleteProduct(product.id)}
+                            className="text-red-400 hover:opacity-80 font-semibold text-sm">
+                            Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -208,7 +288,7 @@ export default function AdminDashboard() {
                     <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Contact</th>
                     <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Listings</th>
                     <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Status</th>
-                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Action</th>
+                    <th className="text-left px-6 py-3 text-sm font-bold text-gray-500">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -230,11 +310,18 @@ export default function AdminDashboard() {
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        <button onClick={() => toggleVerified(seller.id, seller.verified)}
-                          className="text-sm font-semibold hover:opacity-80"
-                          style={{color: seller.verified ? '#f87171' : '#fcd968'}}>
-                          {seller.verified ? 'Unverify' : 'Verify'}
-                        </button>
+                        <div className="flex gap-3">
+                          <button onClick={() => openEditSeller(seller)}
+                            className="text-sm font-semibold hover:opacity-80"
+                            style={{color: '#fcd968'}}>
+                            Edit
+                          </button>
+                          <button onClick={() => toggleVerified(seller.id, seller.verified)}
+                            className="text-sm font-semibold hover:opacity-80"
+                            style={{color: seller.verified ? '#f87171' : '#4ade80'}}>
+                            {seller.verified ? 'Unverify' : 'Verify'}
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
