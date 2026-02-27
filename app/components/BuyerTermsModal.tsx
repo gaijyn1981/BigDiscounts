@@ -20,7 +20,7 @@ export default function BuyerTermsModal({ onAccept, onDecline }: Props) {
           <li className="flex gap-2"><span style={{color: '#fcd968'}}>•</span> Transactions are directly between you and the seller</li>
           <li className="flex gap-2"><span style={{color: '#fcd968'}}>•</span> BigDiscounts is not responsible for payments or disputes</li>
           <li className="flex gap-2"><span style={{color: '#fcd968'}}>•</span> You have a 14-day return right under UK Consumer Contracts Regulations</li>
-          <li className="flex gap-2"><span style={{color: '#fcd968'}}>•</span> Sellers are responsible for shipping and returns</li>
+          <li className="flex gap-2"><span style={{color: '#fcd968'}}>•</span> Sellers are responsible for delivery. Buyers have 14 days to return items; sellers must refund within 14 days of receiving the return.</li>
         </ul>
         <label className="flex items-center gap-3 mb-6 cursor-pointer">
           <input type="checkbox" checked={checked} onChange={e => setChecked(e.target.checked)}

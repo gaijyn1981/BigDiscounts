@@ -30,7 +30,7 @@ export default function Terms() {
             </section>
             <section>
               <h2 className="text-xl font-black text-white mb-2">5. Returns & Refunds</h2>
-              <p>Under UK Consumer Contracts Regulations 2013, buyers have the right to cancel within 14 days of receiving goods. Sellers are responsible for accepting returns and issuing refunds. BigDiscounts is not responsible for enforcing returns between buyers and sellers.</p>
+              <p>Under UK Consumer Contracts Regulations 2013, buyers have the right to cancel within 14 days of receiving goods. Sellers are responsible for delivery and issuing refunds within 14 days of receiving a return. Buyers are responsible for returning items within 14 days of receipt. BigDiscounts is not responsible for enforcing returns between buyers and sellers.</p>
             </section>
             <section>
               <h2 className="text-xl font-black text-white mb-2">6. Prohibited Content</h2>
