@@ -71,27 +71,6 @@ export default function BuyerDashboard() {
           <p className="text-gray-500">Browse deals or check your saved products.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-          <Link href="/browse"
-            className="rounded-2xl p-8 flex items-center gap-6 hover:opacity-90 transition-opacity"
-            style={{background: '#111111', border: '2px solid #fcd968'}}>
-            <span className="text-5xl">🔍</span>
-            <div>
-              <h2 className="text-xl font-black text-white mb-1">Browse Deals</h2>
-              <p className="text-gray-400 text-sm">Discover the latest products from UK sellers.</p>
-            </div>
-          </Link>
-          <Link href="/buyer/favourites"
-            className="rounded-2xl p-8 flex items-center gap-6 hover:opacity-90 transition-opacity"
-            style={{background: '#111111', border: '1px solid #333'}}>
-            <span className="text-5xl">❤️</span>
-            <div>
-              <h2 className="text-xl font-black text-white mb-1">Saved Products</h2>
-              <p className="text-gray-400 text-sm">{favourites.length} product{favourites.length !== 1 ? 's' : ''} saved.</p>
-            </div>
-          </Link>
-        </div>
-
         {favourites.length > 0 && (
           <div>
             <h2 className="text-2xl font-black text-white mb-6">Your Saved Products</h2>
