@@ -22,6 +22,8 @@ model Seller {
   products         Product[]
   emailVerified Boolean @default(false)
   verifyToken   String?
+  resetTokenExpiry DateTime?
+
 }
 
 model Buyer {
@@ -32,6 +34,8 @@ model Buyer {
   createdAt DateTime @default(now())
   emailVerified Boolean @default(false)
   verifyToken   String?
+  resetTokenExpiry DateTime?
+
 }
 
 model Product {
