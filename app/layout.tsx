@@ -13,7 +13,11 @@ export const metadata: Metadata = {
   description: 'Discover amazing deals from verified UK sellers. List your products for just £1/month. No commission, no middleman.',
   keywords: 'UK marketplace, discount products, buy and sell UK, cheap products UK, online marketplace',
   robots: 'index, follow',
+  icons: {
+    icon: '/favicon.svg',
+  },
   openGraph: {
+
     title: 'BigDiscounts - The UK Discount Marketplace',
     description: 'Discover amazing deals from verified UK sellers. List your products for just £1/month.',
     url: 'https://www.bigdiscounts.uk',
