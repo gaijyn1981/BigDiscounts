@@ -14,6 +14,14 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null
 
+        // Admin check
+        if (
+          credentials.email === process.env.ADMIN_EMAIL &&
+          credentials.password === process.env.ADMIN_PASS
+        ) {
+          return { id: 'admin', email: credentials.email, name: 'Admin', role: 'admin' }
+        }
+
         const seller = await prisma.seller.findUnique({ where: { email: credentials.email } })
         if (seller) {
           const valid = await bcrypt.compare(credentials.password, seller.password)

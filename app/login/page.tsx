@@ -24,13 +24,20 @@ export default function LoginPage() {
       setError('Invalid email or password')
       setLoading(false)
     } else {
-      // Check if seller or buyer and redirect accordingly
-      const profileRes = await fetch('/api/seller/profile')
-      if (profileRes.ok) {
-        router.push('/seller/dashboard')
+      const sessionRes = await fetch('/api/auth/session')
+      const sessionData = await sessionRes.json()
+      const role = sessionData?.user?.role
+      if (role === 'admin') {
+        router.push('/admin/dashboard')
       } else {
-        router.push("/buyer/dashboard")
+        const profileRes = await fetch('/api/seller/profile')
+        if (profileRes.ok) {
+          router.push('/seller/dashboard')
+        } else {
+          router.push('/buyer/dashboard')
+        }
       }
+      setLoading(false)
     }
   }
 
@@ -65,7 +72,6 @@ export default function LoginPage() {
             </button>
           </form>
           <p className="text-right mt-2"><Link href="/forgot-password" style={{color: '#fcd968'}} className="text-sm hover:opacity-80">Forgot password?</Link></p>
-
           <div className="mt-8 pt-6" style={{borderTop: '1px solid #222'}}>
             <p className="text-center text-gray-500 text-sm mb-4">Don't have an account?</p>
             <div className="grid grid-cols-2 gap-3">

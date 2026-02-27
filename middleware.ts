@@ -9,19 +9,6 @@ const ratelimit = new Ratelimit({
 })
 
 export async function middleware(request: NextRequest) {
-  if (request.nextUrl.pathname.startsWith('/admin')) {
-    const authHeader = request.headers.get('authorization')
-    const validUsername = process.env.ADMIN_USERNAME || 'admin'
-    const validPassword = process.env.ADMIN_PASSWORD || 'admin123'
-
-    if (!authHeader || authHeader !== `Basic ${Buffer.from(`${validUsername}:${validPassword}`).toString('base64')}`) {
-      return new NextResponse('Unauthorized', {
-        status: 401,
-        headers: { 'WWW-Authenticate': 'Basic realm="Admin Area"' }
-      })
-    }
-  }
-
   if (request.nextUrl.pathname === '/api/auth/signin' ||
       request.nextUrl.pathname.startsWith('/api/register')) {
     const ip = request.headers.get('x-forwarded-for') || 'anonymous'
@@ -39,5 +26,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/auth/:path*', '/api/register/:path*']
+  matcher: ['/api/auth/:path*', '/api/register/:path*']
 }
