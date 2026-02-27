@@ -11,6 +11,8 @@ export default function NewProduct() {
   const [photos, setPhotos] = useState<string[]>([])
   const [uploading, setUploading] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [showTerms, setShowTerms] = useState(false)
+  const [termsAccepted, setTermsAccepted] = useState(false)
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -37,8 +39,13 @@ export default function NewProduct() {
     setUploading(false)
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  function handleFormSubmit(e: React.FormEvent) {
     e.preventDefault()
+    setShowTerms(true)
+  }
+
+  async function handleSubmit() {
+    setShowTerms(false)
     setLoading(true)
     setError('')
     const res = await fetch('/api/seller/products', {
@@ -67,7 +74,7 @@ export default function NewProduct() {
       <div className="max-w-2xl mx-auto px-6 py-10">
         <h1 className="text-3xl font-black text-white mb-8">Add New Product</h1>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleFormSubmit} className="space-y-6">
           <div className="rounded-2xl p-6" style={{background: '#111111', border: '1px solid #222'}}>
             <h2 className="text-lg font-black text-white mb-4">Product Details</h2>
             <div className="space-y-4">
@@ -151,6 +158,46 @@ export default function NewProduct() {
           </button>
         </form>
       </div>
+      {/* Seller Terms Modal */}
+      {showTerms && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4" style={{background: 'rgba(0,0,0,0.85)'}}>
+          <div className="w-full max-w-md rounded-2xl p-8" style={{background: '#111111', border: '1px solid #fcd968'}}>
+            <h2 className="text-xl font-black text-white mb-2">Before You Publish</h2>
+            <p className="text-gray-500 text-sm mb-6">By listing on BigDiscounts you agree to the following:</p>
+            <ul className="space-y-3 mb-6">
+              {[
+                'Ship products promptly after receiving payment from the buyer',
+                'Ensure product descriptions and photos are accurate and not misleading',
+                'Accept returns within 14 days under UK Consumer Contracts Regulations 2013',
+                'Issue refunds within 14 days of receiving a return from the buyer',
+                'BigDiscounts is not liable for disputes between buyers and sellers',
+              ].map((item, i) => (
+                <li key={i} className="flex gap-3 items-start">
+                  <span className="mt-1 text-sm" style={{color: '#fcd968'}}>•</span>
+                  <span className="text-gray-300 text-sm">{item}</span>
+                </li>
+              ))}
+            </ul>
+            <label className="flex items-center gap-3 mb-6 cursor-pointer">
+              <input type="checkbox" checked={termsAccepted} onChange={e => setTermsAccepted(e.target.checked)}
+                className="w-4 h-4 rounded" />
+              <span className="text-gray-400 text-sm">I understand and agree to these terms</span>
+            </label>
+            <div className="flex gap-3">
+              <button onClick={handleSubmit} disabled={!termsAccepted}
+                className="flex-1 py-3 rounded-xl font-black text-black transition-opacity hover:opacity-90 disabled:opacity-30"
+                style={{background: '#fcd968'}}>
+                Publish Listing
+              </button>
+              <button onClick={() => setShowTerms(false)}
+                className="flex-1 py-3 rounded-xl font-bold text-gray-400 hover:opacity-80"
+                style={{background: '#1a1a1a', border: '1px solid #333'}}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   )
 }
