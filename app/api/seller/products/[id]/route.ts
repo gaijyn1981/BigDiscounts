@@ -7,7 +7,10 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
   const { id } = await context.params
   const session = await getServerSession(authOptions)
   if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  const product = await prisma.product.findUnique({ where: { id } })
+  const seller = await prisma.seller.findUnique({ where: { email: session.user.email } })
+  if (!seller) return NextResponse.json({ error: 'Seller not found' }, { status: 404 })
+  const product = await prisma.product.findFirst({ where: { id, sellerId: seller.id } })
+  if (!product) return NextResponse.json({ error: 'Not found' }, { status: 404 })
   return NextResponse.json(product)
 }
 

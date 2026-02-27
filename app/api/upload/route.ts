@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 import { v2 as cloudinary } from 'cloudinary'
 
 cloudinary.config({
@@ -7,19 +9,15 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}
-
 export async function POST(req: Request) {
   try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
     const formData = await req.formData()
     const file = formData.get('file') as File
     if (!file) return NextResponse.json({ error: 'No file provided' }, { status: 400 })
 
-    // Compress by resizing on upload
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
     const base64 = `data:${file.type};base64,${buffer.toString('base64')}`
