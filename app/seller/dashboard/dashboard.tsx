@@ -98,7 +98,7 @@ export default function Dashboard() {
       {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
 
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <Link href="/" className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
+        <span className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</span>
         <div className="flex items-center gap-4">
           <span className="text-gray-400 text-sm">Welcome, {session?.user?.name}</span>
           <button onClick={() => signOut({ callbackUrl: '/' })} className="text-gray-500 hover:text-red-400 text-sm">Logout</button>

@@ -13,10 +13,10 @@ export default async function SellPage() {
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <Link href="/" className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
+        <span className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</span>
         <div className="flex gap-4 items-center">
-          <Link href="/browse" className="text-gray-400 hover:text-white transition-colors">Browse</Link>
-          <Link href="/sell" className="text-white font-bold transition-colors">Sell</Link>
+          <Link href="/" className="text-gray-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></Link><Link href="/browse" className="text-gray-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></Link>
+          <Link href="/sell" className="text-gray-400 hover:text-white transition-colors">Sell</Link>
           {session?.user ? (
             <>
               <Link href="/seller/dashboard" className="text-gray-400 hover:text-white transition-colors text-sm">
@@ -182,7 +182,7 @@ export default async function SellPage() {
 
       <footer style={{background: '#111111', borderTop: '1px solid #1a1a1a'}} className="px-6 py-10">
         <div className="max-w-4xl mx-auto text-center">
-          <Link href="/" className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
+          <span className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</span>
           <p className="text-gray-600 text-sm mt-3">hello@bigdiscounts.uk</p>
           <p className="text-gray-600 text-xs mt-1">BigDiscounts is operated by Petrica Marin, Sole Trader, United Kingdom.</p>
           <p className="text-gray-700 text-xs mt-1">© 2026 BigDiscounts. All rights reserved.</p>

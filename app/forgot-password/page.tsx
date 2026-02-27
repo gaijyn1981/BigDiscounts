@@ -43,7 +43,7 @@ export default function ForgotPassword() {
     <main className="min-h-screen flex items-center justify-center px-4" style={{background: '#0a0a0a'}}>
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/" className="text-3xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
+          <span className="text-3xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</span>
           <p className="text-gray-500 mt-2">Reset your password</p>
         </div>
         <div className="rounded-2xl p-8" style={{background: '#111111', border: '1px solid #222'}}>

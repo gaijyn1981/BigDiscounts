@@ -108,7 +108,7 @@ export default function AdminDashboard() {
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <Link href="/" className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</Link>
+        <span className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</span>
         <span className="text-gray-400 font-semibold">Admin Dashboard</span>
         <a href="/logout" className="text-sm font-bold px-4 py-2 rounded-lg" style={{background: '#1a1a1a', color: '#f87171', border: '1px solid #f87171'}}>Logout</a>
       </nav>
