@@ -127,7 +127,7 @@ export default async function Home() {
           <div className="max-w-6xl mx-auto">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-3xl font-black text-white">Latest Deals</h2>
-              <Link href="/browse" style={{color: '#fcd968'}} className="font-bold hover:opacity-80">View All →</Link>
+              <Link href="/browse" style={{color: '#fcd968'}} className="font-bold hover:opacity-80">View All Deals →</Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {recentProducts.map(product => {
