@@ -64,7 +64,7 @@ export async function POST(req: Request) {
     ],
     success_url: `${process.env.NEXTAUTH_URL}/seller/dashboard?success=true`,
     cancel_url: `${process.env.NEXTAUTH_URL}/seller/dashboard?cancelled=true`,
-    metadata: { productId: product.id, sellerId: seller.id }
+    metadata: { productId: product.id, sellerId: seller.id, type: 'subscription' }
   })
 
   return NextResponse.json({ url: checkoutSession.url })
