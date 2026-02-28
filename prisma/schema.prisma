@@ -50,6 +50,7 @@ model Product {
   featured    Boolean  @default(false)
   featuredSubId String?
   stripeSubId String?
+  subscriptionEndsAt DateTime?
   views       Int      @default(0)
   createdAt   DateTime @default(now())
   seller      Seller   @relation(fields: [sellerId], references: [id])
