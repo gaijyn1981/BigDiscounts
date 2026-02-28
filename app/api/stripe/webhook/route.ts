@@ -36,7 +36,7 @@ export async function POST(req: Request) {
         data: {
           active: true,
           stripeSubId: subscriptionId,
-          subscriptionEndsAt: new Date(stripeSubscription.current_period_end * 1000)
+          subscriptionEndsAt: new Date((stripeSubscription as any).current_period_end * 1000)
         }
       })
     }
