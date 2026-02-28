@@ -92,7 +92,7 @@ export default function BrowsePage() {
       <div className="px-6 py-8" style={{background: '#111111', borderBottom: '1px solid #1a1a1a'}}>
         <div className="max-w-5xl mx-auto">
           <h1 className="text-3xl font-black text-white mb-2">Browse Products from Independent UK Sellers</h1>
-          <p className="text-gray-500 text-sm mb-1">Discover products from independent UK sellers — direct, fair, and transparent.</p>
+          <p className="text-gray-500 text-sm mb-1">Discover products from UK sellers — direct, fair, and transparent.</p>
           {!loading && recentCount > 0 && (
             <p className="text-xs mb-4" style={{color: '#fcd968'}}>
               🆕 {recentCount} product{recentCount > 1 ? 's' : ''} added in the last 24 hours
@@ -215,9 +215,9 @@ export default function BrowsePage() {
 
       <section className="px-6 py-14" style={{background: '#111111', borderTop: '1px solid #1a1a1a'}}>
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-2xl font-black text-white mb-4">Why Buy Direct from UK Sellers</h2>
+          <h2 className="text-2xl font-black text-white mb-4">Why Buy Direct from UK Businesses</h2>
           <p className="text-gray-500 leading-relaxed">
-            Shopping on BigDiscounts allows buyers to discover products from independent UK sellers while supporting small businesses. By connecting directly with sellers, buyers benefit from transparent communication, competitive pricing, and a growing range of products across multiple categories.
+            Shopping on BigDiscounts allows buyers to discover products from UK sellers and businesses of all sizes. By connecting directly with sellers, buyers benefit from transparent communication, competitive pricing, and a growing range of products across multiple categories.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
             {[
