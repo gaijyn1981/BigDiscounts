@@ -198,7 +198,7 @@ export default async function SellPage() {
               },
               {
                 q: 'Is BigDiscounts only for UK sellers?',
-                a: 'Yes — we focus exclusively on supporting UK independent sellers and connecting them with UK buyers.'
+                a: 'Yes — BigDiscounts is a UK-based marketplace open to any UK seller, whether you are an independent trader, small business, dropshipper, or established retailer.'
               },
               {
                 q: 'What happens after I list my product?',
