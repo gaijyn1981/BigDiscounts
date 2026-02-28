@@ -60,7 +60,7 @@ export async function POST(req: Request) {
       await prisma.product.updateMany({
         where: { stripeSubId: subscription.id },
         data: {
-          subscriptionEndsAt: new Date(subscription.current_period_end * 1000)
+          subscriptionEndsAt: new Date((subscription as any).current_period_end * 1000)
         }
       })
     }
