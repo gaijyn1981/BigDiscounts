@@ -1,46 +1,89 @@
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 import { prisma } from '@/lib/db'
+
+export const dynamic = 'force-dynamic'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export async function POST(req: Request) {
+  const body = await req.text()
+  const sig = req.headers.get('stripe-signature')!
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!
+
+  let event: Stripe.Event
+
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    event = stripe.webhooks.constructEvent(body, sig, webhookSecret)
+  } catch (err) {
+    return NextResponse.json({ error: 'Webhook error' }, { status: 400 })
+  }
 
-    const seller = await prisma.seller.findUnique({ where: { email: session.user.email } })
-    if (!seller) return NextResponse.json({ error: 'Seller not found' }, { status: 404 })
-
-    const { productId, type } = await req.json()
-
-    const product = await prisma.product.findFirst({
-      where: { id: productId, sellerId: seller.id }
-    })
-
-    if (!product) return NextResponse.json({ error: 'Product not found' }, { status: 404 })
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object as Stripe.Checkout.Session
+    const { productId, type } = session.metadata!
+    const subscriptionId = session.subscription as string
 
     if (type === 'featured') {
-      if (!product.featuredSubId) return NextResponse.json({ error: 'No featured subscription' }, { status: 400 })
-      await stripe.subscriptions.cancel(product.featuredSubId)
       await prisma.product.update({
         where: { id: productId },
-        data: { featured: false, featuredSubId: null }
+        data: { featured: true, featuredSubId: subscriptionId }
       })
     } else {
-      if (!product.stripeSubId) return NextResponse.json({ error: 'No active subscription' }, { status: 400 })
-      await stripe.subscriptions.cancel(product.stripeSubId)
+      // Fetch subscription to get current period end
+      const stripeSubscription = await stripe.subscriptions.retrieve(subscriptionId)
       await prisma.product.update({
         where: { id: productId },
-        data: { active: false, stripeSubId: null }
+        data: {
+          active: true,
+          stripeSubId: subscriptionId,
+          subscriptionEndsAt: new Date(stripeSubscription.current_period_end * 1000)
+        }
       })
     }
-
-    return NextResponse.json({ success: true })
-  } catch (error: any) {
-    console.error(error)
-    return NextResponse.json({ error: error.message || 'Something went wrong' }, { status: 500 })
   }
+
+  // Fires when cancel_at_period_end is true and the period actually ends
+  if (event.type === 'customer.subscription.deleted' || event.type === 'customer.subscription.paused') {
+    const subscription = event.data.object as Stripe.Subscription
+    await prisma.product.updateMany({
+      where: { stripeSubId: subscription.id },
+      data: { active: false, stripeSubId: null, subscriptionEndsAt: null }
+    })
+    await prisma.product.updateMany({
+      where: { featuredSubId: subscription.id },
+      data: { featured: false, featuredSubId: null }
+    })
+  }
+
+  // When a subscription is set to cancel_at_period_end, Stripe fires this event
+  // We use it to update the subscriptionEndsAt date if not already set
+  if (event.type === 'customer.subscription.updated') {
+    const subscription = event.data.object as Stripe.Subscription
+    if (subscription.cancel_at_period_end) {
+      await prisma.product.updateMany({
+        where: { stripeSubId: subscription.id },
+        data: {
+          subscriptionEndsAt: new Date(subscription.current_period_end * 1000)
+        }
+      })
+    }
+  }
+
+  if (event.type === 'invoice.payment_failed') {
+    const invoice = event.data.object as Stripe.Invoice
+    const subscriptionId = (invoice as any).subscription as string
+    if (subscriptionId) {
+      await prisma.product.updateMany({
+        where: { stripeSubId: subscriptionId },
+        data: { active: false }
+      })
+      await prisma.product.updateMany({
+        where: { featuredSubId: subscriptionId },
+        data: { featured: false }
+      })
+    }
+  }
+
+  return NextResponse.json({ received: true })
 }

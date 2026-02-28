@@ -14,6 +14,7 @@ interface Product {
   featured: boolean
   stripeSubId: string | null
   featuredSubId: string | null
+  subscriptionEndsAt: string | null
   views: number
 }
 
@@ -71,7 +72,17 @@ export default function Dashboard() {
   }
 
   async function cancelSubscription(id: string, type: 'regular' | 'featured') {
-    if (!confirm(`Cancel ${type} subscription? Your listing will be affected immediately.`)) return
+    const product = products.find(p => p.id === id)
+    const endsAt = product?.subscriptionEndsAt
+      ? new Date(product.subscriptionEndsAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+      : 'the end of your billing period'
+
+    if (!confirm(
+      type === 'featured'
+        ? `Cancel featured subscription? Your listing will lose featured status at the end of the billing period.`
+        : `Cancel subscription? Your listing will remain active until ${endsAt}, then go offline.`
+    )) return
+
     setCancelling(id + type)
     const res = await fetch('/api/stripe/cancel', {
       method: 'POST',
@@ -80,7 +91,12 @@ export default function Dashboard() {
     })
     if (res.ok) {
       fetchProducts()
-      showToast(`${type === 'featured' ? 'Featured' : ''} subscription cancelled`, 'info')
+      showToast(
+        type === 'featured'
+          ? 'Featured subscription cancelled — feature will end at billing period end.'
+          : `Subscription cancelled — listing stays active until ${endsAt}.`,
+        'info'
+      )
     } else {
       showToast('Failed to cancel. Please try again.', 'error')
     }
@@ -183,13 +199,19 @@ export default function Dashboard() {
                     )}
                   </div>
                   <p className="text-gray-500 text-sm">£{product.price.toFixed(2)} · {product.category || 'No category'}</p>
-                  <div className="flex items-center gap-3 mt-2">
+                  <div className="flex items-center gap-3 mt-2 flex-wrap">
                     <span className="text-xs px-2 py-1 rounded-full font-bold"
                       style={product.active
                         ? {background: '#0a1a0a', color: '#4ade80', border: '1px solid #4ade80'}
                         : {background: '#1a1000', color: '#f97316', border: '1px solid #f97316'}}>
                       {product.active ? 'Active' : 'Pending payment'}
                     </span>
+                    {product.active && product.subscriptionEndsAt && (
+                      <span className="text-xs px-2 py-1 rounded-full font-bold"
+                        style={{background: '#1a0a0a', color: '#f87171', border: '1px solid #f87171'}}>
+                        Active until {new Date(product.subscriptionEndsAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      </span>
+                    )}
                     <span className="text-xs text-gray-600">👁️ {product.views} views</span>
                   </div>
                 </div>
