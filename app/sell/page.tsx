@@ -3,8 +3,8 @@ import { getServerSession } from 'next-auth'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Sell Online for £1/Month | BigDiscounts.uk',
-  description: 'List your products on BigDiscounts.uk for just £1/month with 0% commission. Keep 100% of your profits. The UK marketplace alternative to eBay and Amazon.',
+  title: 'Sell Online in the UK | £1/Month Marketplace — BigDiscounts',
+  description: 'Looking to sell online in the UK without paying high commission? BigDiscounts offers a fair £1/month listing fee with 0% commission and full seller control.',
 }
 
 export default async function SellPage() {
@@ -13,9 +13,10 @@ export default async function SellPage() {
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <span className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</span>
+        <span className="text-2xl font-black" style={{color: '#fcd968'}}>BigDiscounts</span>
         <div className="flex gap-4 items-center">
-          <Link href="/" className="text-gray-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></Link><Link href="/browse" className="text-gray-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></Link>
+          <Link href="/" className="text-gray-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></Link>
+          <Link href="/browse" className="text-gray-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></Link>
           <Link href="/sell" className="text-gray-400 hover:text-white transition-colors">Sell</Link>
           {session?.user ? (
             <>
@@ -37,14 +38,13 @@ export default async function SellPage() {
       <section className="px-6 py-24 text-center" style={{background: 'linear-gradient(180deg, #111111 0%, #0a0a0a 100%)'}}>
         <div className="max-w-3xl mx-auto">
           <div className="inline-block mb-6 px-4 py-2 rounded-full text-sm font-bold" style={{background: '#1a1400', border: '1px solid #fcd968', color: '#fcd968'}}>
-            🇬🇧 UK-Based Marketplace
+            UK-Based Marketplace
           </div>
           <h1 className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight">
-            Sell Online for <span style={{color: '#fcd968'}}>£1/Month.</span><br/>
-            Keep 100% of Every Sale.
+            Sell Online in the UK with <span style={{color: '#fcd968'}}>Fair, Transparent Fees</span>
           </h1>
           <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-            No commission. No hidden fees. Buyers contact you directly. The UK marketplace built for sellers, not shareholders.
+            List products for £1/month and keep 100% of what you sell — no commissions, no hidden fees, no contracts.
           </p>
           <Link href="/register?type=seller" style={{background: '#fcd968'}}
             className="text-black px-10 py-4 rounded-xl font-black text-xl hover:opacity-90 transition-opacity inline-block">
@@ -54,9 +54,21 @@ export default async function SellPage() {
         </div>
       </section>
 
+      <section className="px-6 py-14" style={{background: '#111111'}}>
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-2xl font-black text-white mb-4">Our Purpose</h2>
+          <p className="text-gray-400 leading-relaxed text-lg">
+            Many marketplaces charge commission on every sale, hold funds, and control your visibility. BigDiscounts was created to offer a fair, transparent alternative for UK sellers — a simple £1/month fee, direct buyer contact, and full control over your pricing, branding, and fulfilment.
+          </p>
+          <p className="text-gray-500 leading-relaxed mt-4">
+            If you are looking for an alternative to Amazon, eBay, or other high-fee marketplaces in the UK, BigDiscounts offers a straightforward solution. Sellers retain full control while reaching buyers across the United Kingdom.
+          </p>
+        </div>
+      </section>
+
       <section className="px-6 py-16" style={{background: '#0a0a0a'}}>
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-black text-white text-center mb-2">Why sellers choose BigDiscounts</h2>
+          <h2 className="text-3xl font-black text-white text-center mb-2">Why Choose BigDiscounts Over Other Marketplaces</h2>
           <p className="text-gray-500 text-center mb-10">Stop giving away your profits. Compare the real cost of selling online.</p>
           <div className="rounded-2xl overflow-hidden w-full" style={{border: '1px solid #2a2a2a'}}>
             <div className="overflow-x-auto">
@@ -89,7 +101,7 @@ export default async function SellPage() {
                   <td className="px-3 py-3 md:px-6 md:py-4 text-center text-gray-400">~90%</td>
                 </tr>
                 <tr style={{background: '#1a1400'}}>
-                  <td className="px-3 py-4 md:px-6 md:py-5 font-black text-base md:text-lg" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</td>
+                  <td className="px-3 py-4 md:px-6 md:py-5 font-black text-base md:text-lg" style={{color: '#fcd968'}}>BigDiscounts</td>
                   <td className="px-3 py-4 md:px-6 md:py-5 text-center font-black text-lg" style={{color: '#fcd968'}}>£1/month</td>
                   <td className="px-3 py-4 md:px-6 md:py-5 text-center font-black text-lg text-green-400">0%</td>
                   <td className="px-3 py-4 md:px-6 md:py-5 text-center font-black text-lg text-green-400">100%</td>
@@ -104,30 +116,7 @@ export default async function SellPage() {
 
       <section className="px-6 py-16" style={{background: '#111111'}}>
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-black text-white mb-12">Start selling in 3 simple steps</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-6 rounded-2xl" style={{background: '#1a1a1a', border: '1px solid #fcd968'}}>
-              <div className="text-4xl mb-4">👤</div>
-              <h3 className="text-xl font-black text-white mb-2">1. Create your account</h3>
-              <p className="text-gray-400">Register as a seller in under 2 minutes. No approval needed.</p>
-            </div>
-            <div className="p-6 rounded-2xl" style={{background: '#1a1a1a', border: '1px solid #fcd968'}}>
-              <div className="text-4xl mb-4">📦</div>
-              <h3 className="text-xl font-black text-white mb-2">2. List your products</h3>
-              <p className="text-gray-400">Add photos, description and price. Your listing goes live instantly.</p>
-            </div>
-            <div className="p-6 rounded-2xl" style={{background: '#1a1a1a', border: '1px solid #fcd968'}}>
-              <div className="text-4xl mb-4">💰</div>
-              <h3 className="text-xl font-black text-white mb-2">3. Get paid in full</h3>
-              <p className="text-gray-400">Buyers contact you directly. You handle payment your way. We take nothing.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="px-6 py-16" style={{background: '#0a0a0a'}}>
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-black text-white mb-4">Built for UK independent sellers</h2>
+          <h2 className="text-3xl font-black text-white mb-4">Keep 100% of Every Sale</h2>
           <p className="text-gray-500 mb-10">Whether you sell one product or a thousand, BigDiscounts works for you.</p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {[
@@ -138,7 +127,7 @@ export default async function SellPage() {
               { icon: '📦', label: 'Wholesale suppliers' },
               { icon: '🔄', label: 'eBay & Amazon migrants' },
             ].map(item => (
-              <div key={item.label} className="p-4 rounded-xl text-center" style={{background: '#111111', border: '1px solid #2a2a2a'}}>
+              <div key={item.label} className="p-4 rounded-xl text-center" style={{background: '#1a1a1a', border: '1px solid #2a2a2a'}}>
                 <div className="text-2xl mb-2">{item.icon}</div>
                 <p className="text-gray-300 text-sm font-medium">{item.label}</p>
               </div>
@@ -147,9 +136,31 @@ export default async function SellPage() {
         </div>
       </section>
 
+      <section className="px-6 py-16" style={{background: '#0a0a0a'}}>
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-black text-white mb-12">How to Start Selling in Minutes</h2>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-start">
+            {[
+              { icon: '👤', step: '1', title: 'Register your seller account', desc: 'Create your profile in under 2 minutes. No approval process needed.' },
+              { icon: '📸', step: '2', title: 'Upload your products', desc: 'Add photos, descriptions and prices. Up to 4 photos per listing.' },
+              { icon: '✅', step: '3', title: 'Your listings go live', desc: 'Pay £1/month per listing and your product is immediately visible to buyers.' },
+              { icon: '💬', step: '4', title: 'Buyers contact you directly', desc: 'Interested buyers message you directly — no forced checkout or platform interference.' },
+              { icon: '💰', step: '5', title: 'You arrange payment and delivery', desc: 'Handle payment and shipping your way. You keep 100% of every sale.' },
+            ].map(item => (
+              <div key={item.step} className="p-6 rounded-2xl" style={{background: '#111111', border: '1px solid #fcd968'}}>
+                <div className="text-3xl mb-3">{item.icon}</div>
+                <div className="text-xs font-black mb-2" style={{color: '#fcd968'}}>STEP {item.step}</div>
+                <h3 className="text-sm font-black text-white mb-2">{item.title}</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="px-6 py-14" style={{background: '#111111'}}>
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl font-black text-white text-center mb-8">Why sellers trust us</h2>
+          <h2 className="text-2xl font-black text-white text-center mb-8">Who Can Sell on BigDiscounts</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
               { icon: '🇬🇧', text: 'UK-based marketplace' },
@@ -168,7 +179,50 @@ export default async function SellPage() {
         </div>
       </section>
 
-      <section className="px-6 py-24 text-center" style={{background: '#0a0a0a'}}>
+      <section className="px-6 py-16" style={{background: '#0a0a0a'}}>
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-3xl font-black text-white text-center mb-10">Frequently Asked Questions</h2>
+          <div className="space-y-4">
+            {[
+              {
+                q: 'Do you take any commission on sales?',
+                a: 'No. BigDiscounts charges a flat £1/month listing fee per product. We take 0% commission on any sale you make.'
+              },
+              {
+                q: 'Do I need to sign a contract?',
+                a: 'No contract required. Your listing runs month to month and you can cancel at any time. Your listing stays active until the end of your current billing period.'
+              },
+              {
+                q: 'How do I get paid?',
+                a: 'You and the buyer agree on payment directly. You can use PayPal, bank transfer, or any method you prefer. BigDiscounts does not handle or hold payments between buyers and sellers.'
+              },
+              {
+                q: 'Is BigDiscounts only for UK sellers?',
+                a: 'Yes — we focus exclusively on supporting UK independent sellers and connecting them with UK buyers.'
+              },
+              {
+                q: 'What happens after I list my product?',
+                a: 'Your product goes live on the marketplace immediately after payment. Buyers can browse, view your listing, and contact you directly through the platform.'
+              },
+              {
+                q: 'Can I list multiple products?',
+                a: 'Yes. Each product is listed separately for £1/month. There is no limit on how many products you can list.'
+              },
+            ].map((item, i) => (
+              <div key={i} className="p-6 rounded-xl" style={{background: '#111111', border: '1px solid #2a2a2a'}}>
+                <h3 className="font-black text-white mb-2">{item.q}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{item.a}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-center mt-8 text-gray-500 text-sm">
+            Still have questions? Contact us at{' '}
+            <a href="mailto:hello@bigdiscounts.uk" style={{color: '#fcd968'}} className="hover:opacity-80">hello@bigdiscounts.uk</a>
+          </p>
+        </div>
+      </section>
+
+      <section className="px-6 py-24 text-center" style={{background: '#111111'}}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl font-black text-white mb-4">Ready to start?</h2>
           <p className="text-gray-400 mb-8 text-lg">Join UK sellers keeping 100% of every sale on BigDiscounts.</p>
@@ -182,10 +236,15 @@ export default async function SellPage() {
 
       <footer style={{background: '#111111', borderTop: '1px solid #1a1a1a'}} className="px-6 py-10">
         <div className="max-w-4xl mx-auto text-center">
-          <span className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</span>
+          <span className="text-2xl font-black" style={{color: '#fcd968'}}>BigDiscounts</span>
           <p className="text-gray-600 text-sm mt-3">hello@bigdiscounts.uk</p>
           <p className="text-gray-600 text-xs mt-1">BigDiscounts is operated by Petrica Marin, Sole Trader, United Kingdom.</p>
-          <p className="text-gray-700 text-xs mt-1">© 2026 BigDiscounts. All rights reserved.</p>
+          <div className="flex justify-center gap-6 mt-3">
+            <Link href="/terms" className="text-gray-700 text-xs hover:text-gray-500">Terms & Conditions</Link>
+            <Link href="/sell" className="text-gray-700 text-xs hover:text-gray-500">Seller Policy</Link>
+            <Link href="/browse" className="text-gray-700 text-xs hover:text-gray-500">Browse Deals</Link>
+          </div>
+          <p className="text-gray-700 text-xs mt-3">© 2026 BigDiscounts. All rights reserved.</p>
         </div>
       </footer>
     </main>
