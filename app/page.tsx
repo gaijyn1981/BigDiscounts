@@ -1,6 +1,12 @@
 import Link from 'next/link'
 import { prisma } from '@/lib/db'
 import { getServerSession } from 'next-auth'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'UK Marketplace for Sellers | BigDiscounts — Fair, Low Fee Selling',
+  description: 'BigDiscounts is a UK marketplace built to support sellers. List products for £1/month, keep 100% of every sale, and connect directly with buyers across the UK.',
+}
 
 export default async function Home() {
   const session = await getServerSession()
@@ -20,7 +26,7 @@ export default async function Home() {
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <span className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</span>
+        <span className="text-2xl font-black" style={{color: '#fcd968'}}>BigDiscounts</span>
         <div className="flex gap-4 items-center">
           <Link href="/browse" className="text-gray-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></Link>
           <Link href="/sell" className="text-gray-400 hover:text-white transition-colors">Sell</Link>
@@ -44,14 +50,17 @@ export default async function Home() {
       <section className="px-6 py-24 text-center" style={{background: 'linear-gradient(180deg, #111111 0%, #0a0a0a 100%)'}}>
         <div className="max-w-4xl mx-auto">
           <div className="inline-block mb-6 px-4 py-2 rounded-full text-sm font-bold" style={{background: '#1a1400', border: '1px solid #fcd968', color: '#fcd968'}}>
-            🇬🇧 Connecting Buyers and Businesses Across the UK.
+            Connecting Buyers and Businesses Across the UK
           </div>
           <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
-            Thousands of UK Deals.<br/>
-            <span style={{color: '#fcd968'}}>Buy direct. Sell for £1/month.</span>
+            The UK Marketplace<br/>
+            <span style={{color: '#fcd968'}}>Built to Support Sellers</span>
           </h1>
-          <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Browse thousands of UK deals and contact sellers directly — or list your own products for just £1/month with 0% commission.
+          <p className="text-xl text-gray-400 mb-6 max-w-2xl mx-auto leading-relaxed">
+            A fair, transparent place to buy and sell — no commission, low fees, full control.
+          </p>
+          <p className="text-gray-600 text-base mb-10 max-w-2xl mx-auto leading-relaxed">
+            BigDiscounts is an online marketplace in the United Kingdom designed to support independent sellers and small businesses. Unlike traditional platforms that charge commission on every sale, BigDiscounts offers a transparent £1/month listing fee with no commission, allowing sellers to keep 100% of their revenue while connecting directly with buyers.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             {session?.user ? (
@@ -74,9 +83,28 @@ export default async function Home() {
         </div>
       </section>
 
+      <section className="px-6 py-14" style={{background: '#111111', borderTop: '1px solid #1a1a1a', borderBottom: '1px solid #1a1a1a'}}>
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-black text-white text-center mb-8">A Fair Alternative to High-Fee Marketplaces</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { icon: '💷', title: '£1/month listing fee', desc: 'No commission on any sale you make.' },
+              { icon: '💰', title: 'Keep 100% of every sale', desc: 'Your revenue stays yours, always.' },
+              { icon: '💬', title: 'Buyers contact you directly', desc: 'Full control over communication and fulfilment.' },
+              { icon: '✅', title: 'Simple, transparent pricing', desc: 'No hidden costs, no contracts, cancel anytime.' },
+            ].map(item => (
+              <div key={item.title} className="p-5 rounded-xl text-center" style={{background: '#1a1a1a', border: '1px solid #2a2a2a'}}>
+                <div className="text-3xl mb-3">{item.icon}</div>
+                <h3 className="font-black text-white text-sm mb-2">{item.title}</h3>
+                <p className="text-gray-500 text-xs leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {showCounters && (
-        <section className="px-6 py-12" style={{background: '#111111', borderTop: '1px solid #1a1a1a', borderBottom: '1px solid #1a1a1a'}}>
+        <section className="px-6 py-12" style={{background: '#0a0a0a', borderBottom: '1px solid #1a1a1a'}}>
           <div className="max-w-4xl mx-auto grid grid-cols-3 gap-8 text-center">
             <div>
               <p className="text-4xl font-black" style={{color: '#fcd968'}}>{totalProducts}+</p>
@@ -131,10 +159,9 @@ export default async function Home() {
 
       <section className="px-6 py-16" style={{background: '#111111'}}>
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-black text-white text-center mb-12">How It Works</h2>
+          <h2 className="text-3xl font-black text-white text-center mb-12">How Buying and Selling Works</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-            {/* For Sellers */}
             <div className="p-8 rounded-2xl" style={{background: '#1a1a1a', border: '1px solid #fcd968'}}>
               <p className="text-sm font-bold mb-6 inline-block px-3 py-1 rounded-full" style={{background: '#1a1400', color: '#fcd968', border: '1px solid #fcd968'}}>For Sellers</p>
               <div className="space-y-6">
@@ -165,7 +192,6 @@ export default async function Home() {
               </Link>
             </div>
 
-            {/* For Buyers */}
             <div className="p-8 rounded-2xl" style={{background: '#1a1a1a', border: '1px solid #fcd968'}}>
               <p className="text-sm font-bold mb-6 inline-block px-3 py-1 rounded-full" style={{background: '#1a1400', color: '#fcd968', border: '1px solid #fcd968'}}>For Buyers</p>
               <div className="space-y-6">
@@ -173,7 +199,7 @@ export default async function Home() {
                   <span className="text-2xl">🔍</span>
                   <div>
                     <p className="font-black text-white mb-1">1. Browse UK deals</p>
-                    <p className="text-gray-400 text-sm">Discover thousands of products from UK sellers and businesses.</p>
+                    <p className="text-gray-400 text-sm">Discover products from UK sellers and businesses across all categories.</p>
                   </div>
                 </div>
                 <div className="flex gap-4 items-start">
@@ -200,7 +226,31 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="px-6 py-24 text-center" style={{background: '#0a0a0a'}}>
+      <section className="px-6 py-16" style={{background: '#0a0a0a'}}>
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-black text-white mb-4">Discover Products from Independent UK Businesses</h2>
+          <p className="text-gray-500 mb-10">Browse across popular categories and support UK sellers directly.</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { icon: '💊', label: 'Health & Beauty', href: '/browse?category=Health+%26+Beauty' },
+              { icon: '👗', label: 'Clothing & Fashion', href: '/browse?category=Clothing+%26+Fashion' },
+              { icon: '🏠', label: 'Home & Living', href: '/browse?category=Home+%26+Living' },
+              { icon: '🐾', label: 'Pets', href: '/browse?category=Pets' },
+              { icon: '🧸', label: 'Toys & Games', href: '/browse?category=Toys+%26+Games' },
+              { icon: '🍫', label: 'Food & Drink', href: '/browse?category=Food+%26+Drink' },
+              { icon: '🎨', label: 'Art & Crafts', href: '/browse?category=Art+%26+Crafts' },
+              { icon: '📦', label: 'View All', href: '/browse' },
+            ].map(item => (
+              <Link key={item.label} href={item.href} className="p-4 rounded-xl text-center hover:opacity-80 transition-opacity" style={{background: '#111111', border: '1px solid #2a2a2a'}}>
+                <div className="text-2xl mb-2">{item.icon}</div>
+                <p className="text-gray-300 text-sm font-medium">{item.label}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 py-24 text-center" style={{background: '#111111'}}>
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-black text-white mb-8 leading-tight">
             A Smarter Way to Buy and Sell in the UK.
@@ -223,7 +273,7 @@ export default async function Home() {
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-wrap justify-between gap-8 mb-8">
             <div>
-              <p className="text-2xl font-black mb-2" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</p>
+              <p className="text-2xl font-black mb-2" style={{color: '#fcd968'}}>BigDiscounts</p>
               <p className="text-gray-500 text-sm max-w-xs">Buy direct or sell for just £1/month. No commissions. No hidden fees.</p>
             </div>
             <div className="flex gap-12">
