@@ -24,25 +24,31 @@ export async function POST(req: Request) {
 
     if (type === 'featured') {
       if (!product.featuredSubId) return NextResponse.json({ error: 'No featured subscription' }, { status: 400 })
-      await stripe.subscriptions.update(product.featuredSubId, {
-        cancel_at_period_end: true
+      await stripe.subscriptions.update(product.featuredSubId, { cancel_at_period_end: true })
+      await prisma.product.update({
+        where: { id: productId },
+        data: { featured: false }
       })
     } else {
       if (!product.stripeSubId) return NextResponse.json({ error: 'No active subscription' }, { status: 400 })
-      await stripe.subscriptions.update(product.stripeSubId, {
-        cancel_at_period_end: true
-      })
+
+      await stripe.subscriptions.update(product.stripeSubId, { cancel_at_period_end: true })
+
       const stripeSubscription = await stripe.subscriptions.retrieve(product.stripeSubId)
+      const periodEnd = (stripeSubscription as any).current_period_end
+
+      console.log('periodEnd:', periodEnd)
+      console.log('productId:', productId)
+
       await prisma.product.update({
         where: { id: productId },
-        data: {
-          subscriptionEndsAt: new Date((stripeSubscription as any).current_period_end * 1000)
-        }
+        data: { subscriptionEndsAt: periodEnd ? new Date(periodEnd * 1000) : null }
       })
     }
 
     return NextResponse.json({ success: true })
   } catch (error: any) {
+    console.error('CANCEL ERROR:', error.message)
     console.error(error)
     return NextResponse.json({ error: error.message || 'Something went wrong' }, { status: 500 })
   }
