@@ -1,14 +1,14 @@
-import { NextResponse } from ‘next/server’
-import Stripe from ‘stripe’
-import { prisma } from ‘@/lib/db’
+import { NextResponse } from 'next/server'
+import Stripe from 'stripe'
+import { prisma } from '@/lib/db'
 
-export const dynamic = ‘force-dynamic’
+export const dynamic = 'force-dynamic'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export async function POST(req: Request) {
 const body = await req.text()
-const sig = req.headers.get(‘stripe-signature’)!
+const sig = req.headers.get('stripe-signature')!
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!
 
 let event: Stripe.Event
@@ -16,10 +16,10 @@ let event: Stripe.Event
 try {
 event = stripe.webhooks.constructEvent(body, sig, webhookSecret)
 } catch (err) {
-return NextResponse.json({ error: ‘Webhook error’ }, { status: 400 })
+return NextResponse.json({ error: 'Webhook error' }, { status: 400 })
 }
 
-if (event.type === ‘checkout.session.completed’) {
+if (event.type === 'checkout.session.completed') {
 const session = event.data.object as Stripe.Checkout.Session
 const { productId, type } = session.metadata!
 const subscriptionId = session.subscription as string
@@ -47,7 +47,7 @@ if (type === 'featured') {
 }
 
 // Fires when cancel_at_period_end is true and the period actually ends
-if (event.type === ‘customer.subscription.deleted’ || event.type === ‘customer.subscription.paused’) {
+if (event.type === 'customer.subscription.deleted' || event.type === 'customer.subscription.paused') {
 const subscription = event.data.object as Stripe.Subscription
 await prisma.product.updateMany({
 where: { stripeSubId: subscription.id },
@@ -61,7 +61,7 @@ data: { featured: false, featuredSubId: null }
 
 // When a subscription is set to cancel_at_period_end, Stripe fires this event
 // We use it to update the subscriptionEndsAt date if not already set
-if (event.type === ‘customer.subscription.updated’) {
+if (event.type === 'customer.subscription.updated') {
 const subscription = event.data.object as Stripe.Subscription
 if (subscription.cancel_at_period_end) {
 await prisma.product.updateMany({
@@ -73,7 +73,7 @@ subscriptionEndsAt: new Date(subscription.current_period_end * 1000)
 }
 }
 
-if (event.type === ‘invoice.payment_failed’) {
+if (event.type === 'invoice.payment_failed') {
 const invoice = event.data.object as Stripe.Invoice
 const subscriptionId = (invoice as any).subscription as string
 if (subscriptionId) {
