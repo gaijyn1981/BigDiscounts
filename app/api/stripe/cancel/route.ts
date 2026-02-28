@@ -29,13 +29,14 @@ export async function POST(req: Request) {
       })
     } else {
       if (!product.stripeSubId) return NextResponse.json({ error: 'No active subscription' }, { status: 400 })
-      const stripeSubscription = await stripe.subscriptions.update(product.stripeSubId, {
+      await stripe.subscriptions.update(product.stripeSubId, {
         cancel_at_period_end: true
       })
+      const stripeSubscription = await stripe.subscriptions.retrieve(product.stripeSubId)
       await prisma.product.update({
         where: { id: productId },
         data: {
-          subscriptionEndsAt: new Date(stripeSubscription.current_period_end * 1000)
+          subscriptionEndsAt: new Date((stripeSubscription as any).current_period_end * 1000)
         }
       })
     }
