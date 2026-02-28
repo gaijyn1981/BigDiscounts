@@ -79,8 +79,8 @@ export default function Dashboard() {
 
     if (!confirm(
       type === 'featured'
-        ? `Cancel featured subscription? Your listing will lose featured status at the end of the billing period.`
-        : `Cancel subscription? Your listing will remain active until ${endsAt}, then go offline.`
+        ? 'Cancel featured subscription? Your listing will lose featured status at the end of the billing period.'
+        : 'Cancel subscription? Your listing will remain active until ' + endsAt + ', then go offline.'
     )) return
 
     setCancelling(id + type)
@@ -93,8 +93,8 @@ export default function Dashboard() {
       fetchProducts()
       showToast(
         type === 'featured'
-          ? 'Featured subscription cancelled — feature will end at billing period end.'
-          : `Subscription cancelled — listing stays active until ${endsAt}.`,
+          ? 'Featured subscription cancelled - feature will end at billing period end.'
+          : 'Subscription cancelled - listing stays active until ' + endsAt + '.',
         'info'
       )
     } else {
@@ -114,7 +114,7 @@ export default function Dashboard() {
       {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
 
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <span className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</span>
+        <span className="text-2xl font-black" style={{color: '#fcd968'}}>BigDiscounts</span>
         <div className="flex items-center gap-4">
           <span className="text-gray-400 text-sm">Welcome, {session?.user?.name}</span>
           <button onClick={() => signOut({ callbackUrl: '/' })} className="text-gray-500 hover:text-red-400 text-sm">Logout</button>
@@ -178,7 +178,7 @@ export default function Dashboard() {
 
         {products.length === 0 ? (
           <div className="rounded-xl p-12 text-center" style={{background: '#111111', border: '1px solid #222'}}>
-            <p className="text-gray-500 text-lg mb-4">You haven't listed any products yet.</p>
+            <p className="text-gray-500 text-lg mb-4">You have not listed any products yet.</p>
             <Link href="/seller/products/new"
               className="px-6 py-3 rounded-lg font-bold text-black"
               style={{background: '#fcd968'}}>
