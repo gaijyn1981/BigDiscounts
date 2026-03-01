@@ -4,8 +4,8 @@ import { getServerSession } from 'next-auth'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'UK Marketplace for Sellers | BigDiscounts — Fair, Low Fee Selling',
-  description: 'BigDiscounts is a UK marketplace built to support sellers. List products for £1/month, keep 100% of every sale, and connect directly with buyers across the UK.',
+  title: 'UK Marketplace for Sellers & Buyers | BigDiscounts — Fair, Low Fee Marketplace',
+  description: 'BigDiscounts is a UK marketplace built to support sellers and buyers. List products for £1/month with 0% commission, or browse deals and buy direct from UK sellers.',
 }
 
 export default async function Home() {
@@ -54,7 +54,7 @@ export default async function Home() {
           </div>
           <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
             The UK Marketplace<br/>
-            <span style={{color: '#fcd968'}}>Built to Support Sellers</span>
+            <span style={{color: '#fcd968'}}>Built to Support Sellers and Buyers</span>
           </h1>
           <p className="text-xl text-gray-400 mb-6 max-w-2xl mx-auto leading-relaxed">
             A fair, transparent place to buy and sell — no commission, low fees, full control.
