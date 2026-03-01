@@ -298,6 +298,19 @@ export default async function Home() {
                 </div>
               </div>
               <div>
+                <p className="text-white font-bold mb-3">Categories</p>
+                <div className="space-y-2">
+                  <Link href="/browse/Electronics%20%26%20Tech" className="block text-gray-500 hover:text-white text-sm">Electronics & Tech</Link>
+                  <Link href="/browse/Clothing%20%26%20Fashion" className="block text-gray-500 hover:text-white text-sm">Clothing & Fashion</Link>
+                  <Link href="/browse/Home%20%26%20Living" className="block text-gray-500 hover:text-white text-sm">Home & Living</Link>
+                  <Link href="/browse/Health%20%26%20Beauty" className="block text-gray-500 hover:text-white text-sm">Health & Beauty</Link>
+                  <Link href="/browse/Garden%20%26%20Outdoor" className="block text-gray-500 hover:text-white text-sm">Garden & Outdoor</Link>
+                  <Link href="/browse/Sports%20%26%20Fitness" className="block text-gray-500 hover:text-white text-sm">Sports & Fitness</Link>
+                  <Link href="/browse/Toys%20%26%20Games" className="block text-gray-500 hover:text-white text-sm">Toys & Games</Link>
+                  <Link href="/browse/Pets" className="block text-gray-500 hover:text-white text-sm">Pets</Link>
+                </div>
+              </div>
+              <div>
                 <p className="text-white font-bold mb-3">Legal</p>
                 <div className="space-y-2">
                   <Link href="/privacy" className="block text-gray-500 hover:text-white text-sm">Privacy Policy</Link>
