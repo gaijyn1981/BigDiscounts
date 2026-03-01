@@ -15,13 +15,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     include: { seller: true }
   })
   if (!product) return {}
+  const photos = JSON.parse(product.photos || '[]')
+  const ogImage = photos[0] || null
   return {
     title: `${product.title} - £${product.price.toFixed(2)} | BigDiscounts`,
     description: `${product.description.slice(0, 150)} - Sold by ${product.seller.companyName} on BigDiscounts.`,
+    alternates: { canonical: `https://www.bigdiscounts.uk/product/${slug}` },
     openGraph: {
       title: `${product.title} - £${product.price.toFixed(2)}`,
-      description: `${product.description.slice(0, 150)}`,
+      description: `${product.description.slice(0, 150)} - Sold by ${product.seller.companyName} on BigDiscounts.`,
       url: `https://www.bigdiscounts.uk/product/${slug}`,
+      images: ogImage ? [{ url: ogImage, alt: product.title }] : [],
+      type: 'website',
     }
   }
 }
@@ -90,11 +95,20 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
             <div className="p-8 flex flex-col justify-between">
               <div>
+                <p className="text-xs text-gray-600 mb-3">
+                  <Link href="/browse" className="hover:text-gray-400">Browse</Link>
+                  {product.category && (
+                    <> › <Link href={`/browse/${encodeURIComponent(product.category)}`} className="hover:text-gray-400">{product.category}</Link></>
+                  )}
+                  {' › '}{product.title}
+                </p>
                 {product.category && (
-                  <span className="text-xs font-semibold px-3 py-1 rounded-full"
-                    style={{background: '#1a1400', color: '#fcd968', border: '1px solid #fcd968'}}>
-                    {product.category}
-                  </span>
+                  <Link href={`/browse/${encodeURIComponent(product.category)}`}>
+                    <span className="text-xs font-semibold px-3 py-1 rounded-full"
+                      style={{background: '#1a1400', color: '#fcd968', border: '1px solid #fcd968'}}>
+                      {product.category}
+                    </span>
+                  </Link>
                 )}
                 <h1 className="text-3xl font-black text-white mt-3 mb-2">{product.title}</h1>
                 <p className="text-4xl font-black mb-4" style={{color: '#fcd968'}}>£{product.price.toFixed(2)}</p>
