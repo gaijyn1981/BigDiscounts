@@ -93,7 +93,7 @@ export default async function Home() {
               { icon: '💬', title: 'Buyers contact you directly', desc: 'Full control over communication and fulfilment.' },
               { icon: '✅', title: 'Simple, transparent pricing', desc: 'No hidden costs, no contracts, cancel anytime.' },
             ].map(item => (
-              <div key={item.title} className="p-5 rounded-xl text-center" style={{background: '#1a1a1a', border: '1px solid #2a2a2a'}}>
+              <div key={item.title} className="p-5 rounded-xl text-center" style={{background: '#1a1a1a', border: '1px solid #fcd968'}}>
                 <div className="text-3xl mb-3">{item.icon}</div>
                 <h3 className="font-black text-white text-sm mb-2">{item.title}</h3>
                 <p className="text-gray-500 text-xs leading-relaxed">{item.desc}</p>
@@ -252,7 +252,7 @@ export default async function Home() {
               { icon: '🧹', label: 'Cleaning & Household', href: '/browse/Cleaning%20%26%20Household' },
               { icon: '📦', label: 'View All', href: '/browse' },
             ].map(item => (
-              <Link key={item.label} href={item.href} className="p-4 rounded-xl text-center hover:opacity-80 transition-opacity" style={{background: '#111111', border: '1px solid #2a2a2a'}}>
+              <Link key={item.label} href={item.href} className="p-4 rounded-xl text-center hover:opacity-80 transition-opacity" style={{background: '#111111', border: '1px solid #fcd968'}}>
                 <div className="text-2xl mb-2">{item.icon}</div>
                 <p className="text-gray-300 text-sm font-medium">{item.label}</p>
               </Link>
