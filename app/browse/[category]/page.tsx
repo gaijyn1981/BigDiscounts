@@ -131,7 +131,7 @@ export async function generateMetadata({ params }: { params: { category: string 
 }
 
 export async function generateStaticParams() {
-  return Object.keys(categoryData).map(cat => ({ category: encodeURIComponent(cat) }))
+  return Object.keys(categoryData).map(cat => ({ category: cat }))
 }
 
 export default function CategoryPage({ params }: { params: { category: string } }) {
