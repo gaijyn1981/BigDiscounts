@@ -131,7 +131,7 @@ export default function AdminDashboard() {
               { label: 'Total Products', value: stats.totalProducts },
               { label: 'Active Products', value: stats.activeProducts },
             ].map(s => (
-              <div key={s.label} className="rounded-xl p-4 text-center" style={{background: '#111', border: '1px solid #2a2a2a'}}>
+              <div key={s.label} className="rounded-xl p-4 text-center" style={{background: '#111', border: '1px solid #fcd968'}}>
                 <p className="text-3xl font-black" style={{color: '#fcd968'}}>{s.value}</p>
                 <p className="text-gray-400 text-sm mt-1">{s.label}</p>
               </div>
