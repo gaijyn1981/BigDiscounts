@@ -1,4 +1,3 @@
-cat > ~/Desktop/bigdiscounts/app/browse/\[category\]/CategoryClient.tsx << 'EOF'
 'use client'
 import { useState, useEffect } from 'react'
 import { useSession, signOut } from 'next-auth/react'
@@ -216,4 +215,3 @@ export default function CategoryClient({ category, h1, description }: Props) {
     </main>
   )
 }
-EOF
