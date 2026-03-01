@@ -127,7 +127,7 @@ export default async function SellPage() {
               { icon: '📦', label: 'Wholesale suppliers' },
               { icon: '🔄', label: 'eBay & Amazon migrants' },
             ].map(item => (
-              <div key={item.label} className="p-4 rounded-xl text-center" style={{background: '#1a1a1a', border: '1px solid #2a2a2a'}}>
+              <div key={item.label} className="p-4 rounded-xl text-center" style={{background: '#1a1a1a', border: '1px solid #fcd968'}}>
                 <div className="text-2xl mb-2">{item.icon}</div>
                 <p className="text-gray-300 text-sm font-medium">{item.label}</p>
               </div>
@@ -170,7 +170,7 @@ export default async function SellPage() {
               { icon: '📣', text: 'Actively promoted across Google & social media' },
               { icon: '❌', text: 'Cancel anytime, no contract' },
             ].map(item => (
-              <div key={item.text} className="flex items-center gap-3 p-4 rounded-xl" style={{background: '#1a1a1a', border: '1px solid #2a2a2a'}}>
+              <div key={item.text} className="flex items-center gap-3 p-4 rounded-xl" style={{background: '#1a1a1a', border: '1px solid #fcd968'}}>
                 <span className="text-xl">{item.icon}</span>
                 <span className="text-gray-300 font-medium">{item.text}</span>
               </div>
@@ -209,7 +209,7 @@ export default async function SellPage() {
                 a: 'Yes. Each product is listed separately for £1/month. There is no limit on how many products you can list.'
               },
             ].map((item, i) => (
-              <div key={i} className="p-6 rounded-xl" style={{background: '#111111', border: '1px solid #2a2a2a'}}>
+              <div key={i} className="p-6 rounded-xl" style={{background: '#111111', border: '1px solid #fcd968'}}>
                 <h3 className="font-black text-white mb-2">{item.q}</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">{item.a}</p>
               </div>
