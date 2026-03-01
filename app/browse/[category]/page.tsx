@@ -119,8 +119,9 @@ const categoryData: Record<string, { meta_title: string; meta_desc: string; h1: 
   }
 }
 
-export async function generateMetadata({ params }: { params: { category: string } }): Promise<Metadata> {
-  const name = decodeURIComponent(params.category)
+export async function generateMetadata({ params }: { params: Promise<{ category: string }> }): Promise<Metadata> {
+  const { category: rawCategory } = await params
+  const name = decodeURIComponent(rawCategory)
   const data = categoryData[name]
   if (!data) return { title: 'BigDiscounts' }
   return {
@@ -134,8 +135,9 @@ export async function generateStaticParams() {
   return Object.keys(categoryData).map(cat => ({ category: cat }))
 }
 
-export default function CategoryPage({ params }: { params: { category: string } }) {
-  const name = decodeURIComponent(params.category)
+export default async function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
+  const { category: rawCategory } = await params
+  const name = decodeURIComponent(rawCategory)
   const data = categoryData[name]
   if (!data) notFound()
   return <CategoryClient category={name} h1={data.h1} description={data.description} />
