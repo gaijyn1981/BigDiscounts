@@ -3,7 +3,7 @@ import { prisma } from '@/lib/db'
 import { randomBytes } from 'crypto'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const getResend = () => new Resend(process.env.RESEND_API_KEY!)
 
 export async function POST(req: Request) {
   try {
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
         where: { email },
         data: { verifyToken: token, resetTokenExpiry: expiry }
       })
-      await resend.emails.send({
+      await getResend().emails.send({
         from: 'BigDiscounts <hello@bigdiscounts.uk>',
         to: email,
         subject: 'Reset your BigDiscounts password',
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
         where: { email },
         data: { verifyToken: token, resetTokenExpiry: expiry }
       })
-      await resend.emails.send({
+      await getResend().emails.send({
         from: 'BigDiscounts <hello@bigdiscounts.uk>',
         to: email,
         subject: 'Reset your BigDiscounts password',

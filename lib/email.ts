@@ -1,11 +1,11 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const getResend = () => new Resend(process.env.RESEND_API_KEY!)
 
 export async function sendVerificationEmail(email: string, token: string, name: string) {
   const verifyUrl = `${process.env.NEXTAUTH_URL}/api/verify-email?token=${token}`
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: 'BigDiscounts <hello@bigdiscounts.uk>',
     to: email,
     subject: 'Verify your BigDiscounts account',
