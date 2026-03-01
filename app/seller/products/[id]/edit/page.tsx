@@ -12,14 +12,17 @@ export default function EditProductPage() {
   const [error, setError] = useState('')
   const [photos, setPhotos] = useState<string[]>(['', '', '', ''])
   const [uploading, setUploading] = useState<boolean[]>([false, false, false, false])
-  const [form, setForm] = useState({ title: '', description: '', price: '', category: '' })
+  const [form, setForm] = useState({ title: '', description: '', price: '', category: '', deliveryTime: '' })
+  const [customDelivery, setCustomDelivery] = useState('')
 
   useEffect(() => {
     async function fetchProduct() {
       const res = await fetch(`/api/seller/products/${id}`)
       const data = await res.json()
       if (data) {
-        setForm({ title: data.title || '', description: data.description || '', price: data.price?.toString() || '', category: data.category || '' })
+        const isCustom = data.deliveryTime && !['Next day','2-3 days','1 week','2 weeks+',''].includes(data.deliveryTime)
+        setForm({ title: data.title || '', description: data.description || '', price: data.price?.toString() || '', category: data.category || '', deliveryTime: isCustom ? 'Custom' : (data.deliveryTime || '') })
+        if (isCustom) setCustomDelivery(data.deliveryTime || '')
         const existingPhotos = JSON.parse(data.photos || '[]')
         setPhotos([...existingPhotos, '', '', '', ''].slice(0, 4))
       }
@@ -57,7 +60,7 @@ export default function EditProductPage() {
     const res = await fetch(`/api/seller/products/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...form, photos: filteredPhotos })
+      body: JSON.stringify({ ...form, deliveryTime: form.deliveryTime === 'Custom' ? customDelivery : form.deliveryTime, photos: filteredPhotos })
     })
     if (res.ok) router.push('/seller/dashboard')
     else { const data = await res.json(); setError(data.error || 'Error'); setLoading(false) }
@@ -123,6 +126,25 @@ export default function EditProductPage() {
               <option value="Cleaning & Household">Cleaning & Household</option>
               <option value="Other">Other</option>
             </select>
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-400 mb-1">Delivery Time <span className="text-gray-600 font-normal">(optional)</span></label>
+            <select name="deliveryTime" value={form.deliveryTime} onChange={update}
+              className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
+              style={{background: '#1a1a1a', border: '1px solid #333'}}>
+              <option value="">Not specified</option>
+              <option value="Next day">Next day</option>
+              <option value="2-3 days">2-3 days</option>
+              <option value="1 week">1 week</option>
+              <option value="2 weeks+">2 weeks+</option>
+              <option value="Custom">Custom</option>
+            </select>
+            {form.deliveryTime === 'Custom' && (
+              <input value={customDelivery} onChange={e => setCustomDelivery(e.target.value)}
+                placeholder="e.g. 3-5 working days"
+                className="w-full mt-2 px-4 py-3 rounded-xl text-white focus:outline-none"
+                style={{background: '#1a1a1a', border: '1px solid #333'}} />
+            )}
           </div>
           <div>
             <label className="block text-sm font-semibold text-gray-400 mb-2">Photos (up to 4)</label>

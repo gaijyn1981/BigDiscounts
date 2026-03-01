@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     const seller = await prisma.seller.findUnique({ where: { email: session.user.email } })
     if (!seller) return NextResponse.json({ error: 'Seller not found' }, { status: 404 })
 
-    const { title, description, price, category, photos } = await req.json()
+    const { title, description, price, category, photos, deliveryTime } = await req.json()
 
     if (!title || typeof title !== 'string' || title.length > 200)
       return NextResponse.json({ error: 'Invalid title' }, { status: 400 })
@@ -40,11 +40,14 @@ export async function POST(req: Request) {
     if (category && typeof category !== 'string' || (category && category.length > 50))
       return NextResponse.json({ error: 'Invalid category' }, { status: 400 })
 
+    if (deliveryTime && (typeof deliveryTime !== 'string' || deliveryTime.length > 100))
+      return NextResponse.json({ error: 'Invalid delivery time' }, { status: 400 })
+
     if (photos && (!Array.isArray(photos) || photos.length > 4))
       return NextResponse.json({ error: 'Maximum 4 photos allowed' }, { status: 400 })
 
     const product = await prisma.product.create({
-      data: { sellerId: seller.id, title, description, price: parseFloat(price), category: category || null, photos: JSON.stringify(photos || []), active: false }
+      data: { sellerId: seller.id, title, description, price: parseFloat(price), category: category || null, deliveryTime: deliveryTime || null, photos: JSON.stringify(photos || []), active: false }
     })
 
     return NextResponse.json(product)

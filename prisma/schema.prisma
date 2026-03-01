@@ -46,6 +46,7 @@ model Product {
   price       Float
   photos      String   @default("[]")
   category    String?
+  deliveryTime String?
   active      Boolean  @default(false)
   featured    Boolean  @default(false)
   featuredSubId String?

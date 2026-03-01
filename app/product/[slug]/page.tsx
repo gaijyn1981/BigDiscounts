@@ -112,6 +112,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 )}
                 <h1 className="text-3xl font-black text-white mt-3 mb-2">{product.title}</h1>
                 <p className="text-4xl font-black mb-4" style={{color: '#fcd968'}}>£{product.price.toFixed(2)}</p>
+                {product.deliveryTime && (
+                  <p className="text-sm font-semibold mb-4" style={{color: '#4ade80'}}>🚚 Delivery: {product.deliveryTime}</p>
+                )}
                 <p className="text-sm text-gray-600 mb-4">👁️ {product.views} views</p>
                 <p className="text-gray-400 leading-relaxed mb-4">{product.description}</p>
               </div>
