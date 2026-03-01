@@ -1,4 +1,3 @@
-cat > ~/Desktop/bigdiscounts/app/browse/\[category\]/page.tsx << 'EOF'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import CategoryClient from './CategoryClient'
@@ -141,4 +140,3 @@ export default function CategoryPage({ params }: { params: { category: string } 
   if (!data) notFound()
   return <CategoryClient category={name} h1={data.h1} description={data.description} />
 }
-EOF
