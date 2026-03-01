@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useSession, signOut } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 interface Product {
@@ -16,6 +17,7 @@ interface Product {
 
 export default function BrowsePage() {
   const { data: session } = useSession()
+  const router = useRouter()
   const [products, setProducts] = useState<Product[]>([])
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('')
@@ -105,7 +107,7 @@ export default function BrowsePage() {
             <input type="text" placeholder="Search products..." value={search} onChange={e => setSearch(e.target.value)}
               className="flex-1 px-5 py-3 rounded-xl text-white focus:outline-none min-w-48"
               style={{background: '#1a1a1a', border: '1px solid #333'}} />
-            <select value={category} onChange={e => setCategory(e.target.value)}
+            <select value={category} onChange={e => { const val = e.target.value; if (val) router.push(`/browse/${encodeURIComponent(val)}`); else setCategory('') }}
               className="px-4 py-3 rounded-xl text-white focus:outline-none"
               style={{background: '#1a1a1a', border: '1px solid #333'}}>
               <option value="">All Categories</option>
