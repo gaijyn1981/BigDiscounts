@@ -147,7 +147,7 @@ export default function AdminDashboard() {
                 className={`rounded-xl p-4 text-center transition-all ${s.clickTab ? 'cursor-pointer hover:scale-105' : ''}`}
                 style={{
                   background: s.clickTab && tab === s.clickTab ? '#1a1a1a' : '#111',
-                  border: s.clickTab && tab === s.clickTab ? '1px solid #fcd968' : '1px solid #2a2a2a'
+                  border: s.clickTab && tab === s.clickTab ? '2px solid #fcd968' : '1px solid #fcd968'
                 }}>
                 <p className="text-3xl font-black" style={{color: '#fcd968'}}>{s.value}</p>
                 <p className="text-gray-400 text-sm mt-1">{s.label}</p>
