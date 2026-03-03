@@ -37,6 +37,14 @@ interface Seller {
   _count: { products: number }
 }
 
+interface Buyer {
+  id: string
+  email: string
+  name: string
+  emailVerified: boolean
+  createdAt: string
+}
+
 export default function AdminDashboard() {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -44,8 +52,9 @@ export default function AdminDashboard() {
   const [products, setProducts] = useState<Product[]>([])
   const [reports, setReports] = useState<Report[]>([])
   const [sellers, setSellers] = useState<Seller[]>([])
+  const [buyers, setBuyers] = useState<Buyer[]>([])
   const [loading, setLoading] = useState(true)
-  const [tab, setTab] = useState<'products' | 'sellers'>('products')
+  const [tab, setTab] = useState<'products' | 'sellers' | 'buyers'>('products')
   const [editingSeller, setEditingSeller] = useState<Seller | null>(null)
   const [editForm, setEditForm] = useState({ companyName: '', contactName: '', email: '', phone: '' })
   const [saving, setSaving] = useState(false)
@@ -61,12 +70,14 @@ export default function AdminDashboard() {
     if (!session?.user?.email || (session.user as any).role !== 'admin') return
     Promise.all([
       fetch('/api/admin/stats').then(r => r.json()),
-      fetch('/api/admin/sellers').then(r => r.json())
-    ]).then(([statsData, sellersData]) => {
+      fetch('/api/admin/sellers').then(r => r.json()),
+      fetch('/api/admin/buyers').then(r => r.json())
+    ]).then(([statsData, sellersData, buyersData]) => {
       setStats(statsData.stats)
       setProducts(statsData.products || [])
       setReports(statsData.reports || [])
       setSellers(sellersData)
+      setBuyers(buyersData)
       setLoading(false)
     })
   }, [session])
@@ -126,12 +137,18 @@ export default function AdminDashboard() {
         {stats && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             {[
-              { label: 'Sellers', value: stats.totalSellers },
-              { label: 'Buyers', value: stats.totalBuyers },
-              { label: 'Total Products', value: stats.totalProducts },
-              { label: 'Active Products', value: stats.activeProducts },
+              { label: 'Sellers', value: stats.totalSellers, clickTab: 'sellers' as const },
+              { label: 'Buyers', value: stats.totalBuyers, clickTab: 'buyers' as const },
+              { label: 'Total Products', value: stats.totalProducts, clickTab: 'products' as const },
+              { label: 'Active Products', value: stats.activeProducts, clickTab: null },
             ].map(s => (
-              <div key={s.label} className="rounded-xl p-4 text-center" style={{background: '#111', border: '1px solid #2a2a2a'}}>
+              <div key={s.label}
+                onClick={() => s.clickTab && setTab(s.clickTab)}
+                className={`rounded-xl p-4 text-center transition-all ${s.clickTab ? 'cursor-pointer hover:scale-105' : ''}`}
+                style={{
+                  background: s.clickTab && tab === s.clickTab ? '#1a1a1a' : '#111',
+                  border: s.clickTab && tab === s.clickTab ? '1px solid #fcd968' : '1px solid #2a2a2a'
+                }}>
                 <p className="text-3xl font-black" style={{color: '#fcd968'}}>{s.value}</p>
                 <p className="text-gray-400 text-sm mt-1">{s.label}</p>
               </div>
@@ -142,6 +159,7 @@ export default function AdminDashboard() {
         <div className="flex gap-4 mb-6">
           <button onClick={() => setTab('products')} className={`px-4 py-2 rounded-lg font-bold text-sm ${tab === 'products' ? 'text-black' : 'text-gray-400'}`} style={tab === 'products' ? {background: '#fcd968'} : {background: '#1a1a1a'}}>Products</button>
           <button onClick={() => setTab('sellers')} className={`px-4 py-2 rounded-lg font-bold text-sm ${tab === 'sellers' ? 'text-black' : 'text-gray-400'}`} style={tab === 'sellers' ? {background: '#fcd968'} : {background: '#1a1a1a'}}>Sellers</button>
+          <button onClick={() => setTab('buyers')} className={`px-4 py-2 rounded-lg font-bold text-sm ${tab === 'buyers' ? 'text-black' : 'text-gray-400'}`} style={tab === 'buyers' ? {background: '#fcd968'} : {background: '#1a1a1a'}}>Buyers</button>
         </div>
 
         {tab === 'products' && (
@@ -174,6 +192,28 @@ export default function AdminDashboard() {
                     </button>
                     <button onClick={() => { setEditingSeller(s); setEditForm({ companyName: s.companyName, contactName: s.contactName, email: s.email, phone: s.phone }) }} className="px-3 py-1 rounded-lg text-sm font-bold text-gray-400" style={{background: '#1a1a1a', border: '1px solid #2a2a2a'}}>Edit</button>
                   </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {tab === 'buyers' && (
+          <div className="space-y-3">
+            {buyers.length === 0 && (
+              <p className="text-gray-500 text-center py-8">No buyers registered yet.</p>
+            )}
+            {buyers.map(b => (
+              <div key={b.id} className="p-4 rounded-xl" style={{background: '#111', border: '1px solid #2a2a2a'}}>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-white font-bold">{b.name}</p>
+                    <p className="text-gray-400 text-sm">{b.email}</p>
+                    <p className="text-gray-500 text-xs mt-1">Joined {new Date(b.createdAt).toLocaleDateString('en-GB')}</p>
+                  </div>
+                  <span className="px-3 py-1 rounded-lg text-sm font-bold" style={b.emailVerified ? {background: '#1a1a1a', color: '#4ade80', border: '1px solid #4ade80'} : {background: '#1a1a1a', color: '#f87171', border: '1px solid #f87171'}}>
+                    {b.emailVerified ? 'Verified' : 'Unverified'}
+                  </span>
                 </div>
               </div>
             ))}
