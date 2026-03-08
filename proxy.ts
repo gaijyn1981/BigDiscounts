@@ -8,7 +8,7 @@ const ratelimit = new Ratelimit({
   limiter: Ratelimit.slidingWindow(5, '1 m'),
 })
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   if (request.nextUrl.pathname === '/api/auth/signin' ||
       request.nextUrl.pathname.startsWith('/api/register')) {
     const ip = request.headers.get('x-forwarded-for') || 'anonymous'
