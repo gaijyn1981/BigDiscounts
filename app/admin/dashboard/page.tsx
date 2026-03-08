@@ -97,6 +97,15 @@ export default function AdminDashboard() {
     setSellers(prev => prev.map(s => s.id === id ? { ...s, verified } : s))
   }
 
+  const toggleBuyerVerified = async (id: string, emailVerified: boolean) => {
+    await fetch('/api/admin/buyers', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, emailVerified })
+    })
+    setBuyers(prev => prev.map(b => b.id === id ? { ...b, emailVerified } : b))
+  }
+
   const saveSellerEdit = async () => {
     if (!editingSeller) return
     setSaving(true)
@@ -121,16 +130,15 @@ export default function AdminDashboard() {
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <span className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</span>
+        <span className="text-2xl font-black" style={{color: '#fcd968'}}>BigDiscounts</span>
         <div className="flex items-center gap-4">
-  <span className="text-gray-400 text-sm">Admin Dashboard</span>
-  <button onClick={() => signOut({ callbackUrl: '/login' })}
-    className="text-sm font-bold px-4 py-2 rounded-lg transition-opacity hover:opacity-80"
-    style={{background: '#1a1a1a', color: '#f87171', border: '1px solid #f87171'}}>
-    Logout
-  </button>
-</div>
-
+          <span className="text-gray-400 text-sm">Admin Dashboard</span>
+          <button onClick={() => signOut({ callbackUrl: '/login' })}
+            className="text-sm font-bold px-4 py-2 rounded-lg transition-opacity hover:opacity-80"
+            style={{background: '#1a1a1a', color: '#f87171', border: '1px solid #f87171'}}>
+            Logout
+          </button>
+        </div>
       </nav>
 
       <div className="max-w-6xl mx-auto px-6 py-8">
@@ -211,9 +219,9 @@ export default function AdminDashboard() {
                     <p className="text-gray-400 text-sm">{b.email}</p>
                     <p className="text-gray-500 text-xs mt-1">Joined {new Date(b.createdAt).toLocaleDateString('en-GB')}</p>
                   </div>
-                  <span className="px-3 py-1 rounded-lg text-sm font-bold" style={b.emailVerified ? {background: '#1a1a1a', color: '#4ade80', border: '1px solid #4ade80'} : {background: '#1a1a1a', color: '#f87171', border: '1px solid #f87171'}}>
+                  <button onClick={() => toggleBuyerVerified(b.id, !b.emailVerified)} className="px-3 py-1 rounded-lg text-sm font-bold" style={b.emailVerified ? {background: '#1a1a1a', color: '#4ade80', border: '1px solid #4ade80'} : {background: '#1a1a1a', color: '#f87171', border: '1px solid #f87171'}}>
                     {b.emailVerified ? 'Verified' : 'Unverified'}
-                  </span>
+                  </button>
                 </div>
               </div>
             ))}
