@@ -16,6 +16,12 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.svg',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'BigDiscounts - The UK Discount Marketplace',
+    description: 'Discover incredible deals from verified UK sellers. List your products for just £1/month. No commission, no middleman.',
+    site: '@bigdiscounts_uk',
+  },
   openGraph: {
 
     title: 'BigDiscounts - The UK Discount Marketplace',
