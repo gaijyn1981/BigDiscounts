@@ -25,6 +25,55 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How much does it cost to list on BigDiscounts?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "It costs just £1/month to list your products on BigDiscounts. There are no commission fees, no hidden costs, and no contracts. You can cancel anytime."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does BigDiscounts take commission on sales?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. BigDiscounts charges 0% commission on all sales. You keep 100% of your revenue. The only cost is the £1/month listing fee."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do buyers contact sellers on BigDiscounts?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Buyers contact sellers directly through the platform. There is no middleman — you communicate and transact directly with the buyer."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Who can sell on BigDiscounts?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Any UK-based business or independent seller can list products on BigDiscounts. It is designed to support small businesses and independent sellers."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I start selling on BigDiscounts?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Simply register an account, create your product listings, and activate your subscription for £1/month. Your listings will be live immediately."
+              }
+            }
+          ]
+        }) }}
+      />
       <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
         <span className="text-2xl font-black" style={{color: '#fcd968'}}>BigDiscounts</span>
         <div className="flex gap-4 items-center">
