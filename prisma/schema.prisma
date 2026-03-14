@@ -1,11 +1,10 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
   output   = "../lib/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Seller {
@@ -17,55 +16,54 @@ model Seller {
   phone            String
   paypalMe         String?
   stripeCustomerId String?
-  verified         Boolean  @default(false)
+  verified         Boolean   @default(false)
   createdAt        DateTime  @default(now())
   products         Product[]
-  emailVerified Boolean @default(false)
-  verifyToken   String?
+  emailVerified    Boolean   @default(false)
+  verifyToken      String?
   resetTokenExpiry DateTime?
-
 }
 
 model Buyer {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  name      String
-  createdAt DateTime @default(now())
-  emailVerified Boolean @default(false)
-  verifyToken   String?
+  id               String   @id @default(cuid())
+  email            String   @unique
+  password         String
+  name             String
+  createdAt        DateTime @default(now())
+  emailVerified    Boolean  @default(false)
+  verifyToken      String?
   resetTokenExpiry DateTime?
-
 }
 
 model Product {
-  id          String   @id @default(cuid())
-  sellerId    String
-  title       String
-  description String
-  price       Float
-  photos      String   @default("[]")
-  category    String?
-  deliveryTime String?
-  active      Boolean  @default(false)
-  featured    Boolean  @default(false)
-  featuredSubId String?
-  stripeSubId String?
+  id                 String    @id @default(cuid())
+  sellerId           String
+  title              String
+  description        String
+  price              Float
+  photos             String    @default("[]")
+  category           String?
+  deliveryTime       String?
+  active             Boolean   @default(false)
+  featured           Boolean   @default(false)
+  featuredSubId      String?
+  stripeSubId        String?
   subscriptionEndsAt DateTime?
-  views       Int      @default(0)
-  createdAt   DateTime @default(now())
-  seller      Seller   @relation(fields: [sellerId], references: [id])
+  views              Int       @default(0)
+  createdAt          DateTime  @default(now())
+  seller             Seller    @relation(fields: [sellerId], references: [id])
 }
+
 model Favourite {
-  id        String   @id @default(cuid())
+  id         String   @id @default(cuid())
   buyerEmail String
-  productId String
-  createdAt DateTime @default(now())
+  productId  String
+  createdAt  DateTime @default(now())
 
   @@unique([buyerEmail, productId])
 }
 
-  model Report {
+model Report {
   id        String   @id @default(cuid())
   productId String
   reason    String
