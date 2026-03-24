@@ -175,40 +175,6 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="px-6 py-16" style={{background: '#0a0a0a'}}>
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-3xl font-black text-white mb-4">Browse by Category</h2>
-          <p className="text-gray-500 mb-10">Discover products from UK sellers across all categories.</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {[
-              { icon: '📱', label: 'Electronics & Tech', href: '/browse/Electronics%20%26%20Tech' },
-              { icon: '📲', label: 'Phone & Accessories', href: '/browse/Phone%20%26%20Accessories' },
-              { icon: '👗', label: 'Clothing & Fashion', href: '/browse/Clothing%20%26%20Fashion' },
-              { icon: '🏠', label: 'Home & Living', href: '/browse/Home%20%26%20Living' },
-              { icon: '🌿', label: 'Garden & Outdoor', href: '/browse/Garden%20%26%20Outdoor' },
-              { icon: '🐾', label: 'Pets', href: '/browse/Pets' },
-              { icon: '👶', label: 'Baby & Kids', href: '/browse/Baby%20%26%20Kids' },
-              { icon: '💊', label: 'Health & Beauty', href: '/browse/Health%20%26%20Beauty' },
-              { icon: '🧸', label: 'Toys & Games', href: '/browse/Toys%20%26%20Games' },
-              { icon: '⚽', label: 'Sports & Fitness', href: '/browse/Sports%20%26%20Fitness' },
-              { icon: '🍫', label: 'Food & Drink', href: '/browse/Food%20%26%20Drink' },
-              { icon: '📚', label: 'Books & Stationery', href: '/browse/Books%20%26%20Stationery' },
-              { icon: '🔧', label: 'Tools & DIY', href: '/browse/Tools%20%26%20DIY' },
-              { icon: '🚗', label: 'Automotive', href: '/browse/Automotive' },
-              { icon: '🎨', label: 'Arts & Crafts', href: '/browse/Arts%20%26%20Crafts' },
-              { icon: '💼', label: 'Office & Business', href: '/browse/Office%20%26%20Business' },
-              { icon: '🎁', label: 'Gifts & Seasonal', href: '/browse/Gifts%20%26%20Seasonal' },
-              { icon: '🧹', label: 'Cleaning & Household', href: '/browse/Cleaning%20%26%20Household' },
-              { icon: '📦', label: 'View All', href: '/browse' },
-            ].map(item => (
-              <Link key={item.label} href={item.href} className="p-4 rounded-xl text-center hover:opacity-80 transition-opacity" style={{background: '#111111', border: '1px solid #fcd968'}}>
-                <div className="text-2xl mb-2">{item.icon}</div>
-                <p className="text-gray-300 text-sm font-medium">{item.label}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section className="px-6 py-24 text-center" style={{background: '#111111'}}>
         <div className="max-w-2xl mx-auto">
