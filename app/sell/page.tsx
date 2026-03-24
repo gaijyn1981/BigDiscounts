@@ -35,8 +35,21 @@ export default async function SellPage() {
         </div>
       </nav>
 
+      <style>{`
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(24px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeUp2 {
+          from { opacity: 0; transform: translateY(24px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-animate { animation: fadeUp 0.7s ease forwards; }
+        .hero-animate-delay { animation: fadeUp2 0.7s ease 0.2s forwards; opacity: 0; }
+        .pulse-btn:hover { transform: scale(1.05); transition: transform 0.2s ease; }
+      `}</style>
       <section className="px-6 py-24 text-center" style={{background: 'linear-gradient(180deg, #111111 0%, #0a0a0a 100%)'}}>
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-3xl mx-auto hero-animate">
           <div className="inline-block mb-6 px-4 py-2 rounded-full text-sm font-bold" style={{background: '#1a1400', border: '1px solid #fcd968', color: '#fcd968'}}>
             UK-Based Marketplace
           </div>
@@ -47,7 +60,7 @@ export default async function SellPage() {
             List products for £1/month and keep 100% of what you sell — no commissions, no hidden fees, no contracts.
           </p>
           <Link href="/register?type=seller" style={{background: '#fcd968'}}
-            className="text-black px-10 py-4 rounded-xl font-black text-xl hover:opacity-90 transition-opacity inline-block">
+            className="pulse-btn text-black px-10 py-4 rounded-xl font-black text-xl inline-block">
             Start Selling Now — £1/month
           </Link>
           <p className="text-gray-600 text-sm mt-4">No contract. Cancel anytime.</p>

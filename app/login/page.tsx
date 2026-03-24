@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -10,6 +10,12 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(true), 100)
+    return () => clearTimeout(timer)
+  }, [])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -53,7 +59,13 @@ export default function LoginPage() {
   </Link>
 </div>
 
-        <div className="rounded-2xl p-8" style={{background: '#111111', border: '1px solid #222'}}>
+        <div className="rounded-2xl p-8" style={{
+          background: '#111111',
+          border: '1px solid #222',
+          opacity: visible ? 1 : 0,
+          transform: visible ? 'translateY(0)' : 'translateY(24px)',
+          transition: 'opacity 0.6s ease, transform 0.6s ease',
+        }}>
           <h1 className="text-2xl font-black text-white mb-2">Welcome Back</h1>
           <p className="text-gray-500 text-sm mb-6">Sign in as a seller or buyer — we'll take you to the right place.</p>
           <form onSubmit={handleSubmit} className="space-y-4">
