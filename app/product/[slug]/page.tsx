@@ -7,6 +7,7 @@ import ReportButton from '@/app/components/ReportButton'
 import ContactSellerButtons from '@/app/components/ContactSellerButtons'
 import type { Metadata } from 'next'
 import { getServerSession } from 'next-auth'
+import ProductAnimations from '@/app/components/ProductAnimations'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -72,25 +73,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <div className="rounded-2xl overflow-hidden" style={{background: '#111111', border: '1px solid #222'}}>
           <div className="grid md:grid-cols-2 gap-0">
             <div className="p-6" style={{background: '#1a1a1a'}}>
-              {photos.length > 0 ? (
-                <div className="space-y-3">
-                  <img src={photos[0]} alt={product.title}
-                    className="w-full h-72 object-cover rounded-xl" />
-                  {photos.length > 1 && (
-                    <div className="grid grid-cols-3 gap-2">
-                      {photos.slice(1).map((photo: string, i: number) => (
-                        <img key={i} src={photo} alt={product.title}
-                          className="w-full h-24 object-cover rounded-lg" />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="w-full h-72 rounded-xl flex items-center justify-center text-8xl"
-                  style={{background: '#222'}}>
-                  📦
-                </div>
-              )}
+              <ProductAnimations
+                photos={photos}
+                title={product.title}
+                price={product.price}
+                contactButton={null}
+              />
             </div>
 
             <div className="p-8 flex flex-col justify-between">
@@ -111,7 +99,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                   </Link>
                 )}
                 <h1 className="text-3xl font-black text-white mt-3 mb-2">{product.title}</h1>
-                <p className="text-4xl font-black mb-4" style={{color: '#fcd968'}}>£{product.price.toFixed(2)}</p>
+                {/* Price rendered by ProductAnimations */}
                 {product.deliveryTime && (
                   <p className="text-sm font-semibold mb-4" style={{color: '#4ade80'}}>🚚 Delivery: {product.deliveryTime}</p>
                 )}
