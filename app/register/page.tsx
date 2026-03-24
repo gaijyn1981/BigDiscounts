@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 export default function RegisterPage() {
@@ -7,6 +7,12 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [sent, setSent] = useState(false)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(true), 100)
+    return () => clearTimeout(timer)
+  }, [])
   const [form, setForm] = useState({
     email: '', password: '', name: '', companyName: '', contactName: '', phone: ''
   })
@@ -33,7 +39,13 @@ export default function RegisterPage() {
   if (sent) return (
     <main className="min-h-screen flex items-center justify-center px-4" style={{background: '#0a0a0a'}}>
       <div className="w-full max-w-md text-center">
-        <div className="rounded-2xl p-8" style={{background: '#111111', border: '1px solid #222'}}>
+        <div className="rounded-2xl p-8" style={{
+          background: '#111111',
+          border: '1px solid #222',
+          opacity: visible ? 1 : 0,
+          transform: visible ? 'translateY(0)' : 'translateY(24px)',
+          transition: 'opacity 0.6s ease, transform 0.6s ease',
+        }}>
           <div className="text-5xl mb-4">📧</div>
           <h1 className="text-2xl font-black text-white mb-2">Check Your Email!</h1>
           <p className="text-gray-400 mb-6">We sent a verification link to <span style={{color: '#fcd968'}}>{form.email}</span>. Click it to activate your account. If you don't see it, please check your spam or junk folder.</p>
@@ -73,13 +85,17 @@ export default function RegisterPage() {
               <label className="block text-sm font-semibold text-gray-400 mb-1">Email</label>
               <input name="email" type="email" value={form.email} onChange={update} required
                 className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
-                style={{background: '#1a1a1a', border: '1px solid #333'}} />
+                style={{background: '#1a1a1a', border: '1px solid #333', transition: 'border-color 0.2s ease, box-shadow 0.2s ease'}}
+                onFocus={e => { e.currentTarget.style.borderColor = '#fcd968'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(252,217,104,0.15)' }}
+                onBlur={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.boxShadow = 'none' }} />
             </div>
             <div>
               <label className="block text-sm font-semibold text-gray-400 mb-1">Password</label>
               <input name="password" type="password" value={form.password} onChange={update} required
                 className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
-                style={{background: '#1a1a1a', border: '1px solid #333'}} />
+                style={{background: '#1a1a1a', border: '1px solid #333', transition: 'border-color 0.2s ease, box-shadow 0.2s ease'}}
+                onFocus={e => { e.currentTarget.style.borderColor = '#fcd968'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(252,217,104,0.15)' }}
+                onBlur={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.boxShadow = 'none' }} />
             </div>
             {type === 'seller' ? (
               <>
@@ -87,19 +103,25 @@ export default function RegisterPage() {
                   <label className="block text-sm font-semibold text-gray-400 mb-1">Company Name</label>
                   <input name="companyName" type="text" value={form.companyName} onChange={update} required
                     className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
-                    style={{background: '#1a1a1a', border: '1px solid #333'}} />
+                    style={{background: '#1a1a1a', border: '1px solid #333', transition: 'border-color 0.2s ease, box-shadow 0.2s ease'}}
+                onFocus={e => { e.currentTarget.style.borderColor = '#fcd968'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(252,217,104,0.15)' }}
+                onBlur={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.boxShadow = 'none' }} />
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-400 mb-1">Contact Name</label>
                   <input name="contactName" type="text" value={form.contactName} onChange={update} required
                     className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
-                    style={{background: '#1a1a1a', border: '1px solid #333'}} />
+                    style={{background: '#1a1a1a', border: '1px solid #333', transition: 'border-color 0.2s ease, box-shadow 0.2s ease'}}
+                onFocus={e => { e.currentTarget.style.borderColor = '#fcd968'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(252,217,104,0.15)' }}
+                onBlur={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.boxShadow = 'none' }} />
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-400 mb-1">Phone</label>
                   <input name="phone" type="tel" value={form.phone} onChange={update} required
                     className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
-                    style={{background: '#1a1a1a', border: '1px solid #333'}} />
+                    style={{background: '#1a1a1a', border: '1px solid #333', transition: 'border-color 0.2s ease, box-shadow 0.2s ease'}}
+                onFocus={e => { e.currentTarget.style.borderColor = '#fcd968'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(252,217,104,0.15)' }}
+                onBlur={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.boxShadow = 'none' }} />
                 </div>
               </>
             ) : (
@@ -107,7 +129,9 @@ export default function RegisterPage() {
                 <label className="block text-sm font-semibold text-gray-400 mb-1">Full Name</label>
                 <input name="name" type="text" value={form.name} onChange={update} required
                   className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
-                  style={{background: '#1a1a1a', border: '1px solid #333'}} />
+                  style={{background: '#1a1a1a', border: '1px solid #333', transition: 'border-color 0.2s ease, box-shadow 0.2s ease'}}
+                onFocus={e => { e.currentTarget.style.borderColor = '#fcd968'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(252,217,104,0.15)' }}
+                onBlur={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.boxShadow = 'none' }} />
               </div>
             )}
             {error && <p className="text-red-400 text-sm">{error}</p>}
