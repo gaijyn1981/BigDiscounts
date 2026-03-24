@@ -25,9 +25,14 @@ export default function BrowsePage() {
   const [minPrice, setMinPrice] = useState('')
   const [maxPrice, setMaxPrice] = useState('')
   const [loading, setLoading] = useState(true)
+  const [cardsVisible, setCardsVisible] = useState(false)
 
   useEffect(() => {
-    fetch('/api/products').then(r => r.json()).then(data => { setProducts(data); setLoading(false) })
+    fetch('/api/products').then(r => r.json()).then(data => {
+      setProducts(data)
+      setLoading(false)
+      setTimeout(() => setCardsVisible(true), 100)
+    })
   }, [])
 
   function isNew(createdAt: string) {
@@ -106,7 +111,9 @@ export default function BrowsePage() {
           <div className="flex gap-3 flex-wrap mt-4">
             <input type="text" placeholder="Search products..." value={search} onChange={e => setSearch(e.target.value)}
               className="flex-1 px-5 py-3 rounded-xl text-white focus:outline-none min-w-48"
-              style={{background: '#1a1a1a', border: '1px solid #333'}} />
+              style={{background: '#1a1a1a', border: '1px solid #333', transition: 'border-color 0.2s ease, box-shadow 0.2s ease'}}
+              onFocus={e => { e.target.style.borderColor = '#fcd968'; e.target.style.boxShadow = '0 0 0 3px rgba(252,217,104,0.15)' }}
+              onBlur={e => { e.target.style.borderColor = '#333'; e.target.style.boxShadow = 'none' }} />
             <select value={category} onChange={e => { const val = e.target.value; if (val) router.push(`/browse/${encodeURIComponent(val)}`); else setCategory('') }}
               className="px-4 py-3 rounded-xl text-white focus:outline-none"
               style={{background: '#1a1a1a', border: '1px solid #333'}}>
@@ -177,7 +184,7 @@ export default function BrowsePage() {
           <>
             <p className="text-gray-600 text-sm mb-6">{filtered.length} product{filtered.length !== 1 ? 's' : ''} found{category ? ' in ' + category : ''}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {filtered.map(product => {
+              {filtered.map((product, i) => {
                 const photos = JSON.parse(product.photos || '[]')
                 const photo = photos[0]
                 return (
@@ -197,7 +204,7 @@ export default function BrowsePage() {
                     )}
                     <div className="h-48 flex items-center justify-center overflow-hidden" style={{background: '#1a1a1a'}}>
                       {photo ? (
-                        <img src={photo} alt={product.title} className="w-full h-full object-cover" />
+                        <img src={photo} alt={product.title} className="w-full h-full object-cover group-hover:scale-105" style={{transition: 'transform 0.3s ease'}} />
                       ) : (
                         <span className="text-6xl">📦</span>
                       )}
