@@ -120,7 +120,7 @@ export default function AnimatedHome({ session, recentProducts, totalProducts, t
           <div className="flex gap-4 justify-center flex-wrap">
             {session ? (
               <Link href="/seller/dashboard" style={{ background: '#fcd968' }}
-                className="text-black px-8 py-4 rounded-xl font-black text-lg hover:opacity-90 transition-opacity">
+                className="text-black px-8 py-4 rounded-xl font-black text-lg hover:scale-105 transition-transform duration-200 inline-block">
                 Go to Dashboard
               </Link>
             ) : (
@@ -245,7 +245,7 @@ export default function AnimatedHome({ session, recentProducts, totalProducts, t
           </div>
           <div className="text-center mt-8">
             <Link href="/browse" style={{ background: '#fcd968' }}
-              className="text-black px-8 py-3 rounded-xl font-black hover:opacity-90 transition-opacity inline-block">
+              className="text-black px-8 py-3 rounded-xl font-black hover:scale-105 transition-transform duration-200 inline-block">
               View All Listings
             </Link>
           </div>
