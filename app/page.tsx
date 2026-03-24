@@ -106,14 +106,6 @@ export default async function Home() {
         showCounters={showCounters}
       />
 
-      <AnimatedHome
-        session={!!session?.user}
-        recentProducts={recentProducts}
-        totalProducts={totalProducts}
-        totalSellers={totalSellers}
-        showCounters={showCounters}
-      />
-
       <section className="px-6 py-16" style={{background: '#111111'}}>
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-black text-white text-center mb-12">How Buying and Selling Works</h2>
