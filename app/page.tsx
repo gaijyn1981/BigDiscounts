@@ -1,7 +1,9 @@
 import Link from 'next/link'
+import AnimatedHome from './components/AnimatedHome'
 import { prisma } from '@/lib/db'
 import { getServerSession } from 'next-auth'
 import type { Metadata } from 'next'
+
 
 export const metadata: Metadata = {
   title: 'UK Marketplace for Sellers & Buyers | BigDiscounts — Fair, Low Fee Marketplace',
@@ -96,115 +98,21 @@ export default async function Home() {
         </div>
       </nav>
 
-      <section className="px-6 py-24 text-center" style={{background: 'linear-gradient(180deg, #111111 0%, #0a0a0a 100%)'}}>
-        <div className="max-w-4xl mx-auto">
-          <div className="inline-block mb-6 px-4 py-2 rounded-full text-sm font-bold" style={{background: '#1a1400', border: '1px solid #fcd968', color: '#fcd968'}}>
-            Connecting Buyers and Businesses Across the UK
-          </div>
-          <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
-            The UK Marketplace<br/>
-            <span style={{color: '#fcd968'}}>Built to Support Sellers and Buyers</span>
-          </h1>
-          <p className="text-xl text-gray-400 mb-6 max-w-2xl mx-auto leading-relaxed">
-            A fair, transparent place to buy and sell — no commission, low fees, full control.
-          </p>
-          <p className="text-gray-600 text-base mb-10 max-w-2xl mx-auto leading-relaxed">
-            BigDiscounts is an online marketplace in the United Kingdom designed to support independent sellers and small businesses. Unlike traditional platforms that charge commission on every sale, BigDiscounts offers a transparent £1/month listing fee with no commission, allowing sellers to keep 100% of their revenue while connecting directly with buyers.
-          </p>
-          <div className="flex gap-4 justify-center flex-wrap">
-            {session?.user ? (
-              <Link href="/seller/dashboard" style={{background: '#fcd968'}}
-                className="text-black px-8 py-4 rounded-xl font-black text-lg hover:opacity-90 transition-opacity">
-                Go to Dashboard
-              </Link>
-            ) : (
-              <Link href="/register?type=seller" style={{background: '#fcd968'}}
-                className="text-black px-8 py-4 rounded-xl font-black text-lg hover:opacity-90 transition-opacity">
-                Start Selling — £1/mo
-              </Link>
-            )}
-            <Link href="/browse"
-              className="text-black px-8 py-4 rounded-xl font-black text-lg hover:opacity-90 transition-opacity"
-              style={{background: '#fcd968'}}>
-              Browse Deals
-            </Link>
-          </div>
-        </div>
-      </section>
+      <AnimatedHome
+        session={!!session?.user}
+        recentProducts={recentProducts}
+        totalProducts={totalProducts}
+        totalSellers={totalSellers}
+        showCounters={showCounters}
+      />
 
-      <section className="px-6 py-14" style={{background: '#111111', borderTop: '1px solid #1a1a1a', borderBottom: '1px solid #1a1a1a'}}>
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-black text-white text-center mb-8">A Fair Alternative to High-Fee Marketplaces</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { icon: '💷', title: '£1/month listing fee', desc: 'No commission on any sale you make.' },
-              { icon: '💰', title: 'Keep 100% of every sale', desc: 'Your revenue stays yours, always.' },
-              { icon: '💬', title: 'Buyers contact you directly', desc: 'Full control over communication and fulfilment.' },
-              { icon: '✅', title: 'Simple, transparent pricing', desc: 'No hidden costs, no contracts, cancel anytime.' },
-            ].map(item => (
-              <div key={item.title} className="p-5 rounded-xl text-center" style={{background: '#1a1a1a', border: '1px solid #fcd968'}}>
-                <div className="text-3xl mb-3">{item.icon}</div>
-                <h3 className="font-black text-white text-sm mb-2">{item.title}</h3>
-                <p className="text-gray-500 text-xs leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {showCounters && (
-        <section className="px-6 py-12" style={{background: '#0a0a0a', borderBottom: '1px solid #1a1a1a'}}>
-          <div className="max-w-4xl mx-auto grid grid-cols-3 gap-8 text-center">
-            <div>
-              <p className="text-4xl font-black" style={{color: '#fcd968'}}>{totalProducts}+</p>
-              <p className="text-gray-400 mt-1">Active Listings</p>
-            </div>
-            <div>
-              <p className="text-4xl font-black" style={{color: '#fcd968'}}>{totalSellers}+</p>
-              <p className="text-gray-400 mt-1">UK Sellers</p>
-            </div>
-            <div>
-              <p className="text-4xl font-black" style={{color: '#fcd968'}}>£1</p>
-              <p className="text-gray-400 mt-1">Per Month</p>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {recentProducts.length > 0 && (
-        <section className="px-6 py-16">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-3xl font-black text-white">Latest Deals</h2>
-              <Link href="/browse" style={{color: '#fcd968'}} className="font-bold hover:opacity-80">View All Deals →</Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {recentProducts.map(product => {
-                const photos = JSON.parse(product.photos || '[]')
-                const photo = photos[0]
-                return (
-                  <Link key={product.id} href={`/product/${product.id}`}
-                    className="rounded-2xl overflow-hidden group hover:transform hover:scale-105 transition-all duration-200"
-                    style={{background: '#111111', border: '1px solid #222'}}>
-                    <div className="h-48 flex items-center justify-center overflow-hidden" style={{background: '#1a1a1a'}}>
-                      {photo ? (
-                        <img src={photo} alt={product.title} className="w-full h-full object-cover" />
-                      ) : (
-                        <span className="text-5xl">📦</span>
-                      )}
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-bold text-white truncate mb-1">{product.title}</h3>
-                      <p className="text-gray-500 text-sm mb-2">{product.seller.companyName}</p>
-                      <p className="text-2xl font-black" style={{color: '#fcd968'}}>£{product.price.toFixed(2)}</p>
-                    </div>
-                  </Link>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-      )}
+      <AnimatedHome
+        session={!!session?.user}
+        recentProducts={recentProducts}
+        totalProducts={totalProducts}
+        totalSellers={totalSellers}
+        showCounters={showCounters}
+      />
 
       <section className="px-6 py-16" style={{background: '#111111'}}>
         <div className="max-w-5xl mx-auto">
