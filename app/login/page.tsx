@@ -73,7 +73,9 @@ export default function LoginPage() {
               <label className="block text-sm font-semibold text-gray-400 mb-1">Email</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)} required
                 className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
-                style={{background: '#1a1a1a', border: '1px solid #333'}} />
+                style={{background: '#1a1a1a', border: '1px solid #333', transition: 'border-color 0.2s ease, box-shadow 0.2s ease'}}
+                onFocus={e => { e.currentTarget.style.borderColor = '#fcd968'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(252,217,104,0.15)' }}
+                onBlur={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.boxShadow = 'none' }} />
             </div>
             <div>
               <label className="block text-sm font-semibold text-gray-400 mb-1">Password</label>
