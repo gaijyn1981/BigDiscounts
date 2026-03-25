@@ -54,7 +54,7 @@ export default function AdminDashboard() {
   const [sellers, setSellers] = useState<Seller[]>([])
   const [buyers, setBuyers] = useState<Buyer[]>([])
   const [loading, setLoading] = useState(true)
-  const [tab, setTab] = useState<'products' | 'sellers' | 'buyers'>('products')
+  const [tab, setTab] = useState<'products' | 'sellers' | 'buyers' | 'reports'>('products')
   const [editingSeller, setEditingSeller] = useState<Seller | null>(null)
   const [editForm, setEditForm] = useState({ companyName: '', contactName: '', email: '', phone: '' })
   const [saving, setSaving] = useState(false)
@@ -168,7 +168,44 @@ export default function AdminDashboard() {
           <button onClick={() => setTab('products')} className={`px-4 py-2 rounded-lg font-bold text-sm ${tab === 'products' ? 'text-black' : 'text-gray-400'}`} style={tab === 'products' ? {background: '#fcd968'} : {background: '#1a1a1a'}}>Products</button>
           <button onClick={() => setTab('sellers')} className={`px-4 py-2 rounded-lg font-bold text-sm ${tab === 'sellers' ? 'text-black' : 'text-gray-400'}`} style={tab === 'sellers' ? {background: '#fcd968'} : {background: '#1a1a1a'}}>Sellers</button>
           <button onClick={() => setTab('buyers')} className={`px-4 py-2 rounded-lg font-bold text-sm ${tab === 'buyers' ? 'text-black' : 'text-gray-400'}`} style={tab === 'buyers' ? {background: '#fcd968'} : {background: '#1a1a1a'}}>Buyers</button>
+          <button onClick={() => setTab('reports')} className={`px-4 py-2 rounded-lg font-bold text-sm ${tab === 'reports' ? 'text-black' : 'text-gray-400'}`} style={tab === 'reports' ? {background: '#f87171', color: 'white'} : {background: '#1a1a1a'}}>
+            Reports {reports.length > 0 && <span className="ml-1 px-1.5 py-0.5 rounded-full text-xs" style={{background: '#f87171', color: 'white'}}>{reports.length}</span>}
+          </button>
         </div>
+
+        {tab === 'reports' && (
+          <div className="space-y-3">
+            {reports.length === 0 ? (
+              <div className="text-center py-20">
+                <div className="text-5xl mb-4">✅</div>
+                <p className="text-gray-400 text-lg font-bold">No reports yet</p>
+                <p className="text-gray-600 text-sm mt-2">Reported products will appear here.</p>
+              </div>
+            ) : (
+              reports.map(r => (
+                <div key={r.id} className="p-4 rounded-xl flex justify-between items-start gap-4" style={{background: '#1a1a1a', border: '1px solid #f87171'}}>
+                  <div>
+                    <p className="text-white font-bold text-sm mb-1">Product ID: <span style={{color: '#fcd968'}}>{r.productId}</span></p>
+                    <p className="text-gray-400 text-sm mb-2">{r.reason}</p>
+                    <p className="text-gray-600 text-xs">{new Date(r.createdAt).toLocaleString()}</p>
+                  </div>
+                  <div className="flex gap-2 shrink-0">
+                    <a href={`/product/${r.productId}`} target="_blank"
+                      className="px-3 py-1.5 rounded-lg text-xs font-bold"
+                      style={{background: '#fcd968', color: 'black'}}>
+                      View
+                    </a>
+                    <button onClick={() => deleteProduct(r.productId)}
+                      className="px-3 py-1.5 rounded-lg text-xs font-bold"
+                      style={{background: '#f87171', color: 'white'}}>
+                      Delete Product
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
 
         {tab === 'products' && (
           <div className="space-y-3">
