@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import AnimatedHome from './components/AnimatedHome'
-import Navbar from './components/Navbar'
 import { prisma } from '@/lib/db'
 import { getServerSession } from 'next-auth'
 import type { Metadata } from 'next'
@@ -77,7 +76,6 @@ export default async function Home() {
           ]
         }) }}
       />
-      <Navbar session={!!session?.user} userName={session?.user?.name?.split(' ')[0]} />
 
       <AnimatedHome
         session={!!session?.user}
