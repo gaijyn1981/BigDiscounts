@@ -13,6 +13,7 @@ export default function Navbar({ session, userName, lang = 'en' }: Props) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   const t = {
+    home: lang === 'ro' ? 'Acasă' : 'Home',
     sell: lang === 'ro' ? 'Vinde' : 'Sell',
     browse: lang === 'ro' ? 'Explorează' : 'Browse',
     login: lang === 'ro' ? 'Autentificare' : 'Login',
@@ -27,6 +28,7 @@ export default function Navbar({ session, userName, lang = 'en' }: Props) {
 
       {/* Desktop nav */}
       <div className="hidden md:flex gap-4 items-center">
+        <Link href="/" className="text-gray-400 hover:text-white transition-colors">{t.home}</Link>
         <Link href="/browse" className="text-gray-400 hover:text-white transition-colors">{t.browse}</Link>
         <Link href="/sell" className="text-gray-400 hover:text-white transition-colors">{t.sell}</Link>
         {session ? (
@@ -77,6 +79,11 @@ export default function Navbar({ session, userName, lang = 'en' }: Props) {
       {menuOpen && (
         <div className="md:hidden absolute top-16 left-0 right-0 z-50 px-6 py-4 flex flex-col gap-4"
           style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}}>
+          <Link href="/" onClick={() => setMenuOpen(false)}
+            className="text-gray-400 hover:text-white transition-colors py-2 border-b"
+            style={{borderColor: '#1a1a1a'}}>
+            {t.home}
+          </Link>
           <Link href="/browse" onClick={() => setMenuOpen(false)}
             className="text-gray-400 hover:text-white transition-colors py-2 border-b"
             style={{borderColor: '#1a1a1a'}}>
