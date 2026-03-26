@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 
 interface Props {
@@ -14,6 +15,7 @@ export default function Navbar({ session, userName, lang = 'en' }: Props) {
 
   const t = {
     home: lang === 'ro' ? 'Acasă' : 'Home',
+    logout: lang === 'ro' ? 'Deconectare' : 'Logout',
     sell: lang === 'ro' ? 'Vinde' : 'Sell',
     browse: lang === 'ro' ? 'Explorează' : 'Browse',
     login: lang === 'ro' ? 'Autentificare' : 'Login',
@@ -39,6 +41,11 @@ export default function Navbar({ session, userName, lang = 'en' }: Props) {
               style={{background: '#fcd968', color: 'black'}}>
               {t.dashboard}
             </Link>
+            <button onClick={() => signOut({ callbackUrl: '/' })}
+              className="px-4 py-2 rounded-lg font-bold text-sm hover:opacity-80 transition-opacity"
+              style={{background: '#1a1a1a', color: '#f87171', border: '1px solid #f87171'}}>
+              {t.logout}
+            </button>
           </>
         ) : (
           <>
@@ -95,11 +102,18 @@ export default function Navbar({ session, userName, lang = 'en' }: Props) {
             {t.sell}
           </Link>
           {session ? (
-            <Link href="/seller/dashboard" onClick={() => setMenuOpen(false)}
-              className="py-3 rounded-lg font-bold text-center"
-              style={{background: '#fcd968', color: 'black'}}>
-              {t.dashboard}
-            </Link>
+            <>
+              <Link href="/seller/dashboard" onClick={() => setMenuOpen(false)}
+                className="py-3 rounded-lg font-bold text-center"
+                style={{background: '#fcd968', color: 'black'}}>
+                {t.dashboard}
+              </Link>
+              <button onClick={() => signOut({ callbackUrl: '/' })}
+                className="py-3 rounded-lg font-bold text-center"
+                style={{background: '#1a1a1a', color: '#f87171', border: '1px solid #f87171'}}>
+                {t.logout}
+              </button>
+            </>
           ) : (
             <>
               <Link href="/login" onClick={() => setMenuOpen(false)}
