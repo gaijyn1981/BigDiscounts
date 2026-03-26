@@ -129,17 +129,6 @@ export default function AdminDashboard() {
 
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
-      <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <span className="text-2xl font-black" style={{color: '#fcd968'}}>BigDiscounts</span>
-        <div className="flex items-center gap-4">
-          <span className="text-gray-400 text-sm">Admin Dashboard</span>
-          <button onClick={() => signOut({ callbackUrl: '/login' })}
-            className="text-sm font-bold px-4 py-2 rounded-lg transition-opacity hover:opacity-80"
-            style={{background: '#1a1a1a', color: '#f87171', border: '1px solid #f87171'}}>
-            Logout
-          </button>
-        </div>
-      </nav>
 
       <div className="max-w-6xl mx-auto px-6 py-8">
         {stats && (

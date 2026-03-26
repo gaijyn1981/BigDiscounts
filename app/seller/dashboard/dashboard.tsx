@@ -113,14 +113,6 @@ export default function Dashboard() {
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
       {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
 
-      <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <span className="text-2xl font-black" style={{color: '#fcd968'}}>BigDiscounts</span>
-        <div className="flex items-center gap-4">
-          <span className="text-gray-400 text-sm">Welcome, {session?.user?.name}</span>
-          <button onClick={() => signOut({ callbackUrl: '/' })} className="text-gray-500 hover:text-red-400 text-sm">Logout</button>
-        </div>
-      </nav>
-
       <div className="max-w-4xl mx-auto px-6 py-10">
         {success && (
           <div className="rounded-xl px-6 py-4 mb-6 flex items-center gap-3"

@@ -74,10 +74,6 @@ export default function EditProductPage() {
 
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
-      <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <span className="text-2xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</span>
-        <Link href="/seller/dashboard" className="text-gray-400 hover:text-white transition-colors">← Back</Link>
-      </nav>
 
       <div className="max-w-2xl mx-auto px-6 py-10">
         <h1 className="text-3xl font-black text-white mb-8">Edit Product</h1>
