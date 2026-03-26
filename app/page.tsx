@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import AnimatedHome from './components/AnimatedHome'
+import Navbar from './components/Navbar'
 import { prisma } from '@/lib/db'
 import { getServerSession } from 'next-auth'
 import type { Metadata } from 'next'
@@ -76,27 +77,7 @@ export default async function Home() {
           ]
         }) }}
       />
-      <nav style={{background: '#111111', borderBottom: '1px solid #2a2a2a'}} className="px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <span className="text-2xl font-black" style={{color: '#fcd968'}}>BigDiscounts</span>
-        <div className="flex gap-4 items-center">
-          <Link href="/browse" aria-label="Browse products" className="text-gray-400 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></Link>
-          <Link href="/sell" className="text-gray-400 hover:text-white transition-colors">Sell</Link>
-          {session?.user ? (
-            <>
-              <Link href="/seller/dashboard" className="text-gray-400 hover:text-white transition-colors text-sm">
-                Hi, {session.user.name?.split(' ')[0]}
-              </Link>
-              <Link href="/seller/dashboard"
-                className="px-5 py-2 rounded-lg font-bold hover:opacity-90 transition-opacity text-sm"
-                style={{background: '#fcd968', color: 'black'}}>
-                Dashboard
-              </Link>
-            </>
-          ) : (
-            <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Login</Link>
-          )}
-        </div>
-      </nav>
+      <Navbar session={!!session?.user} userName={session?.user?.name?.split(' ')[0]} />
 
       <AnimatedHome
         session={!!session?.user}
