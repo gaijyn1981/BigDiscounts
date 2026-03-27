@@ -15,7 +15,7 @@ export default async function Home() {
 
   const recentProducts = await prisma.product.findMany({
     where: { active: true },
-    orderBy: { createdAt: 'desc' },
+    orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }],
     take: 8,
     include: { seller: { select: { companyName: true } } }
   })
