@@ -18,6 +18,7 @@ export default function FavouritesPage() {
   const router = useRouter()
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
+  const [cardsVisible, setCardsVisible] = useState(false)
 
   useEffect(() => {
     if (status === 'unauthenticated') router.push('/login')
@@ -32,6 +33,7 @@ export default function FavouritesPage() {
     const all = await allRes.json()
     setProducts(all.filter((p: Product) => ids.includes(p.id)))
     setLoading(false)
+    setTimeout(() => setCardsVisible(true), 100)
   }
 
   async function removeFavourite(productId: string) {
