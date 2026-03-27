@@ -46,6 +46,7 @@ interface Props {
     price: number
     photos: string
     category: string | null
+    featured: boolean
     seller: { companyName: string }
   }[]
   totalProducts: number
@@ -54,6 +55,9 @@ interface Props {
 }
 
 export default function AnimatedHome({ session, recentProducts, totalProducts, totalSellers, showCounters }: Props) {
+  // Search state
+  const [search, setSearch] = useState('')
+
   // Hero fade-in
   const [heroVisible, setHeroVisible] = useState(false)
   useEffect(() => {
@@ -201,9 +205,30 @@ export default function AnimatedHome({ session, recentProducts, totalProducts, t
       {/* Recent Products - Staggered fade in */}
       {recentProducts.length > 0 && (
         <section className="px-6 py-14" style={{ background: '#111111' }}>
+          {/* Search bar */}
+          <div className="max-w-xl mx-auto mb-8">
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="w-full px-5 py-3 rounded-xl text-white focus:outline-none"
+              style={{
+                background: '#1a1a1a',
+                border: '1px solid #333',
+                transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+              }}
+              onFocus={e => { e.currentTarget.style.borderColor = '#fcd968'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(252,217,104,0.15)' }}
+              onBlur={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.boxShadow = 'none' }}
+            />
+          </div>
+
           <h2 className="text-2xl font-black text-white text-center mb-8">Latest Listings</h2>
           <div ref={productsRef} className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
-            {recentProducts.map((product, i) => {
+            {recentProducts
+              .filter(p => !search || p.title.toLowerCase().includes(search.toLowerCase()))
+              .sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
+              .map((product, i) => {
               const photos = JSON.parse(product.photos || '[]')
               const photo = photos[0] || null
               return (
@@ -220,16 +245,23 @@ export default function AnimatedHome({ session, recentProducts, totalProducts, t
                   }}
                 >
                   <div
-                    className="h-40 overflow-hidden"
+                    className="h-40 overflow-hidden relative"
                     style={{ background: '#222' }}
                   >
                     {photo ? (
-                      <img
-                        src={photo}
-                        alt={product.title}
-                        className="w-full h-full object-cover group-hover:scale-105"
-                        style={{ transition: 'transform 0.3s ease' }}
-                      />
+                      <>
+                    <img
+                      src={photo}
+                      alt={product.title}
+                      className="w-full h-full object-cover group-hover:scale-105"
+                      style={{ transition: 'transform 0.3s ease' }}
+                    />
+                    {product.featured && (
+                      <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-xs font-black text-black" style={{background: '#fcd968'}}>
+                        ⭐ Featured
+                      </div>
+                    )}
+                  </>
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-4xl">📦</div>
                     )}
