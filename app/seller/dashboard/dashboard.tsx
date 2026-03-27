@@ -26,6 +26,8 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true)
   const [cancelling, setCancelling] = useState<string | null>(null)
   const { toast, showToast, hideToast } = useToast()
+  const [cardsVisible, setCardsVisible] = useState(false)
+  const [statsVisible, setStatsVisible] = useState(false)
 
   const success = searchParams.get('success')
   const cancelled = searchParams.get('cancelled')
@@ -42,6 +44,7 @@ export default function Dashboard() {
     const data = await res.json()
     setProducts(data)
     setLoading(false)
+    setTimeout(() => { setCardsVisible(true); setStatsVisible(true) }, 100)
   }
 
   async function deleteProduct(id: string) {
@@ -152,6 +155,27 @@ export default function Dashboard() {
           <p className="text-gray-400 text-sm">As a seller you are responsible for: shipping products to buyers and issuing refunds within 14 days of receiving a return. Buyers are responsible for returning items within 14 days under UK Consumer Contracts Regulations 2013. BigDiscounts is not liable for any disputes between buyers and sellers.</p>
         </div>
 
+        {/* Stats bar */}
+        <div className="grid grid-cols-3 gap-4 mb-8">
+          {[
+            { label: 'Total Products', value: products.length },
+            { label: 'Active', value: products.filter(p => p.active).length },
+            { label: 'Total Views', value: products.reduce((a, p) => a + p.views, 0) },
+          ].map((stat, i) => (
+            <div key={stat.label} className="rounded-xl p-4 text-center"
+              style={{
+                background: '#111111',
+                border: '1px solid #fcd968',
+                opacity: statsVisible ? 1 : 0,
+                transform: statsVisible ? 'translateY(0)' : 'translateY(12px)',
+                transition: `opacity 0.4s ease ${i * 0.1}s, transform 0.4s ease ${i * 0.1}s`,
+              }}>
+              <p className="text-2xl font-black" style={{color: '#fcd968'}}>{stat.value}</p>
+              <p className="text-gray-500 text-xs mt-1">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-black text-white">My Products</h1>
           <div className="flex gap-3">
@@ -179,9 +203,15 @@ export default function Dashboard() {
           </div>
         ) : (
           <div className="space-y-4">
-            {products.map(product => (
+            {products.map((product, i) => (
               <div key={product.id} className="rounded-xl p-6 flex justify-between items-center"
-                style={{background: '#111111', border: product.featured ? '2px solid #fcd968' : '1px solid #222'}}>
+                style={{
+                  background: '#111111',
+                  border: product.featured ? '2px solid #fcd968' : '1px solid #222',
+                  opacity: cardsVisible ? 1 : 0,
+                  transform: cardsVisible ? 'translateY(0)' : 'translateY(16px)',
+                  transition: `opacity 0.4s ease ${i * 0.07}s, transform 0.4s ease ${i * 0.07}s`,
+                }}>
                 <div>
                   <div className="flex items-center gap-2">
                     <h3 className="font-bold text-white text-lg">{product.title}</h3>
