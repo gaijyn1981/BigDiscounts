@@ -19,6 +19,7 @@ export default function BuyerDashboard() {
   const router = useRouter()
   const [favourites, setFavourites] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
+  const [cardsVisible, setCardsVisible] = useState(false)
 
   useEffect(() => {
     if (status === 'unauthenticated') router.push('/login')
@@ -41,6 +42,7 @@ export default function BuyerDashboard() {
       console.error(e)
     }
     setLoading(false)
+    setTimeout(() => setCardsVisible(true), 100)
   }
 
   if (status === 'loading' || loading) return (
@@ -53,7 +55,11 @@ export default function BuyerDashboard() {
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
 
       <div className="max-w-5xl mx-auto px-6 py-10">
-        <div className="mb-10">
+        <div className="mb-10" style={{
+          opacity: cardsVisible ? 1 : 0,
+          transform: cardsVisible ? 'translateY(0)' : 'translateY(16px)',
+          transition: 'opacity 0.5s ease, transform 0.5s ease',
+        }}>
           <h1 className="text-3xl font-black text-white mb-1">Welcome back, {session?.user?.name}! 👋</h1>
           <p className="text-gray-500">Browse deals or check your saved products.</p>
         </div>
@@ -62,16 +68,22 @@ export default function BuyerDashboard() {
           <div>
             <h2 className="text-2xl font-black text-white mb-6">Your Saved Products</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {favourites.slice(0, 6).map(product => {
+              {favourites.slice(0, 6).map((product, i) => {
                 const photos = JSON.parse(product.photos || '[]')
                 const photo = photos[0]
                 return (
                   <Link key={product.id} href={`/product/${product.id}`}
-                    className="rounded-2xl overflow-hidden hover:transform hover:scale-105 transition-all duration-200"
-                    style={{background: '#111111', border: '1px solid #222'}}>
+                    className="rounded-2xl overflow-hidden group"
+                    style={{
+                      background: '#111111',
+                      border: '1px solid #222',
+                      opacity: cardsVisible ? 1 : 0,
+                      transform: cardsVisible ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.97)',
+                      transition: `opacity 0.4s ease ${i * 0.07}s, transform 0.4s ease ${i * 0.07}s`,
+                    }}>
                     <div className="h-40 flex items-center justify-center overflow-hidden" style={{background: '#1a1a1a'}}>
                       {photo ? (
-                        <img src={photo} alt={product.title} className="w-full h-full object-cover" />
+                        <img src={photo} alt={product.title} className="w-full h-full object-cover group-hover:scale-105" style={{transition: 'transform 0.3s ease'}} />
                       ) : (
                         <span className="text-5xl">📦</span>
                       )}
