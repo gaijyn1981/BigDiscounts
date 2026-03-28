@@ -70,6 +70,12 @@ export default function BrowsePage() {
 
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
+      <style>{`
+        @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+      `}</style>
 
       <div className="px-6 py-8" style={{background: '#111111', borderBottom: '1px solid #1a1a1a'}}>
         <div className="max-w-5xl mx-auto">
@@ -141,7 +147,31 @@ export default function BrowsePage() {
 
       <div className="max-w-6xl mx-auto px-6 py-10">
         {loading ? (
-          <div className="text-center py-20 text-gray-500 text-lg">Loading products...</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="rounded-2xl overflow-hidden" style={{background: '#111111', border: '1px solid #222'}}>
+                <div className="h-48 relative overflow-hidden" style={{background: '#1a1a1a'}}>
+                  <div className="absolute inset-0" style={{
+                    background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%)',
+                    animation: 'shimmer 1.5s infinite',
+                    backgroundSize: '200% 100%',
+                  }} />
+                </div>
+                <div className="p-4 space-y-2">
+                  <div className="h-4 rounded-lg" style={{background: '#1a1a1a', width: '80%', position: 'relative', overflow: 'hidden'}}>
+                    <div className="absolute inset-0" style={{background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%)', animation: 'shimmer 1.5s infinite 0.1s', backgroundSize: '200% 100%'}} />
+                  </div>
+                  <div className="h-3 rounded-lg" style={{background: '#1a1a1a', width: '50%', position: 'relative', overflow: 'hidden'}}>
+                    <div className="absolute inset-0" style={{background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%)', animation: 'shimmer 1.5s infinite 0.2s', backgroundSize: '200% 100%'}} />
+                  </div>
+                  <div className="h-5 rounded-lg" style={{background: '#1a1a1a', width: '35%', position: 'relative', overflow: 'hidden'}}>
+                    <div className="absolute inset-0" style={{background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%)', animation: 'shimmer 1.5s infinite 0.3s', backgroundSize: '200% 100%'}} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
         ) : filtered.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-5xl mb-4">🔍</div>
