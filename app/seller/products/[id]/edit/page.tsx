@@ -8,12 +8,18 @@ export default function EditProductPage() {
   const id = params.id as string
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [visible, setVisible] = useState(false)
   const [fetching, setFetching] = useState(true)
   const [error, setError] = useState('')
   const [photos, setPhotos] = useState<string[]>(['', '', '', ''])
   const [uploading, setUploading] = useState<boolean[]>([false, false, false, false])
   const [form, setForm] = useState({ title: '', description: '', price: '', category: '', deliveryTime: '' })
   const [customDelivery, setCustomDelivery] = useState('')
+
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(true), 100)
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     async function fetchProduct() {
@@ -82,19 +88,25 @@ export default function EditProductPage() {
             <label className="block text-sm font-semibold text-gray-400 mb-1">Title</label>
             <input name="title" type="text" value={form.title} onChange={update} required
               className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
-              style={{background: '#1a1a1a', border: '1px solid #333'}} />
+              style={{background: '#1a1a1a', border: '1px solid #333', transition: 'border-color 0.2s ease, box-shadow 0.2s ease'}}
+                  onFocus={e => { e.currentTarget.style.borderColor = '#fcd968'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(252,217,104,0.15)' }}
+                  onBlur={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.boxShadow = 'none' }} />
           </div>
           <div>
             <label className="block text-sm font-semibold text-gray-400 mb-1">Description</label>
             <textarea name="description" value={form.description} onChange={update} rows={4} required
               className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
-              style={{background: '#1a1a1a', border: '1px solid #333'}} />
+              style={{background: '#1a1a1a', border: '1px solid #333', transition: 'border-color 0.2s ease, box-shadow 0.2s ease'}}
+                  onFocus={e => { e.currentTarget.style.borderColor = '#fcd968'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(252,217,104,0.15)' }}
+                  onBlur={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.boxShadow = 'none' }} />
           </div>
           <div>
             <label className="block text-sm font-semibold text-gray-400 mb-1">Price (£)</label>
             <input name="price" type="number" step="0.01" value={form.price} onChange={update} required
               className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
-              style={{background: '#1a1a1a', border: '1px solid #333'}} />
+              style={{background: '#1a1a1a', border: '1px solid #333', transition: 'border-color 0.2s ease, box-shadow 0.2s ease'}}
+                  onFocus={e => { e.currentTarget.style.borderColor = '#fcd968'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(252,217,104,0.15)' }}
+                  onBlur={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.boxShadow = 'none' }} />
           </div>
           <div>
             <label className="block text-sm font-semibold text-gray-400 mb-1">Category</label>
@@ -139,7 +151,9 @@ export default function EditProductPage() {
               <input value={customDelivery} onChange={e => setCustomDelivery(e.target.value)}
                 placeholder="e.g. 3-5 working days"
                 className="w-full mt-2 px-4 py-3 rounded-xl text-white focus:outline-none"
-                style={{background: '#1a1a1a', border: '1px solid #333'}} />
+                style={{background: '#1a1a1a', border: '1px solid #333', transition: 'border-color 0.2s ease, box-shadow 0.2s ease'}}
+                  onFocus={e => { e.currentTarget.style.borderColor = '#fcd968'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(252,217,104,0.15)' }}
+                  onBlur={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.boxShadow = 'none' }} />
             )}
           </div>
           <div>

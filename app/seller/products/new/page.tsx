@@ -11,10 +11,16 @@ export default function NewProduct() {
   const [photos, setPhotos] = useState<string[]>([])
   const [uploading, setUploading] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [visible, setVisible] = useState(false)
   const [showTerms, setShowTerms] = useState(false)
   const [termsAccepted, setTermsAccepted] = useState(false)
   const [error, setError] = useState('')
   const [customDelivery, setCustomDelivery] = useState('')
+
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(true), 100)
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     if (status === 'unauthenticated') router.push('/login')
@@ -71,7 +77,11 @@ export default function NewProduct() {
       <div className="max-w-2xl mx-auto px-6 py-10">
         <h1 className="text-3xl font-black text-white mb-8">Add New Product</h1>
 
-        <form onSubmit={handleFormSubmit} className="space-y-6">
+        <form onSubmit={handleFormSubmit} className="space-y-6" style={{
+          opacity: visible ? 1 : 0,
+          transform: visible ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'opacity 0.5s ease, transform 0.5s ease',
+        }}>
           <div className="rounded-2xl p-6" style={{background: '#111111', border: '1px solid #222'}}>
             <h2 className="text-lg font-black text-white mb-4">Product Details</h2>
             <div className="space-y-4">
@@ -79,20 +89,26 @@ export default function NewProduct() {
                 <label className="block text-sm font-semibold text-gray-400 mb-1">Title</label>
                 <input name="title" value={form.title} onChange={update} required
                   className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
-                  style={{background: '#1a1a1a', border: '1px solid #333'}} />
+                  style={{background: '#1a1a1a', border: '1px solid #333', transition: 'border-color 0.2s ease, box-shadow 0.2s ease'}}
+                  onFocus={e => { e.currentTarget.style.borderColor = '#fcd968'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(252,217,104,0.15)' }}
+                  onBlur={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.boxShadow = 'none' }} />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-400 mb-1">Description</label>
                 <textarea name="description" value={form.description} onChange={update} required rows={4}
                   className="w-full px-4 py-3 rounded-xl text-white focus:outline-none resize-none"
-                  style={{background: '#1a1a1a', border: '1px solid #333'}} />
+                  style={{background: '#1a1a1a', border: '1px solid #333', transition: 'border-color 0.2s ease, box-shadow 0.2s ease'}}
+                  onFocus={e => { e.currentTarget.style.borderColor = '#fcd968'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(252,217,104,0.15)' }}
+                  onBlur={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.boxShadow = 'none' }} />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-400 mb-1">Price (£)</label>
                   <input name="price" type="number" step="0.01" value={form.price} onChange={update} required
                     className="w-full px-4 py-3 rounded-xl text-white focus:outline-none"
-                    style={{background: '#1a1a1a', border: '1px solid #333'}} />
+                    style={{background: '#1a1a1a', border: '1px solid #333', transition: 'border-color 0.2s ease, box-shadow 0.2s ease'}}
+                  onFocus={e => { e.currentTarget.style.borderColor = '#fcd968'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(252,217,104,0.15)' }}
+                  onBlur={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.boxShadow = 'none' }} />
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-400 mb-1">Category</label>
@@ -138,7 +154,9 @@ export default function NewProduct() {
                   <input value={customDelivery} onChange={e => setCustomDelivery(e.target.value)}
                     placeholder="e.g. 3-5 working days"
                     className="w-full mt-2 px-4 py-3 rounded-xl text-white focus:outline-none"
-                    style={{background: '#1a1a1a', border: '1px solid #333'}} />
+                    style={{background: '#1a1a1a', border: '1px solid #333', transition: 'border-color 0.2s ease, box-shadow 0.2s ease'}}
+                  onFocus={e => { e.currentTarget.style.borderColor = '#fcd968'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(252,217,104,0.15)' }}
+                  onBlur={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.boxShadow = 'none' }} />
                 )}
               </div>
             </div>
