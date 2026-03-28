@@ -4,19 +4,30 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
 
-      <div className="max-w-3xl mx-auto px-6 py-16">
+      <style>{`
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-up { animation: fadeUp 0.6s ease forwards; }
+        .fade-up-1 { animation: fadeUp 0.6s ease 0.1s forwards; opacity: 0; }
+        .fade-up-2 { animation: fadeUp 0.6s ease 0.2s forwards; opacity: 0; }
+        .fade-up-3 { animation: fadeUp 0.6s ease 0.3s forwards; opacity: 0; }
+        .fade-up-4 { animation: fadeUp 0.6s ease 0.4s forwards; opacity: 0; }
+      `}</style>
+      <div className="max-w-3xl mx-auto px-6 py-16 fade-up">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-black text-white mb-4">About <span style={{color: '#fcd968'}}>BigDiscounts</span></h1>
           <p className="text-gray-400 text-xl">The UK's premium discount marketplace</p>
         </div>
 
         <div className="space-y-8">
-          <div className="rounded-2xl p-8" style={{background: '#111111', border: '1px solid #222'}}>
+          <div className="rounded-2xl p-8 fade-up-1" style={{background: '#111111', border: '1px solid #222'}}>
             <h2 className="text-2xl font-black text-white mb-4">Our Story</h2>
             <p className="text-gray-400 leading-relaxed">BigDiscounts was built with one simple idea — UK sellers deserve a fair, affordable place to list their products without paying huge commissions or monthly fees. For just £1 per listing per month, sellers can reach thousands of buyers across the UK.</p>
           </div>
 
-          <div className="rounded-2xl p-8" style={{background: '#111111', border: '1px solid #fcd968'}}>
+          <div className="rounded-2xl p-8 fade-up-2" style={{background: '#111111', border: '1px solid #fcd968'}}>
             <h2 className="text-2xl font-black text-white mb-4">Our Mission</h2>
             <p className="text-gray-400 leading-relaxed">To connect UK buyers and sellers directly, without the middleman. No hidden fees, no commissions, no nonsense. Just great deals at fair prices.</p>
           </div>
@@ -39,7 +50,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="rounded-2xl p-8" style={{background: '#111111', border: '1px solid #222'}}>
+          <div className="rounded-2xl p-8 fade-up-3" style={{background: '#111111', border: '1px solid #222'}}>
             <h2 className="text-2xl font-black text-white mb-4">Who We Are</h2>
             <p className="text-gray-400 leading-relaxed mb-6">BigDiscounts is run by Petrica Marin, a sole trader based in Gloucester, UK. We're passionate about supporting UK small businesses and helping buyers find great deals.</p>
             <div className="flex gap-4 flex-wrap">
