@@ -67,13 +67,22 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
             <div className="p-8 flex flex-col justify-between">
               <div>
-                <p className="text-xs text-gray-600 mb-3">
-                  <Link href="/browse" className="hover:text-gray-400">Browse</Link>
+                <div className="flex items-center gap-1.5 text-xs mb-3 flex-wrap">
+                  <Link href="/" className="text-gray-600 hover:text-white transition-colors">🏠</Link>
+                  <span className="text-gray-700">›</span>
+                  <Link href="/browse" className="text-gray-600 hover:text-white transition-colors">Browse</Link>
                   {product.category && (
-                    <> › <Link href={`/browse/${encodeURIComponent(product.category)}`} className="hover:text-gray-400">{product.category}</Link></>
+                    <>
+                      <span className="text-gray-700">›</span>
+                      <Link href={`/browse/${encodeURIComponent(product.category)}`}
+                        className="text-gray-600 hover:text-white transition-colors">
+                        {product.category}
+                      </Link>
+                    </>
                   )}
-                  {' › '}{product.title}
-                </p>
+                  <span className="text-gray-700">›</span>
+                  <span className="text-gray-400 truncate max-w-xs">{product.title}</span>
+                </div>
                 {product.category && (
                   <Link href={`/browse/${encodeURIComponent(product.category)}`}>
                     <span className="text-xs font-semibold px-3 py-1 rounded-full"
