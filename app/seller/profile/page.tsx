@@ -11,7 +11,13 @@ export default function SellerProfile() {
   const [paypalMe, setPaypalMe] = useState('')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [visible, setVisible] = useState(false)
   const [saved, setSaved] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(true), 100)
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     if (status === 'unauthenticated') router.push('/login')
@@ -49,7 +55,13 @@ export default function SellerProfile() {
       <div className="max-w-2xl mx-auto px-6 py-10">
         <h1 className="text-3xl font-black text-white mb-8">Seller Profile</h1>
 
-        <div className="rounded-2xl p-6 mb-6" style={{background: '#111111', border: '1px solid #222'}}>
+        <div className="rounded-2xl p-6 mb-6" style={{
+          background: '#111111',
+          border: '1px solid #222',
+          opacity: visible ? 1 : 0,
+          transform: visible ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'opacity 0.5s ease, transform 0.5s ease',
+        }}>
           <h2 className="text-xl font-black text-white mb-2">Payment Settings</h2>
           <p className="text-gray-500 mb-6 text-sm">Add your PayPal.me link so buyers can pay you directly.</p>
 
