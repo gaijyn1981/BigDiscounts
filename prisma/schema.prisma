@@ -19,6 +19,7 @@ model Seller {
   verified         Boolean   @default(false)
   createdAt        DateTime  @default(now())
   products         Product[]
+  reviewsReceived  Review[]
   emailVerified    Boolean   @default(false)
   verifyToken      String?
   resetTokenExpiry DateTime?
@@ -52,6 +53,7 @@ model Product {
   views              Int       @default(0)
   createdAt          DateTime  @default(now())
   seller             Seller    @relation(fields: [sellerId], references: [id])
+  reviews    Review[]
 }
 
 model Favourite {
@@ -69,3 +71,16 @@ model Report {
   reason    String
   createdAt DateTime @default(now())
 }
+
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  sellerId  String
+  buyerName String
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  seller    Seller   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+}
+
