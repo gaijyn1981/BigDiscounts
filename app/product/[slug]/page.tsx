@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ShareButtons from '@/app/components/ShareButtons'
 import FavouriteButton from '@/app/components/FavouriteButton'
+import ReviewList from "@/app/components/ReviewList";
 import ReportButton from '@/app/components/ReportButton'
 import ContactSellerButtons from '@/app/components/ContactSellerButtons'
 import type { Metadata } from 'next'
@@ -134,6 +135,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </div>
           </div>
         </div>
+      </div>
+      <div className="max-w-6xl mx-auto px-4 pb-16">
+        <ReviewList productId={product.id} sellerId={product.seller.id} />
       </div>
     </main>
   )
