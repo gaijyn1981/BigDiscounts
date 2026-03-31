@@ -189,11 +189,6 @@ export default function Dashboard() {
               style={{background: '#1a1a1a', color: '#fcd968', border: '1px solid #fcd968'}}>
               ⭐ My Reviews
             </Link>
-            <Link href="/seller/reviews"
-              className="px-5 py-2 rounded-lg font-bold text-sm transition-opacity hover:opacity-80"
-              style={{background: '#1a1a1a', color: '#fcd968', border: '1px solid #fcd968'}}>
-              ⭐ My Reviews
-            </Link>
             <Link href="/seller/products/new"
               className="px-5 py-2 rounded-lg font-bold text-sm text-black transition-opacity hover:opacity-90"
               style={{background: '#fcd968'}}>
