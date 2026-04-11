@@ -52,8 +52,30 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const photos = JSON.parse(product.photos || '[]')
   const session = await getServerSession()
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.title,
+    "description": product.description,
+    "image": photos[0] || undefined,
+    "offers": {
+      "@type": "Offer",
+      "price": product.price.toFixed(2),
+      "priceCurrency": "GBP",
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": product.seller.companyName
+      }
+    }
+  }
+
   return (
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <TrackView product={{
         id: product.id,
         title: product.title,
@@ -112,7 +134,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 <p className="text-xs text-gray-600 uppercase tracking-wide font-semibold mb-3">Sold by</p>
                 <div className="rounded-xl p-4" style={{background: '#1a1a1a', border: '1px solid #2a2a2a'}}>
                   <div className="flex items-center gap-2 mb-1">
-                    <p className="font-bold text-white text-lg">{product.seller.companyName}</p>
+                    <Link href={`/seller/${product.seller.id}`} className="font-bold text-white text-lg hover:text-yellow-400 transition-colors">{product.seller.companyName}</Link>
                     {product.seller.verified && (
                       <span className="text-xs font-bold px-2 py-1 rounded-full"
                         style={{background: '#0a1a0a', color: '#4ade80', border: '1px solid #4ade80'}}>
@@ -126,6 +148,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                     phone={product.seller.phone}
                     paypalMe={product.seller.paypalMe}
                     price={product.price}
+                    productId={product.id}
+                    productTitle={product.title}
                   />
                   <FavouriteButton productId={product.id} />
                   <ShareButtons title={product.title} id={product.id} />
