@@ -9,7 +9,7 @@ export async function GET() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const [totalSellers, totalBuyers, totalProducts, activeProducts, products, reports] = await Promise.all([
+  const [reviews, totalSellers, totalBuyers, totalProducts, activeProducts, products, reports] = await Promise.all([
     prisma.seller.count(),
     prisma.buyer.count(),
     prisma.product.count(),
@@ -18,7 +18,8 @@ export async function GET() {
       include: { seller: { select: { companyName: true, email: true } } },
       orderBy: { createdAt: 'desc' }
     }),
-    prisma.report.findMany({
+    prisma.review.findMany({ orderBy: { createdAt: 'desc' }, include: { product: { select: { title: true } } } }),
+      prisma.report.findMany({
       orderBy: { createdAt: 'desc' },
       take: 20
     })

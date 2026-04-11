@@ -20,6 +20,17 @@ interface Product {
   seller: { companyName: string, email: string }
 }
 
+interface Review {
+  id: string
+  buyerName: string
+  rating: number
+  comment: string
+  createdAt: string
+  sellerId: string
+  productId: string
+  product: { title: string }
+}
+
 interface Report {
   id: string
   productId: string
@@ -51,10 +62,11 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null)
   const [products, setProducts] = useState<Product[]>([])
   const [reports, setReports] = useState<Report[]>([])
+  const [reviews, setReviews] = useState<Review[]>([])
   const [sellers, setSellers] = useState<Seller[]>([])
   const [buyers, setBuyers] = useState<Buyer[]>([])
   const [loading, setLoading] = useState(true)
-  const [tab, setTab] = useState<'products' | 'sellers' | 'buyers' | 'reports'>('products')
+  const [tab, setTab] = useState<'products' | 'sellers' | 'buyers' | 'reports' | 'reviews'>('products')
   const [editingSeller, setEditingSeller] = useState<Seller | null>(null)
   const [editForm, setEditForm] = useState({ companyName: '', contactName: '', email: '', phone: '' })
   const [saving, setSaving] = useState(false)
@@ -76,11 +88,18 @@ export default function AdminDashboard() {
       setStats(statsData.stats)
       setProducts(statsData.products || [])
       setReports(statsData.reports || [])
+      setReviews(statsData.reviews || [])
       setSellers(sellersData)
       setBuyers(buyersData)
       setLoading(false)
     })
   }, [session])
+
+  const deleteReview = async (id: string) => {
+    if (!confirm('Delete this review?')) return
+    await fetch(`/api/admin/reviews/${id}`, { method: 'DELETE' })
+    setReviews(prev => prev.filter(r => r.id !== id))
+  }
 
   const deleteProduct = async (id: string) => {
     if (!confirm('Delete this product?')) return
@@ -157,6 +176,9 @@ export default function AdminDashboard() {
           <button onClick={() => setTab('products')} className={`px-4 py-2 rounded-lg font-bold text-sm ${tab === 'products' ? 'text-black' : 'text-gray-400'}`} style={tab === 'products' ? {background: '#fcd968'} : {background: '#1a1a1a'}}>Products</button>
           <button onClick={() => setTab('sellers')} className={`px-4 py-2 rounded-lg font-bold text-sm ${tab === 'sellers' ? 'text-black' : 'text-gray-400'}`} style={tab === 'sellers' ? {background: '#fcd968'} : {background: '#1a1a1a'}}>Sellers</button>
           <button onClick={() => setTab('buyers')} className={`px-4 py-2 rounded-lg font-bold text-sm ${tab === 'buyers' ? 'text-black' : 'text-gray-400'}`} style={tab === 'buyers' ? {background: '#fcd968'} : {background: '#1a1a1a'}}>Buyers</button>
+          <button onClick={() => setTab('reviews')} className={`px-4 py-2 rounded-lg font-bold text-sm ${tab === 'reviews' ? 'text-black' : 'text-gray-400'}`} style={tab === 'reviews' ? {background: '#fcd968'} : {background: '#1a1a1a'}}>
+            Reviews {reviews.length > 0 && <span className="ml-1 px-1.5 py-0.5 rounded-full text-xs" style={{background: '#1a1a1a', color: '#fcd968', border: '1px solid #fcd968'}}>{reviews.length}</span>}
+          </button>
           <button onClick={() => setTab('reports')} className={`px-4 py-2 rounded-lg font-bold text-sm ${tab === 'reports' ? 'text-black' : 'text-gray-400'}`} style={tab === 'reports' ? {background: '#f87171', color: 'white'} : {background: '#1a1a1a'}}>
             Reports {reports.length > 0 && <span className="ml-1 px-1.5 py-0.5 rounded-full text-xs" style={{background: '#f87171', color: 'white'}}>{reports.length}</span>}
           </button>
