@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/db'
+import { generateOgImageUrl } from '@/lib/og-image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ShareButtons from '@/app/components/ShareButtons'
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   })
   if (!product) return {}
   const photos = JSON.parse(product.photos || '[]')
-  const ogImage = photos[0] || null
+  const ogImage = photos[0] ? generateOgImageUrl(photos[0], product.price, product.title) : null
   return {
     title: `${product.title} - £${product.price.toFixed(2)} | BigDiscounts`,
     description: `${product.description.slice(0, 150)} - Sold by ${product.seller.companyName} on BigDiscounts.`,

@@ -20,6 +20,10 @@ interface Product {
   seller: { companyName: string, email: string }
 }
 
+interface DailyData {
+  createdAt: string
+}
+
 interface Review {
   id: string
   buyerName: string
@@ -66,7 +70,9 @@ export default function AdminDashboard() {
   const [sellers, setSellers] = useState<Seller[]>([])
   const [buyers, setBuyers] = useState<Buyer[]>([])
   const [loading, setLoading] = useState(true)
-  const [tab, setTab] = useState<'products' | 'sellers' | 'buyers' | 'reports' | 'reviews'>('products')
+  const [tab, setTab] = useState<'products' | 'sellers' | 'buyers' | 'reports' | 'reviews' | 'analytics'>('products')
+  const [sellersByWeek, setSellersByWeek] = useState<DailyData[]>([])
+  const [productsByWeek, setProductsByWeek] = useState<DailyData[]>([])
   const [editingSeller, setEditingSeller] = useState<Seller | null>(null)
   const [editForm, setEditForm] = useState({ companyName: '', contactName: '', email: '', phone: '' })
   const [saving, setSaving] = useState(false)
@@ -89,6 +95,8 @@ export default function AdminDashboard() {
       setProducts(statsData.products || [])
       setReports(statsData.reports || [])
       setReviews(statsData.reviews || [])
+      setSellersByWeek(statsData.sellersByWeek || [])
+      setProductsByWeek(statsData.productsByWeek || [])
       setSellers(sellersData)
       setBuyers(buyersData)
       setLoading(false)
@@ -176,6 +184,9 @@ export default function AdminDashboard() {
           <button onClick={() => setTab('products')} className={`px-4 py-2 rounded-lg font-bold text-sm ${tab === 'products' ? 'text-black' : 'text-gray-400'}`} style={tab === 'products' ? {background: '#fcd968'} : {background: '#1a1a1a'}}>Products</button>
           <button onClick={() => setTab('sellers')} className={`px-4 py-2 rounded-lg font-bold text-sm ${tab === 'sellers' ? 'text-black' : 'text-gray-400'}`} style={tab === 'sellers' ? {background: '#fcd968'} : {background: '#1a1a1a'}}>Sellers</button>
           <button onClick={() => setTab('buyers')} className={`px-4 py-2 rounded-lg font-bold text-sm ${tab === 'buyers' ? 'text-black' : 'text-gray-400'}`} style={tab === 'buyers' ? {background: '#fcd968'} : {background: '#1a1a1a'}}>Buyers</button>
+          <button onClick={() => setTab('analytics')} className={`px-4 py-2 rounded-lg font-bold text-sm ${tab === 'analytics' ? 'text-black' : 'text-gray-400'}`} style={tab === 'analytics' ? {background: '#fcd968'} : {background: '#1a1a1a'}}>
+            Analytics
+          </button>
           <button onClick={() => setTab('reviews')} className={`px-4 py-2 rounded-lg font-bold text-sm ${tab === 'reviews' ? 'text-black' : 'text-gray-400'}`} style={tab === 'reviews' ? {background: '#fcd968'} : {background: '#1a1a1a'}}>
             Reviews {reviews.length > 0 && <span className="ml-1 px-1.5 py-0.5 rounded-full text-xs" style={{background: '#1a1a1a', color: '#fcd968', border: '1px solid #fcd968'}}>{reviews.length}</span>}
           </button>
