@@ -195,6 +195,40 @@ export default function AdminDashboard() {
           </button>
         </div>
 
+
+        {tab === 'reviews' && (
+          <div className="space-y-3">
+            {reviews.length === 0 ? (
+              <div className="text-center py-20">
+                <div className="text-5xl mb-4">⭐</div>
+                <p className="text-gray-400 text-lg font-bold">No reviews yet</p>
+                <p className="text-gray-600 text-sm mt-2">Seller reviews will appear here.</p>
+              </div>
+            ) : (
+              reviews.map(r => (
+                <div key={r.id} className="p-4 rounded-xl" style={{background: '#1a1a1a', border: '1px solid #fcd968'}}>
+                  <div className="flex justify-between items-start gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-white font-bold text-sm">{r.buyerName}</span>
+                        <span style={{color: '#fcd968'}} className="text-sm">{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</span>
+                      </div>
+                      <p className="text-gray-300 text-sm mb-2">{r.comment}</p>
+                      <p className="text-gray-500 text-xs">Product: <span style={{color: '#fcd968'}}>{r.product?.title}</span></p>
+                      <p className="text-gray-600 text-xs mt-1">{new Date(r.createdAt).toLocaleString()}</p>
+                    </div>
+                    <button onClick={() => deleteReview(r.id)}
+                      className="px-3 py-1.5 rounded-lg text-xs font-bold shrink-0"
+                      style={{background: '#f87171', color: 'white'}}>
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+
         {tab === 'reports' && (
           <div className="space-y-3">
             {reports.length === 0 ? (
