@@ -207,7 +207,7 @@ export default function AdminDashboard() {
             ) : (
               reviews.map(r => (
                 <div key={r.id} className="p-4 rounded-xl" style={{background: '#1a1a1a', border: '1px solid #fcd968'}}>
-                  <div className="flex justify-between items-start gap-4">
+                  <div className="flex flex-col gap-2">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-white font-bold text-sm">{r.buyerName}</span>
@@ -218,7 +218,7 @@ export default function AdminDashboard() {
                       <p className="text-gray-600 text-xs mt-1">{new Date(r.createdAt).toLocaleString()}</p>
                     </div>
                     <button onClick={() => deleteReview(r.id)}
-                      className="px-3 py-1.5 rounded-lg text-xs font-bold shrink-0"
+                      className="w-full py-2 rounded-lg text-xs font-bold mt-1"
                       style={{background: '#f87171', color: 'white'}}>
                       Delete
                     </button>
