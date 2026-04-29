@@ -14,7 +14,7 @@ export default function ApiDocsPage() {
         <div className="mb-12">
           <span className="text-3xl font-black" style={{color: '#fcd968'}}>🇬🇧 BigDiscounts</span>
           <h1 className="text-4xl font-black text-white mt-4 mb-2">API Documentation</h1>
-          <p className="text-gray-400">Partner Integration API — v1.1</p>
+          <p className="text-gray-400">Partner Integration API — v2.0</p>
         </div>
 
         {/* Base URL */}
@@ -111,7 +111,8 @@ export default function ApiDocsPage() {
   "price": 14.99,
   "category": "Gifts & Seasonal",
   "photos": ["https://example.com/photo.jpg"],
-  "delivery_time": "3-5 business days"
+  "delivery_time": "3-5 business days",
+  "sku": "SKU-ABC-001"
 }`}
           </pre>
           <h3 className="text-white font-black mb-3">Response (201)</h3>
@@ -121,7 +122,8 @@ export default function ApiDocsPage() {
   "product_id": "clxyz123abc",
   "title": "Handmade Soy Candle",
   "price": 14.99,
-  "status": "pending_activation",
+  "sku": "SKU-ABC-001",
+  "status": "active",
   "product_url": "https://www.bigdiscounts.uk/product/clxyz123abc"
 }`}
           </pre>
@@ -232,6 +234,126 @@ export default function ApiDocsPage() {
   "courier": "Royal Mail",
   "dispatched": "2026-04-13T10:00:00Z",
   "message": "Tracking information updated successfully."
+}`}
+          </pre>
+        </section>
+
+
+        {/* ORDERS */}
+        <h2 className="text-2xl font-black text-white mb-4 mt-10">Order Endpoints</h2>
+        <p className="text-gray-400 mb-6">Use these endpoints to create and manage orders. BigDiscounts does not handle payments — orders represent buyer contact and fulfilment records.</p>
+
+        {/* POST /orders */}
+        <section className="mb-6 p-6 rounded-2xl" style={{background: '#111111', border: '1px solid #222'}}>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="px-3 py-1 rounded-lg text-sm font-black" style={{background: '#4ade80', color: 'black'}}>POST</span>
+            <code className="text-white font-bold">/api/external/orders</code>
+          </div>
+          <p className="text-gray-400 mb-4">Create a new order record. Pass the buyer details, delivery address, and line items (product IDs from BigDiscounts).</p>
+          <h3 className="text-white font-black mb-3">Request Body (JSON)</h3>
+          <pre className="text-xs p-4 rounded-xl overflow-x-auto mb-4" style={{background: '#0a0a0a', color: '#a3e635', border: '1px solid #1a1a1a'}}>
+{`{
+  "seller_email": "seller@example.com",
+  "external_order_id": "AVASAM-ORD-9876",
+  "buyer_name": "Jane Doe",
+  "buyer_email": "jane@example.com",
+  "buyer_phone": "07700123456",
+  "shipping_address": {
+    "line1": "12 High Street",
+    "line2": "Flat 3",
+    "city": "London",
+    "postcode": "EC1A 1BB",
+    "country": "GB"
+  },
+  "items": [
+    {
+      "product_id": "clxyz123abc",
+      "quantity": 2,
+      "price": 14.99
+    }
+  ]
+}`}
+          </pre>
+          <h3 className="text-white font-black mb-3">Response (201)</h3>
+          <pre className="text-xs p-4 rounded-xl overflow-x-auto" style={{background: '#0a0a0a', color: '#a3e635', border: '1px solid #1a1a1a'}}>
+{`{
+  "success": true,
+  "order_id": "clorder456def",
+  "external_order_id": "AVASAM-ORD-9876",
+  "status": "pending",
+  "buyer": { "name": "Jane Doe", "email": "jane@example.com" },
+  "items": [
+    { "product_id": "clxyz123abc", "sku": "SKU-ABC-001", "title": "Handmade Soy Candle", "price": 14.99, "quantity": 2 }
+  ],
+  "created_at": "2026-04-29T10:00:00Z"
+}`}
+          </pre>
+        </section>
+
+        {/* GET /orders */}
+        <section className="mb-6 p-6 rounded-2xl" style={{background: '#111111', border: '1px solid #222'}}>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="px-3 py-1 rounded-lg text-sm font-black" style={{background: '#60a5fa', color: 'black'}}>GET</span>
+            <code className="text-white font-bold">/api/external/orders?seller_email=EMAIL</code>
+          </div>
+          <p className="text-gray-400 mb-4">List all orders for a seller. Optionally filter by <code className="text-yellow-400">status</code> (pending, dispatched, cancelled), <code className="text-yellow-400">order_id</code>, or <code className="text-yellow-400">external_order_id</code>.</p>
+          <pre className="text-xs p-4 rounded-xl overflow-x-auto" style={{background: '#0a0a0a', color: '#a3e635', border: '1px solid #1a1a1a'}}>
+{`GET /api/external/orders?seller_email=seller@example.com
+GET /api/external/orders?seller_email=seller@example.com&status=pending
+GET /api/external/orders?seller_email=seller@example.com&external_order_id=AVASAM-ORD-9876`}
+          </pre>
+        </section>
+
+        {/* POST /orders/dispatch */}
+        <section className="mb-6 p-6 rounded-2xl" style={{background: '#111111', border: '1px solid #222'}}>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="px-3 py-1 rounded-lg text-sm font-black" style={{background: '#4ade80', color: 'black'}}>POST</span>
+            <code className="text-white font-bold">/api/external/orders/dispatch</code>
+          </div>
+          <p className="text-gray-400 mb-4">Mark an order as dispatched and record tracking information.</p>
+          <h3 className="text-white font-black mb-3">Request Body (JSON)</h3>
+          <pre className="text-xs p-4 rounded-xl overflow-x-auto mb-4" style={{background: '#0a0a0a', color: '#a3e635', border: '1px solid #1a1a1a'}}>
+{`{
+  "external_order_id": "AVASAM-ORD-9876",
+  "tracking_number": "JD000000000000000000",
+  "carrier": "Royal Mail"
+}`}
+          </pre>
+          <h3 className="text-white font-black mb-3">Response (200)</h3>
+          <pre className="text-xs p-4 rounded-xl overflow-x-auto" style={{background: '#0a0a0a', color: '#a3e635', border: '1px solid #1a1a1a'}}>
+{`{
+  "success": true,
+  "order_id": "clorder456def",
+  "status": "dispatched",
+  "tracking_number": "JD000000000000000000",
+  "carrier": "Royal Mail",
+  "dispatched_at": "2026-04-29T14:00:00Z"
+}`}
+          </pre>
+        </section>
+
+        {/* POST /orders/cancel */}
+        <section className="mb-10 p-6 rounded-2xl" style={{background: '#111111', border: '1px solid #222'}}>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="px-3 py-1 rounded-lg text-sm font-black" style={{background: '#4ade80', color: 'black'}}>POST</span>
+            <code className="text-white font-bold">/api/external/orders/cancel</code>
+          </div>
+          <p className="text-gray-400 mb-4">Cancel a pending order. Cannot cancel already dispatched orders.</p>
+          <h3 className="text-white font-black mb-3">Request Body (JSON)</h3>
+          <pre className="text-xs p-4 rounded-xl overflow-x-auto mb-4" style={{background: '#0a0a0a', color: '#a3e635', border: '1px solid #1a1a1a'}}>
+{`{
+  "external_order_id": "AVASAM-ORD-9876",
+  "reason": "Buyer requested cancellation"
+}`}
+          </pre>
+          <h3 className="text-white font-black mb-3">Response (200)</h3>
+          <pre className="text-xs p-4 rounded-xl overflow-x-auto" style={{background: '#0a0a0a', color: '#a3e635', border: '1px solid #1a1a1a'}}>
+{`{
+  "success": true,
+  "order_id": "clorder456def",
+  "status": "cancelled",
+  "cancel_reason": "Buyer requested cancellation",
+  "cancelled_at": "2026-04-29T15:00:00Z"
 }`}
           </pre>
         </section>
