@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 
-// Valid categories
 const VALID_CATEGORIES = [
   'Electronics & Tech', 'Phone & Accessories', 'Clothing & Fashion',
   'Home & Living', 'Garden & Outdoor', 'Pets', 'Baby & Kids',
@@ -12,16 +11,14 @@ const VALID_CATEGORIES = [
 
 export async function POST(req: Request) {
   try {
-    // API key authentication
     const apiKey = req.headers.get('x-api-key')
     if (!apiKey || apiKey !== process.env.AVASAM_API_KEY) {
       return NextResponse.json({ error: 'Unauthorized — invalid or missing API key' }, { status: 401 })
     }
 
     const body = await req.json()
-    const { seller_email, title, description, price, category, photos, delivery_time } = body
+    const { seller_email, title, description, price, category, photos, delivery_time, sku } = body
 
-    // Validate required fields
     if (!seller_email || typeof seller_email !== 'string') {
       return NextResponse.json({ error: 'seller_email is required' }, { status: 400 })
     }
@@ -40,14 +37,15 @@ export async function POST(req: Request) {
     if (photos && (!Array.isArray(photos) || photos.length > 4)) {
       return NextResponse.json({ error: 'photos must be an array of up to 4 URLs' }, { status: 400 })
     }
+    if (sku && typeof sku !== 'string') {
+      return NextResponse.json({ error: 'sku must be a string' }, { status: 400 })
+    }
 
-    // Find seller by email
     const seller = await prisma.seller.findUnique({ where: { email: seller_email } })
     if (!seller) {
       return NextResponse.json({ error: `No seller found with email: ${seller_email}` }, { status: 404 })
     }
 
-    // Create product
     const product = await prisma.product.create({
       data: {
         sellerId: seller.id,
@@ -57,7 +55,8 @@ export async function POST(req: Request) {
         category: category || null,
         deliveryTime: delivery_time || null,
         photos: JSON.stringify(photos || []),
-        active: false // Requires seller to activate via subscription
+        sku: sku || null,
+        active: true // Avasam sellers go live immediately (subject to trial/subscription)
       }
     })
 
@@ -66,8 +65,9 @@ export async function POST(req: Request) {
       product_id: product.id,
       title: product.title,
       price: product.price,
-      status: 'pending_activation',
-      message: 'Product created successfully. The seller must activate it via their BigDiscounts subscription.',
+      sku: product.sku,
+      status: 'active',
+      message: 'Product created and live on BigDiscounts.',
       product_url: `https://www.bigdiscounts.uk/product/${product.id}`
     }, { status: 201 })
 
@@ -93,11 +93,7 @@ export async function GET(req: Request) {
 
     const seller = await prisma.seller.findUnique({
       where: { email: seller_email },
-      include: {
-        products: {
-          orderBy: { createdAt: 'desc' }
-        }
-      }
+      include: { products: { orderBy: { createdAt: 'desc' } } }
     })
 
     if (!seller) {
@@ -111,6 +107,7 @@ export async function GET(req: Request) {
         product_id: p.id,
         title: p.title,
         price: p.price,
+        sku: p.sku,
         category: p.category,
         active: p.active,
         product_url: `https://www.bigdiscounts.uk/product/${p.id}`

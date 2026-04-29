@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import bcrypt from 'bcryptjs'
+import { sendAvasamWelcomeEmail } from '@/lib/email'
 
 export async function POST(req: Request) {
   try {
@@ -27,13 +28,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'phone is required' }, { status: 400 })
     }
 
-    // Check if seller already exists
     const existing = await prisma.seller.findUnique({ where: { email } })
     if (existing) {
       return NextResponse.json({ error: 'A seller account with this email already exists' }, { status: 409 })
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
+
+    // 30-day free trial for Avasam-onboarded sellers
+    const trialEndsAt = new Date()
+    trialEndsAt.setDate(trialEndsAt.getDate() + 30)
 
     const seller = await prisma.seller.create({
       data: {
@@ -42,16 +46,22 @@ export async function POST(req: Request) {
         companyName: company_name,
         contactName: contact_name,
         phone,
-        emailVerified: true, // Auto-verified for Avasam integrations
+        emailVerified: true,
+        avasam: true,
+        trialEndsAt
       }
     })
+
+    // Send day-0 welcome email asynchronously
+    sendAvasamWelcomeEmail(seller.email, seller.contactName, seller.companyName, trialEndsAt).catch(console.error)
 
     return NextResponse.json({
       success: true,
       seller_id: seller.id,
       email: seller.email,
       company_name: seller.companyName,
-      message: 'Seller account created successfully. Use the /api/external/accounts/apikey endpoint to generate an API key.',
+      trial_ends_at: trialEndsAt.toISOString(),
+      message: 'Seller account created with 30-day free trial. Products go live immediately.'
     }, { status: 201 })
 
   } catch (error) {

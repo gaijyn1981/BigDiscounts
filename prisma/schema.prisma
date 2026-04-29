@@ -23,6 +23,11 @@ model Seller {
   emailVerified    Boolean   @default(false)
   verifyToken      String?
   resetTokenExpiry DateTime?
+  avasam           Boolean   @default(false)
+  trialEndsAt      DateTime?
+  trialEmailDay25  Boolean   @default(false)
+  trialEmailDay30  Boolean   @default(false)
+  orders           Order[]
 }
 
 model Buyer {
@@ -51,10 +56,12 @@ model Product {
   stripeSubId        String?
   subscriptionEndsAt DateTime?
   slug               String?   @unique
+  sku                String?
   views              Int       @default(0)
   createdAt          DateTime  @default(now())
   seller             Seller    @relation(fields: [sellerId], references: [id])
-  reviews    Review[]
+  reviews            Review[]
+  orderItems         OrderItem[]
 }
 
 model Favourite {
@@ -85,3 +92,38 @@ model Review {
   seller    Seller   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
 }
 
+model Order {
+  id              String      @id @default(cuid())
+  sellerId        String
+  externalOrderId String?     @unique
+  buyerName       String
+  buyerEmail      String
+  buyerPhone      String?
+  shippingLine1   String
+  shippingLine2   String?
+  shippingCity    String
+  shippingPostcode String
+  shippingCountry String      @default("GB")
+  status          String      @default("pending")
+  trackingNumber  String?
+  carrier         String?
+  dispatchedAt    DateTime?
+  cancelledAt     DateTime?
+  cancelReason    String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  seller          Seller      @relation(fields: [sellerId], references: [id])
+  items           OrderItem[]
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String
+  sku       String?
+  title     String
+  price     Float
+  quantity  Int     @default(1)
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
+}
