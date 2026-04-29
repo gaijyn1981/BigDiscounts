@@ -14,13 +14,10 @@ export async function POST(req: Request) {
 
     const body = await req.json()
     const {
-      seller_email,
-      external_order_id,
-      buyer_name,
-      buyer_email,
-      buyer_phone,
-      shipping_address,
-      items
+      seller_email, external_order_id, buyer_name, buyer_email, buyer_phone,
+      shipping_address, items,
+      currency, dispatch_by, reference_number, notes, paid_on, received_date,
+      payment_status
     } = body
 
     // Validate required fields
@@ -46,7 +43,7 @@ export async function POST(req: Request) {
     }
 
     // Validate + resolve items
-    const resolvedItems: { productId: string; sku: string | null; title: string; price: number; quantity: number }[] = []
+    const resolvedItems: { productId: string; sku: string | null; title: string; price: number; quantity: number; taxRate: number | null; taxCostInclusive: boolean; useChannelTax: boolean }[] = []
     for (const item of items) {
       if (!item.product_id) return NextResponse.json({ error: 'Each item must have a product_id' }, { status: 400 })
       if (!item.quantity || item.quantity < 1) return NextResponse.json({ error: 'Each item must have a quantity >= 1' }, { status: 400 })
@@ -58,9 +55,12 @@ export async function POST(req: Request) {
       resolvedItems.push({
         productId: product.id,
         sku: product.sku || item.sku || null,
-        title: product.title,
-        price: item.price ?? product.price,
-        quantity: item.quantity
+        title: item.ItemTitle || product.title,
+        price: item.PricePerUnit ?? item.price ?? product.price,
+        quantity: item.Quantity ?? item.quantity,
+        taxRate: item.TaxRate ?? null,
+        taxCostInclusive: item.TaxCostInclusive ?? false,
+        useChannelTax: item.UseChannelTax ?? false
       })
     }
 
@@ -75,7 +75,17 @@ export async function POST(req: Request) {
         shippingLine2: shipping_address.line2 || null,
         shippingCity: shipping_address.city,
         shippingPostcode: shipping_address.postcode,
-        shippingCountry: shipping_address.country || 'GB',
+        shippingCountry: shipping_address.Country || shipping_address.country || 'GB',
+        shippingRegion: shipping_address.Region || shipping_address.region || null,
+        shippingCompany: shipping_address.Company || shipping_address.company || null,
+        shippingLine3: shipping_address.Address3 || shipping_address.line3 || null,
+        currency: currency || 'GBP',
+        dispatchBy: dispatch_by ? new Date(dispatch_by) : null,
+        referenceNumber: reference_number || null,
+        notes: notes || null,
+        paidOn: paid_on ? new Date(paid_on) : null,
+        receivedDate: received_date ? new Date(received_date) : null,
+        paymentStatus: payment_status || 'paid',
         status: 'pending',
         items: {
           create: resolvedItems

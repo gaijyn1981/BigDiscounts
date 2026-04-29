@@ -105,6 +105,16 @@ model Order {
   shippingPostcode String
   shippingCountry String      @default("GB")
   status          String      @default("pending")
+  currency        String      @default("GBP")
+  dispatchBy      DateTime?
+  referenceNumber String?
+  notes           String?
+  paidOn          DateTime?
+  receivedDate    DateTime?
+  paymentStatus   String      @default("paid")
+  shippingRegion  String?
+  shippingCompany String?
+  shippingLine3   String?
   trackingNumber  String?
   carrier         String?
   dispatchedAt    DateTime?
@@ -123,7 +133,10 @@ model OrderItem {
   sku       String?
   title     String
   price     Float
-  quantity  Int     @default(1)
+  quantity        Int     @default(1)
+  taxRate         Float?
+  taxCostInclusive Boolean @default(false)
+  useChannelTax   Boolean @default(false)
   order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product   Product @relation(fields: [productId], references: [id])
 }
