@@ -12,6 +12,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.bigdiscounts.uk'),
+  manifest: '/manifest.json',
   title: 'BigDiscounts - The UK Discount Marketplace',
   description: 'Discover amazing deals from verified UK sellers. List your products for just £1/month. No commission, no middleman.',
   keywords: 'UK marketplace, discount products, buy and sell UK, cheap products UK, online marketplace',
@@ -52,6 +53,11 @@ export default function RootLayout({
           <GoogleAnalytics />
           <SchemaMarkup />
         </Providers>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js')})}`,
+          }}
+        />
       </body>
     </html>
   )

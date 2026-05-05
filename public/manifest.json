@@ -1,0 +1,45 @@
+{
+  "name": "BigDiscounts UK",
+  "short_name": "BigDiscounts",
+  "description": "The UK Discount Marketplace — amazing deals from verified UK sellers.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#16a34a",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-GB",
+  "categories": ["shopping", "business"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Browse Deals",
+      "url": "/browse",
+      "description": "Browse all discounted products"
+    },
+    {
+      "name": "Sell a Product",
+      "url": "/sell",
+      "description": "List your product for £1/month"
+    }
+  ]
+}
