@@ -126,6 +126,18 @@ model Order {
   items           OrderItem[]
 }
 
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  userType  String   // "seller" | "buyer"
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+
+  @@index([userId, userType])
+}
+
 model OrderItem {
   id        String  @id @default(cuid())
   orderId   String

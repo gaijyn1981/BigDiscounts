@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
+import { sendPushToUser } from '@/lib/push'
 
 function authCheck(req: Request) {
   const apiKey = req.headers.get('x-api-key')
@@ -93,6 +94,9 @@ export async function POST(req: Request) {
       },
       include: { items: true }
     })
+
+    // Push notification to seller (fire and forget)
+    sendPushToUser(seller.id, 'seller', '🛒 New Order', `New order from ${order.buyerName}`, `/seller/dashboard`).catch(() => {})
 
     return NextResponse.json({
       success: true,

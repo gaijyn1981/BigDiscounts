@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { sendContactNotification } from '@/lib/email'
+import { sendPushToUser } from '@/lib/push'
 
 export async function POST(req: Request) {
   try {
@@ -27,6 +28,15 @@ export async function POST(req: Request) {
       buyerEmail.trim(),
       buyerName.trim(),
       message.trim()
+    )
+
+    // Push notification to seller
+    await sendPushToUser(
+      product.seller.id,
+      'seller',
+      '💬 New Enquiry',
+      `${buyerName} asked about "${product.title}"`,
+      `/seller/dashboard`
     )
 
     return NextResponse.json({ success: true })

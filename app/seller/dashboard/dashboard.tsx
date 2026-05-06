@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Toast, useToast } from '@/app/components/Toast'
+import NotificationToggle from '@/app/components/NotificationToggle'
 
 interface Product {
   id: string
@@ -178,7 +179,8 @@ export default function Dashboard() {
 
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-black text-white">My Products</h1>
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3 items-center">
+            <NotificationToggle userType="seller" />
             <Link href="/seller/profile"
               className="px-5 py-2 rounded-lg font-bold text-sm transition-opacity hover:opacity-80"
               style={{background: '#1a1a1a', color: '#fcd968', border: '1px solid #fcd968'}}>

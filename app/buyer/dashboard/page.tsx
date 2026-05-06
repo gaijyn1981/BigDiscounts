@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import DeleteAccountButton from '@/app/components/DeleteAccountButton'
 import { RecentlyViewedSection } from '@/app/components/RecentlyViewed'
+import NotificationToggle from '@/app/components/NotificationToggle'
 
 interface Product {
   id: string
@@ -62,7 +63,8 @@ export default function BuyerDashboard() {
           transition: 'opacity 0.5s ease, transform 0.5s ease',
         }}>
           <h1 className="text-3xl font-black text-white mb-1">Welcome back, {session?.user?.name}! 👋</h1>
-          <p className="text-gray-500">Browse deals or check your saved products.</p>
+          <p className="text-gray-500 mb-3">Browse deals or check your saved products.</p>
+          <NotificationToggle userType="buyer" />
         </div>
 
         {favourites.length > 0 && (
