@@ -57,11 +57,7 @@ export default function BuyerDashboard() {
     <main className="min-h-screen" style={{background: '#0a0a0a'}}>
 
       <div className="max-w-5xl mx-auto px-6 py-10">
-        <div className="mb-10" style={{
-          opacity: cardsVisible ? 1 : 0,
-          transform: cardsVisible ? 'translateY(0)' : 'translateY(16px)',
-          transition: 'opacity 0.5s ease, transform 0.5s ease',
-        }}>
+        <div className="mb-10">
           <h1 className="text-3xl font-black text-white mb-1">Welcome back, {session?.user?.name}! 👋</h1>
           <p className="text-gray-500 mb-3">Browse deals or check your saved products.</p>
           <NotificationToggle userType="buyer" />
