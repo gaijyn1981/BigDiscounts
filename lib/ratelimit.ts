@@ -23,3 +23,9 @@ export const forgotPasswordRateLimit = new Ratelimit({
   limiter: Ratelimit.slidingWindow(3, '1 h'),
   prefix: 'forgot-password',
 })
+
+export const newsletterRateLimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, '1 h'),
+  prefix: 'newsletter',
+})

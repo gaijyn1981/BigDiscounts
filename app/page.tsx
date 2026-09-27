@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import AnimatedHome from './components/AnimatedHome'
+import NewsletterSignup from './components/NewsletterSignup'
 import { prisma } from '@/lib/db'
 import { getServerSession } from 'next-auth'
 import type { Metadata } from 'next'
@@ -176,6 +177,7 @@ export default async function Home() {
 
       <footer style={{background: '#111111', borderTop: '1px solid #1a1a1a'}} className="px-6 py-10">
         <div className="max-w-4xl mx-auto">
+          <NewsletterSignup />
           <div className="flex flex-wrap justify-between gap-8 mb-8">
             <div>
               <p className="text-2xl font-black mb-2" style={{color: '#fcd968'}}>BigDiscounts</p>
